@@ -1,0 +1,821 @@
+---
+permalink: /slides/lecture12.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 12: 3D graphics</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      .medium li {  font-size: 1.1em; }
+      .small li {  font-size: 1em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### 3D Graphics
+
+---
+
+class: center, middle
+
+# Triangles
+
+<div id="tricontainer"></div>
+
+---
+
+# Some definitions
+
+  * Vertex (plural Vertices): A point in 3D space
+  
+  * Triangle: Three vertices
+  
+  * Face: The "front" side of a triangle
+  
+  * Normal: A vector that points "away" from the face
+
+---
+
+# Why triangles?
+
+  * Triangles are always flat
+  
+  * Flat makes it easier to calculate lighting, color, etc.
+  
+  * Triangles are convex
+  
+  * Convex makes it easier to interpolate between the vertices
+  
+  * Any polygon can be divided into triangles 
+  
+---
+
+# Color
+
+  * We can assign a color to a triangle
+  
+  * But what if we want to have different colors?
+  
+  * Ideally, we want a gradual change
+  
+  * Idea: Assign color to the vertices and interpolate
+  
+  * It's such a good idea, 3D libraries have it built-in
+
+---
+
+# Interpolation
+  
+Halfway between two values:
+
+$$ p = \frac{r + s}{2} = \frac{1}{2} r + \frac{1}{2}s$$
+
+Closer to r than to s
+
+$$ p = \frac{2}{3} r + \frac{1}{3} s$$
+
+or, generally:
+
+$$ p = \theta \cdot r + (1- \theta) \cdot s$$
+
+---
+
+# Interpolation
+  
+What if we have more than two values?
+
+$$ p = \theta \cdot r + \phi \cdot s + \psi \cdot t$$
+
+with 
+
+$$\theta + \phi + \psi = 1$$
+
+Note: r, s, and t don't have to be numbers, they could also be vectors! In particular, they can be the vertices of a triangle. Every point in the triangle can then be represented as
+
+$$p = (\theta,\phi,\psi)$$
+
+---
+
+# Barycentric coordinates
+<!--- Source: https://commons.wikimedia.org/wiki/File:TriangleBarycentricCoordinates.svg -->
+<svg preserveAspectRatio="xMidYMid meet" version="1.0" id="svg2" docname="TriangleBarycentricCoordinates.svg" width="1344.0642" height="2011.8257" font-size="23">
+  <metadata id="metadata65">
+    <RDF id="RDF4">
+      <Work about="" id="Work6">
+        <format id="format8">image/svg+xml</format>
+        <type resource="http://purl.org/dc/dcmitype/StillImage" id="type10"/>
+      </Work>
+    </RDF>
+  </metadata>
+  <desc id="desc4">Barycentric Coordinates in a triangle</desc>
+  <g id="g2526" transform="matrix(0.9,0,0,0.9,0,0)">
+    <path id="path6" d="M 100,50 L 600,50 L 350,483.0127 L 100,50 z" style="fill:none;stroke:#000000;stroke-width:3"/>
+    <circle id="circle8" r="4" cy="194.33757" cx="350" rx="4" ry="4"/>
+    <circle id="circle10" r="4" cy="50" cx="100" rx="4" ry="4"/>
+    <circle id="circle12" r="4" cy="50" cx="600" rx="4" ry="4"/>
+    <circle id="circle14" r="4" cy="483.0127" cx="350" rx="4" ry="4"/>
+    <circle id="circle16" r="4" cy="50" cx="350" rx="4" ry="4"/>
+    <circle id="circle18" r="4" cy="266.50635" cx="475" rx="4" ry="4"/>
+    <circle id="circle20" r="4" cy="266.50635" cx="225" rx="4" ry="4"/>
+    <circle id="circle22" r="4" cy="266.50635" cx="350" rx="4" ry="4"/>
+    <circle id="circle24" r="4" cy="158.25317" cx="412.5" rx="4" ry="4"/>
+    <circle id="circle26" r="4" cy="158.25317" cx="287.5" rx="4" ry="4"/>
+    <g id="g28" style="stroke:#0000ff;stroke-width:0.5;stroke-dasharray:3, 3">
+      <path id="path30" d="M 100,50 L 475,266.50635"/>
+      <path id="path32" d="M 600,50 L 225,266.50635"/>
+      <path id="path34" d="M 350,483.0127 L 350,50"/>
+      <path id="path36" d="M 475,266.50635 L 225,266.50635"/>
+      <path id="path38" d="M 225,266.50635 L 350,50"/>
+      <path id="path40" d="M 350,50 L 475,266.50635"/>
+    </g>
+    <text id="text42" dy="-5" dx="-5" y="50" x="100" style="text-anchor:end">(1,0,0)</text>
+    <text id="text44" dy="-5" dx="5" y="50" x="600">(0,1,0)</text>
+    <text id="text46" dy="20" y="485.9617" x="350" style="text-anchor:middle">(0,0,1)</text>
+    <text id="text48" dy="-5" y="49.016991" x="350" style="text-anchor:middle">(1/2,1/2,0)</text>
+    <text id="text50" dy="20" y="266.50635" x="225" style="text-anchor:end">(1/2,0,1/2)</text>
+    <text id="text52" dy="20" y="266.50635" x="475">(0,1/2,1/2)</text>
+    <text id="text54" dy="20" y="269.45535" x="350" style="text-anchor:middle">(1/4,1/4,1/2)</text>
+    <text id="text56" dy="-5" y="155.30417" x="434.12604" style="text-anchor:middle">(1/4,1/2,1/4)</text>
+    <text id="text58" dy="-5" y="155.30417" x="264.89096" style="text-anchor:middle">(1/2,1/4,1/4)</text>
+    <text id="text60" dy="20" y="197.28658" x="350" style="text-anchor:middle">(1/3,1/3,1/3)</text>
+  </g>
+</svg>
+
+---
+
+# Interpolation
+  
+What can we do with this representation?
+
+$$p = (\theta,\phi,\psi)$$
+
+Calculate color values!
+
+$$c(p) = \theta \cdot c(r) + \phi \cdot c(s) + \psi \cdot c(t)$$
+
+---
+
+# A colored triangle
+
+<div id="tricolcontainer"></div>
+
+---
+
+class: medium
+
+# Normals
+
+  * Normals are (unit) vectors that point away from a face
+  
+  * They are used for lighting (we'll discuss how next week)
+  
+  * What does "away" mean?
+  
+  * Simplest case: perpendicular to the triangle 
+  
+  * What if we have adjacent triangles?
+  
+  * We can assign normals to each vertex and interpolate, just as with colors
+ 
+---
+
+# Textures
+
+  * Colored triangles are boring!
+  
+  * What if we want to show something like wood?
+  
+  * Use an image as the texture 
+  
+  * Assign texture (uv) coordinates to each vertex 
+  
+  * *Interpolate* between the vertices to get the uv coordinate for each pixel!
+  
+---
+
+# Textured Triangle
+
+Texture coordinates (uv): (0,0), (1,1), (1,0)
+
+<table><tr><td>
+
+<div id="texcontainer"></div></td><td><img src="/CI-2700/assets/img/crateuv.png"></td></tr></table>
+
+---
+
+# Textured Triangle
+
+Let's use (0.5,0.5) as the UV value for one vertex.
+
+<table><tr><td>
+
+<div id="tex1container"></div></td><td><img src="/CI-2700/assets/img/crateuv.png"></td></tr></table>
+
+---
+
+# Meshes
+
+  * Triangles are boring!
+  
+  * A *Mesh* is a collection of triangles (and normals, uv coordinates, colors)
+  
+  * How about something more exciting, like a cube?
+  
+  * We can assemble a cube out of triangles!
+  
+  * Or a bunny!
+  
+---
+
+# Stanford Bunny
+
+<table><tr><td><img src="/CI-2700/assets/img/stanfordbunny.jpg" width="100%"/></td><td><img src="/CI-2700/assets/img/BunnyWire.gif" width="100%"/></td></tr></table>
+
+---
+
+class: small
+
+# Back to the cube
+
+  * Cubes have 8 vertices and 6 faces (12 triangles!) 
+  * Vertices:
+     - v1 = (0,0,0)
+     - v2 = (1,0,0)
+     - v3 = (0,1,0)
+     - v4 = (1,1,0)
+     - v5 = (0,0,1)
+     - v6 = (1,0,1)
+     - v7 = (0,1,1)
+     - v8 = (1,1,1)
+  * Faces:
+     - f1: (v1,v2,v3)
+     - f2: (v3,v2,v4)
+     - etc.
+     
+---
+
+class: small
+
+# The .obj file format
+
+<table width="100%"><tr><td width="50%">
+
+<span style="font-family: monospace;">
+v 0 0 0<br/>
+v 1 0 0<br/>
+v 0 1 0<br/>
+v 1 1 0<br/>
+v 0 0 1<br/>
+v 1 0 1<br/>
+v 0 1 1<br/>
+v 1 1 1<br/>
+</span>
+
+</td><td width="50%">
+<span style="font-family: monospace;">
+f 2 1 3<br/>
+f 2 3 4<br/>
+<br/>
+f 8 5 6<br/>
+f 5 8 7<br/>
+<br/>
+f 6 1 2<br/>
+f 1 6 5<br/>
+<br/>
+f 3 8 4<br/>
+f 8 3 7<br/>
+<br/>
+f 1 7 3<br/>
+f 7 1 5<br/>
+<br/>
+f 8 2 4<br/>
+f 2 8 6<br/>
+</span>
+</td></tr></table>
+
+Download file <a href="https://github.com/yawgmoth/CI-2700/blob/master/assets/unity/cube.obj">here</a>
+
+---
+
+# .obj files
+
+  * List of vertices, faces, uv coordinates, normals, etc.
+  
+  * You could hand-write one (like for the cube!)
+  
+  * Or you write code to generate the file
+  
+  * Unity (and most other 3D software) reads them!
+
+---
+
+# Cube (Controls: w, a, s, d)
+
+<div id="container"></div>
+
+---
+
+# Level of Detail 
+
+  * Many modern meshes have a lot of detail 
+  
+  * But what if it is far away?
+  
+  * Idea: Use a lower-resolution (fewer triangles) version of the same mesh!
+  
+  * Can often be precomputed automatically
+  
+  * Limitation: Visible "jumping" when the low-res mesh is replaced with the higher-res one
+  
+---
+
+# Stanford Bunny and Level of Detail
+
+<img src="/CI-2700/assets/img/stanfordbunnylod.png" width="100%"/>
+
+---
+
+class: small
+
+# Billboards
+
+  * Many background objects like trees, grass, rocks only exist as decoration
+  
+  * It may not be important for them to have a lot of detail 
+  
+  * Actually, as long as it looks like a tree from all sides, it's probably fine
+  
+  * Just show a picture of a tree, and turn it so it always faces the camera!
+  
+  * Also useful for health bars or similar information
+  
+``` transform.LookAt(2 * transform.position - Camera.main.transform.position);```
+
+---
+
+class: center, middle
+
+# Rendering Pipeline
+
+## Or: How do we actually get something onto the screen
+
+---
+
+class: small
+
+# Rendering 
+
+  * Model coordinates need to be translated to world coordinates (where is the mesh)
+  
+  * World coordinates are then translated to Camera coordinates (where in the field of view of the camera is the mesh?)
+  
+  * The Camera coordinates need to be projected onto a Viewport (objects that are further away become smaller)
+  
+  * The Viewport is then mapped onto a window on the screen
+  
+  * We will discuss the math behind this next week
+  
+---
+
+# Camera 
+
+<img src="/CI-2700/assets/img/frustum.jpg" width="100%"/>
+
+---
+
+# Clipping and Culling
+
+  * Many triangles do not need to be rendered
+  
+  * Anything outside the frustum or not facing the camera can be discarded (Frustum culling and backface culling)
+  
+  * Triangles that are behind other triangles can also be culled (Occlusion culling)
+  
+  * Triangles that are partially inside the frustum have to be clipped (cut into pieces)
+  
+---
+
+class: small
+
+# Backface culling
+
+  * How do we recognize what is facing away from the camera?
+  
+  * Assume a and b are unit vectors
+  
+$$ \vec{a} \cdot \vec{b} = \cos(\theta) $$
+
+  * The cosine is negative iff the vectors point in opposite directions
+
+  * Discard any triangle where the face normal points in the same direction as the (unit) vector pointing from the camera to the triangle
+  
+---
+
+class: small
+
+# Painter's algorithm
+
+  * How do we avoid showing triangles that are occluded?
+
+  * When you paint, whatever you draw last is visible on the canvas 
+  
+  * Let's use the same idea with triangles!
+  
+  * Draw triangles starting with the one furthest from the camera 
+  
+  * The closer a triangle is to the viewer, the later it is drawn
+  
+  * If a triangle is partially occluded, you will still see the rest
+  
+---
+
+# Which order?
+
+<img src="/CI-2700/assets/img/painters.png" width="50%"/>
+  
+---
+
+class: small
+
+# z-Buffer
+
+  * Instead of deciding per triangle, decide per pixel 
+  
+  * Store z-coordinate (depth) in a special buffer
+  
+  * When something would be drawn on a pixel:
+       
+       - If the z-coordinate of the new object is greater than the buffer, don't draw
+       - Otherwise draw, and update the buffer 
+       
+  * The z-Buffer usually exists in hardware
+  
+---
+
+class: small
+
+# Occlusion culling
+
+  * Both of these approaches still attempt to draw everything
+  
+  * In large scenes this can be very expensive
+  
+  * Specialized algorithms exist to determine objects that are occluded
+  
+  * Such objects can be culled entirely
+  
+  * Unity has an Occlusion culling algorithm, but it requires some setup
+  
+---
+
+class: small
+
+# Shaders 
+
+  * Shaders are little programs that can change draw operations
+  
+  * Vertex shaders operate on vertices 
+  
+  * Geometry shaders operate on primitives (triangles)
+  
+  * Fragment shaders operate on fragments (drawable parts)
+  
+  * Compute shaders can be used to do calculations on the GPU
+  
+  * More next week
+  
+---
+
+# Rendering: Shaders 
+
+<div id="shcontainer"></div>
+
+---
+
+# References 
+
+   * [Barycentric coordinate system](https://en.wikipedia.org/wiki/Barycentric_coordinate_system)
+   
+   * [NeHe OpenGL tutorials](http://nehe.gamedev.net/) (slightly outdated, but explains the basics well)
+   
+   * [OpenGL Billboard tutorial](http://www.opengl-tutorial.org/intermediate-tutorials/billboards-particles/billboards/)
+
+   * [three.js](https://threejs.org/) (JavaScript library for easy 3D rendering)
+   
+   * [OpenGL Render Pipeline](https://www.khronos.org/opengl/wiki/Rendering_Pipeline_Overview)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
+    <script src="/CI-2700/assets/js/3dutils.js"></script>
+    <!-- From:  https://github.com/mrdoob/three.js/blob/master/examples/webgl_shader_lava.html  -->
+    <script id="fragmentShader" type="x-shader/x-fragment">
+			uniform float time;
+			uniform float fogDensity;
+			uniform vec3 fogColor;
+			uniform sampler2D texture1;
+			uniform sampler2D texture2;
+			varying vec2 vUv;
+			void main( void ) {
+				vec2 position = - 1.0 + 2.0 * vUv;
+				vec4 noise = texture2D( texture1, vUv );
+				vec2 T1 = vUv + vec2( 1.5, - 1.5 ) * time * 0.02;
+				vec2 T2 = vUv + vec2( - 0.5, 2.0 ) * time * 0.01;
+				T1.x += noise.x * 2.0;
+				T1.y += noise.y * 2.0;
+				T2.x -= noise.y * 0.2;
+				T2.y += noise.z * 0.2;
+				float p = texture2D( texture1, T1 * 2.0 ).a;
+				vec4 color = texture2D( texture2, T2 * 2.0 );
+				vec4 temp = color * ( vec4( p, p, p, p ) * 2.0 ) + ( color * color - 0.1 );
+				if( temp.r > 1.0 ) { temp.bg += clamp( temp.r - 2.0, 0.0, 100.0 ); }
+				if( temp.g > 1.0 ) { temp.rb += temp.g - 1.0; }
+				if( temp.b > 1.0 ) { temp.rg += temp.b - 1.0; }
+				gl_FragColor = temp;
+				float depth = gl_FragCoord.z / gl_FragCoord.w;
+				const float LOG2 = 1.442695;
+				float fogFactor = exp2( - fogDensity * fogDensity * depth * depth * LOG2 );
+				fogFactor = 1.0 - clamp( fogFactor, 0.0, 1.0 );
+				gl_FragColor = mix( gl_FragColor, vec4( fogColor, gl_FragColor.w ), fogFactor );
+			}
+		</script>
+
+		<script id="vertexShader" type="x-shader/x-vertex">
+			uniform vec2 uvScale;
+            uniform float time;
+			varying vec2 vUv;
+			void main()
+			{
+				vUv = uvScale * uv;
+				vec4 mvPosition = modelViewMatrix * vec4( position + vec3(0.3*sin(time)*position.y,0.4*cos(time*1.3)*position.z,0), 1.0 );
+				gl_Position = projectionMatrix * mvPosition;
+			}
+		</script>
+    
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+      
+    
+ 
+    var cubeinfo = setupScene(window.innerWidth/2, window.innerHeight/2, "container");
+    cubeinfo.update = function ( object ) {
+            const timer = Date.now() * 0.0001;
+            if ( object.isMesh === true ) {
+                object.rotation.z = timer * 15;
+                object.rotation.x = timer * 22;
+            }
+        };
+    
+    var triinfo = setupScene(window.innerWidth/2, window.innerHeight/2, "tricontainer");
+
+    triinfo.update = function ( object ) {
+            const timer = Date.now() * 0.0001;
+            if ( object.isMesh === true ) {
+                object.rotation.y = timer * 6;
+            }
+        };
+        
+    var tricolinfo = setupScene(window.innerWidth/2, window.innerHeight/2, "tricolcontainer");
+
+    tricolinfo.update = function ( object ) {
+            const timer = Date.now() * 0.0001;
+            if ( object.isMesh === true ) {
+                object.rotation.y = timer * 6;
+            }
+        };
+        
+    var texinfo = setupScene(window.innerWidth/4, window.innerHeight/2, "texcontainer");
+    
+    texinfo.update = function ( object ) {
+            const timer = Date.now() * 0.0001;
+            if ( object.isMesh === true ) {
+                object.rotation.y = timer * 6;
+            }
+        };
+    
+    var tex1info = setupScene(window.innerWidth/4, window.innerHeight/2, "tex1container");
+    
+    tex1info.update = function ( object ) {
+            const timer = Date.now() * 0.0001;
+            if ( object.isMesh === true ) {
+                object.rotation.y = timer * 6;
+            }
+        };
+
+    var shinfo = setupScene(window.innerWidth/2, window.innerHeight/2, "shcontainer");
+    
+    
+    
+    var tri = new THREE.Geometry();
+    
+    tri.vertices.push(
+        new THREE.Vector3(-2,-2,0), new THREE.Vector3(2,2,0), new THREE.Vector3(2,-2,0)
+    );
+    
+    var triface = new THREE.Face3( 1, 0, 2, new THREE.Vector3(0,0,1), new THREE.Color( 0xff0000 ) );
+    
+   // triface.vertexColors = [ new THREE.Color( 0xff0000 ), new THREE.Color(0x00ff00), new THREE.Color(0x0000ff) ];
+
+    tri.faces.push( triface );
+    
+    var mat = new THREE.MeshLambertMaterial({vertexColors: THREE.FaceColors, side: THREE.DoubleSide});
+    tri.computeVertexNormals();
+
+    var trimesh = new THREE.Mesh(tri, mat);
+    triinfo.scene.add(trimesh);  
+    
+    
+    var tricolface = new THREE.Face3( 1, 0, 2, new THREE.Vector3(0,0,1), new THREE.Color( 0xff0000 ) );
+    tricolface.vertexColors = [ new THREE.Color( 0xff0000 ), new THREE.Color(0x00ff00), new THREE.Color(0x0000ff) ];
+    var tricol = new THREE.Geometry();
+    tricol.vertices.push(new THREE.Vector3(-2,-2,0), new THREE.Vector3(2,2,0), new THREE.Vector3(2,-2,0));
+    tricol.faces.push(tricolface);
+    //tricol.computeVertexNormals();
+    
+    var tricolmesh = new THREE.Mesh(tricol, new THREE.MeshLambertMaterial({vertexColors: THREE.VertexColors, side: THREE.DoubleSide}));
+    tricolinfo.scene.add(tricolmesh);
+    
+    var texface = new THREE.Face3( 1, 0, 2, new THREE.Vector3(0,0,1) );
+   
+    var tex = new THREE.Geometry();
+    tex.vertices.push(new THREE.Vector3(-2,-2,0), new THREE.Vector3(2,2,0), new THREE.Vector3(2,-2,0));
+    tex.faces.push(texface);
+    tex.faceVertexUvs[0].push([new THREE.Vector2(1,0), new THREE.Vector2(0,0), new THREE.Vector2(1,1)]);
+    tex.uvsNeedUpdate = true;
+    tex.computeVertexNormals();
+    tex.computeFaceNormals();
+    var texture = new THREE.TextureLoader().load('/CI-2700/assets/img/crate.gif');
+    var texmesh = new THREE.Mesh(tex, new THREE.MeshBasicMaterial({map: texture, side: THREE.DoubleSide}));
+
+    texinfo.scene.add(texmesh);
+    texinfo.camera.position.z=5;
+    
+    var tex1face = new THREE.Face3( 1, 0, 2, new THREE.Vector3(0,0,1) );
+   
+    var tex1 = new THREE.Geometry();
+    tex1.vertices.push(new THREE.Vector3(-2,-2,0), new THREE.Vector3(2,2,0), new THREE.Vector3(2,-2,0));
+    tex1.faces.push(texface);
+    tex1.faceVertexUvs[0].push([new THREE.Vector2(1,0), new THREE.Vector2(0,0), new THREE.Vector2(0.5,0.5)]);
+    tex1.uvsNeedUpdate = true;
+    tex1.computeVertexNormals();
+    tex1.computeFaceNormals();
+    textmat = new THREE.MeshBasicMaterial({map: texture, side: THREE.DoubleSide})
+    var tex1mesh = new THREE.Mesh(tex1, textmat);
+
+    
+    tex1info.scene.add(tex1mesh);
+    tex1info.camera.position.z=5;
+    
+    var cube = new THREE.Geometry();
+    
+    cube.vertices.push(
+        new THREE.Vector3(-2,-2,2), new THREE.Vector3(2,2,2), new THREE.Vector3(2,-2,2), new THREE.Vector3(-2, 2,2),
+        new THREE.Vector3(-2,-2,-2), new THREE.Vector3(2,2,-2), new THREE.Vector3(2,-2,-2), new THREE.Vector3(-2, 2,-2)
+    );
+
+    cube.faces.push( new THREE.Face3( 1, 0, 2, new THREE.Vector3(0,0,1), new THREE.Color( 0xff0000 ) ), 
+                       new THREE.Face3( 0, 1, 3, new THREE.Vector3(0,0,1), new THREE.Color( 0x00ff00 ) ));
+                       
+    cube.faces.push( new THREE.Face3( 2, 6, 1, new THREE.Vector3(1,0,0), new THREE.Color( 0x0000ff ) ),
+                       new THREE.Face3( 1, 6, 5, new THREE.Vector3(1,0,0), new THREE.Color( 0xffff00 ) ));
+    
+    cube.faces.push( new THREE.Face3( 2, 0, 4, new THREE.Vector3(0,-1,0), new THREE.Color( 0xff00ff ) ),
+                       new THREE.Face3( 2, 4, 6, new THREE.Vector3(0,-1,0), new THREE.Color( 0x00ffff ) ));
+                       
+    cube.faces.push( new THREE.Face3( 1, 5, 3, new THREE.Vector3(0,1,0), new THREE.Color( 0xff7700 ) ),
+                       new THREE.Face3( 3, 5, 7, new THREE.Vector3(0,1,0), new THREE.Color( 0x77ff00 ) ));
+                       
+    cube.faces.push( new THREE.Face3( 4, 3, 7, new THREE.Vector3(-1,0,0), new THREE.Color( 0xff0077 ) ),
+                       new THREE.Face3( 0, 3, 4, new THREE.Vector3(-1,0,0), new THREE.Color( 0x7700ff ) ));
+                       
+    cube.faces.push( new THREE.Face3( 5, 6, 4, new THREE.Vector3(0,0,1), new THREE.Color( 0x00ff77 ) ), 
+                       new THREE.Face3( 5, 4, 7, new THREE.Vector3(0,0,1), new THREE.Color( 0x0077ff ) ));
+                       
+    cube.faceVertexUvs[0].push([new THREE.Vector2(1,0), new THREE.Vector2(0,0), new THREE.Vector2(1,1)]); 
+    cube.faceVertexUvs[0].push([new THREE.Vector2(0,1), new THREE.Vector2(1,1), new THREE.Vector2(0,0)]); 
+    
+    cube.faceVertexUvs[0].push([new THREE.Vector2(1,0), new THREE.Vector2(0,0), new THREE.Vector2(1,1)]); 
+    cube.faceVertexUvs[0].push([new THREE.Vector2(0,1), new THREE.Vector2(1,1), new THREE.Vector2(0,0)]); 
+    
+    cube.faceVertexUvs[0].push([new THREE.Vector2(1,0), new THREE.Vector2(0,0), new THREE.Vector2(1,1)]); 
+    cube.faceVertexUvs[0].push([new THREE.Vector2(0,1), new THREE.Vector2(1,1), new THREE.Vector2(0,0)]); 
+    
+    cube.faceVertexUvs[0].push([new THREE.Vector2(1,0), new THREE.Vector2(0,0), new THREE.Vector2(1,1)]); 
+    cube.faceVertexUvs[0].push([new THREE.Vector2(0,1), new THREE.Vector2(1,1), new THREE.Vector2(0,0)]); 
+    
+    cube.faceVertexUvs[0].push([new THREE.Vector2(1,0), new THREE.Vector2(0,0), new THREE.Vector2(1,1)]); 
+    cube.faceVertexUvs[0].push([new THREE.Vector2(0,1), new THREE.Vector2(1,1), new THREE.Vector2(0,0)]); 
+    
+    cube.faceVertexUvs[0].push([new THREE.Vector2(1,0), new THREE.Vector2(0,0), new THREE.Vector2(1,1)]); 
+    cube.faceVertexUvs[0].push([new THREE.Vector2(0,1), new THREE.Vector2(1,1), new THREE.Vector2(0,0)]); 
+    
+    cube.computeVertexNormals();
+    cube.computeFaceNormals();
+    
+    var gmat = new THREE.MeshLambertMaterial({color: 0xFF0000});
+    
+    var wirematerial = new THREE.MeshLambertMaterial({color: 0xFF0000, wireframe: true});
+    
+    var mesh = new THREE.Mesh(cube, gmat);
+
+    cubeinfo.scene.add(mesh);
+    
+    var onKeyDown = function ( event ) {
+
+		//event.preventDefault();
+
+		switch ( event.keyCode ) {
+
+			case 38: /*up*/
+			case 87: /*W*/ mesh.material = mat; break;
+            
+            case 37: /*left*/
+            case 65: /*A*/ mesh.material = textmat; break;
+
+			case 40: /*left*/
+			case 83: /*A*/ mesh.material = gmat; break;
+            
+            case 39: /*right*/
+            case 68: /*D*/ mesh.material = wirematerial; break;
+
+		}
+
+     };
+     
+    // From https://github.com/mrdoob/three.js/blob/master/examples/webgl_shader_lava.html 
+    var textureLoader = new THREE.TextureLoader();
+    uniforms = {
+        fogDensity: { value: 0.45 },
+        fogColor: { value: new THREE.Vector3( 0, 0, 0 ) },
+        time: { value: 1.0 },
+        uvScale: { value: new THREE.Vector2( 3.0, 1.0 ) },
+        texture1: { value: textureLoader.load( '/CI-2700/assets/img/cloud.png' ) },
+        texture2: { value: textureLoader.load( '/CI-2700/assets/img/lavatile.jpg' ) }
+    };
+    uniforms.texture1.value.wrapS = uniforms.texture1.value.wrapT = THREE.RepeatWrapping;
+    uniforms.texture2.value.wrapS = uniforms.texture2.value.wrapT = THREE.RepeatWrapping;
+    clock = new THREE.Clock();
+    shinfo.update = function ( object ) {
+        
+        const timer = Date.now() * 0.0001;
+        uniforms.time.value += 0.2 * 5 * clock.getDelta();
+        if ( object.isMesh === true ) {
+            object.rotation.y = timer * 2;
+            object.rotation.z = timer * 1.25;
+        }
+    };
+    
+    var size = 0.65;
+    var material = new THREE.ShaderMaterial( {
+        uniforms: uniforms,
+        vertexShader: document.getElementById( 'vertexShader' ).textContent,
+        fragmentShader: document.getElementById( 'fragmentShader' ).textContent
+    } );
+    var shmesh = new THREE.Mesh( new THREE.TorusBufferGeometry( size, 0.3, 30, 30 ), material );
+    shmesh.rotation.x = 0.3;
+    shinfo.scene.add( shmesh );
+    shinfo.camera.position.z = 1.8;
+     
+     window.addEventListener( 'keydown', onKeyDown, false );
+    
+
+    // Schedule the first frame.
+    requestAnimationFrame(update);
+      
+    </script>
+  </body>
+</html>

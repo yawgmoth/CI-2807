@@ -1,0 +1,470 @@
+---
+permalink: /slides/lecture16.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 16: Review</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.8em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Review
+
+---
+
+class: center, middle
+
+#  What are (video) games? 
+
+---
+
+# Question
+
+## What two elements do most people agree on that a game has to have?
+
+## Consider a crossword puzzle. Is a crossword puzzle a game? Why, or why not?
+
+---
+
+# Question 
+
+## Name at least 3 game genres
+
+## Why are game genres important? Choose one of the three genres you named and name a mechanic that is specific to that genre?
+
+---
+
+# Question 
+
+## Name a popular game (if you can't think of one, pick Tetris), and name at least three of its rules and the main goal for the player
+  
+---
+
+class: center, middle
+
+#  Game Design
+
+---
+
+# Question 
+
+## What are the four main types of components of a game when we look at it as a system?
+
+## Name at least one of each of these types of components for Super Mario
+
+---
+
+# Question 
+
+## Describe at least two different types of goals we can provide a player with
+
+---
+
+# Question 
+
+## What are achievements?
+
+## What are "good" achievements?
+
+---
+
+class: center, middle
+
+#  Game Design Document
+
+---
+
+# Question 
+
+## What is a Game Design Document?
+
+---
+
+# Question 
+
+## Write a pitch for a game in which you play the villain of your favorite movie 
+
+---
+
+class: center, middle
+
+#  Development Process
+
+---
+
+# Question 
+
+## How did game publishing traditionally work? 
+
+## What are the options now?
+
+---
+
+# Question 
+
+## Imagine your project turns out to be a really fun, polished game. How/where would you market it?
+
+---
+
+# Question 
+
+## What is a technical artist?
+
+---
+
+# Question 
+
+## Name at least two problems other than software bugs that can and should be found during game testing
+
+---
+
+class: center, middle
+
+#  Gameplay
+
+---
+
+# Question 
+
+## What are the four player types as defined by Bartle?
+
+## What does each of them want in a game?
+
+---
+
+# Question 
+
+## How could a game like Super Mario be made more attractive to the Killer player type?
+
+---
+
+# Question 
+
+## What is flow?
+
+## Name at least two things that help keep people in the flow in games
+
+---
+
+# Question 
+
+Your level designer has created a mandatory tutorial level for your game. In it, the player is given a book by their mentor that contains written instructions for every magic spell in the game. In the tutorial, the player is transferred to a magic realm where they have to practice every spell in the book in the right order. If they fail, they are reset to the start of the tutorial. In the end, it is revealed that the mentor is actually the murderer of the player character's parents, after which the game starts.
+
+## Name at least three problems with this tutorial design.
+
+---
+
+class: center, middle
+
+#  World Building
+
+---
+
+# Question
+
+## Name a popular, fictional world. Would it make a good game world? Why, or why not?
+
+---
+
+# Question
+
+## What is the blank slate approach to character design?
+
+---
+
+# Question
+
+## Name a popular story, and which goals the protagonist and (main) antagonist are pursuing
+
+## Would this conflict make for a good game? Why, or why not?
+
+---
+
+# Question
+
+## Why do routine actions like repairing equipment, travel, or trading cost gold in most MMOs?
+
+---
+
+class: center, middle
+
+# Unity
+
+---
+
+# Question
+
+## What is a level in Unity called? 
+
+## What does a level consist of?
+
+---
+
+# Question 
+
+## Assume you have a scene in Unity with 3 game objects: A cube, a sphere and the camera. How can you ensure the Camera always moves with the sphere?
+
+## When the player presses "forward", you want the sphere to move towards the cube in a straight line (ignore rotation). How would you do that in Unity?
+
+---
+
+# Question 
+
+## What is a prefab in Unity?
+
+---
+
+# Question 
+
+## How would you shoot a bullet in Unity? (There are two possible answers)
+
+---
+
+# Question 
+
+## What is a Coroutine?
+
+---
+
+class: center, middle
+
+#  Game Engines
+
+---
+
+# Question 
+
+## What is a game engine? Explain the basic outline of how it works.
+
+---
+
+# Question 
+
+## What is a scene graph?
+
+---
+
+class: center, middle
+
+# 3D Graphics
+
+---
+
+# Question
+
+Consider the triangle 
+$$
+a = (1,0,0), 
+b = (1,1,0), 
+c = (0,1,0)
+$$
+
+## For each of the three vertices, determine the point that is twice as close to that vertex than to the other two (in the barycentric sense).
+
+---
+
+# Question
+
+Consider the triangle 
+$$
+a = (1,0,0), 
+b = (1,1,0), 
+c = (0,1,0)
+$$
+
+## If a has the color (99,0,0), b has the color (0,39,0), and c has the color (0,81,81), what color does the barycenter of the triangle have using linear interpolation?
+
+---
+
+# Question
+
+## What are uv coordinates?
+
+---
+
+# Question
+
+## What are Billboards (in Computer Graphics)?
+
+---
+
+# Question
+
+## What is a z-Buffer, and how is it used?
+
+---
+
+# Question
+
+## How do you determine which side of a triangle to draw?
+
+---
+
+class: center, middle
+
+#  2D Graphics
+
+---
+
+# Question
+
+## What is Bresenham's algorithm?
+
+---
+
+# Question 
+
+## What is Anti-Aliasing? How does it work?
+
+---
+
+# Question 
+
+## Name a way to get rounded shapes using lines.
+
+---
+
+# Question 
+
+## Describe how sprites can be animated using sprite sheets.
+
+---
+
+class: center, middle
+
+#  Homogeneous Coordinates, Matrices, Quaternions
+
+---
+
+# Question 
+
+## What are homogenous coordinates, and why are they useful?
+
+---
+
+# Question 
+
+A "shear" is an operation, where each vector's x coordinate is moved c*y units to the right.
+
+$$
+\begin{pmatrix} 
+x \\\\ 
+y
+\end{pmatrix} \mapsto 
+\begin{pmatrix} 
+x + c \cdot y \\\\ 
+y
+\end{pmatrix}
+$$
+
+## Define the matrix for a shear of 2D vectors in homogeneous coordinates.
+
+---
+
+# Question 
+
+Calculate the matrix to rotate a 3D vector by 135 degrees around the z axis, and then rotate it by 45 degrees around the x axis. Apply this matrix to the vector
+
+$$
+\begin{pmatrix} 
+0 \\\\ 
+0 \\\\
+\sqrt{2}
+\end{pmatrix}
+$$
+
+Hint:
+
+$$
+\sin(45) = \cos(45) = \sin(135) = \frac{1}{\sqrt{2}}, \cos(135) = -\frac{1}{\sqrt{2}}
+$$
+
+---
+
+# Question 
+
+## What is Gimbal Lock, and how can it be avoided?
+
+---
+
+# Question 
+
+## Which three matrices are responsible for mapping an object's vertices onto the screen?
+
+
+---
+
+class: center, middle
+
+#  Lighting, Shaders, Animation
+
+---
+
+# Question 
+
+## What are the three components of the Phong reflection model?
+
+---
+
+# Question 
+
+## Describe how Gouraud shading works 
+
+---
+
+# Question 
+
+## How are 3D characters animated?
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    
+    
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+    <script src="sprite-animation.js"></script>
+  </body>
+</html>

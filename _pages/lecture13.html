@@ -1,0 +1,1386 @@
+---
+permalink: /slides/lecture13.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 13: 2D Graphics</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.8em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### 2D Graphics
+
+---
+
+class: center, middle
+
+# Lines
+
+---
+
+# Lines
+
+  * Remember triangles?
+  
+  * Lines are the triangles of the 2D world (kind of)
+  
+  * You can assemble lines into polygons
+  
+  * Lines connect two vertices
+
+---
+
+class: small
+
+# Rasterization of Lines
+
+  * How do we draw a line on the screen?
+  
+  * Pixels!
+  
+  * Rasterization: Take lines (or triangles, in 3D), and map them to pixels
+  
+  * But pixels are arranged in a rectangular grid
+  
+  * How do we draw diagonal lines?
+  
+  * Idea: Draw ideal line, and for each column of pixels make the pixel black that is closest to the line!
+  
+  * Bresenham's algorithm!
+  
+---
+  
+# Bresenham's algorithm
+<!-- Source: https://commons.wikimedia.org/wiki/File:Bresenham.svg -->
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.0"
+   width="700px"
+   height="448px"
+   viewBox="0 0 832 448"
+   id="Illustration of Bresenham's line algorithm">
+  <path fill="#999999" stroke="none" d="M 64,64   h +64 v +64 h -64 Z" />
+  <path fill="#999999" stroke="none" d="M 128,64  h +64 v +64 h -64 Z" />
+  <path fill="#999999" stroke="none" d="M 192,128 h +64 v +64 h -64 Z" />
+  <path fill="#999999" stroke="none" d="M 256,128 h +64 v +64 h -64 Z" />
+  <path fill="#999999" stroke="none" d="M 320,192 h +64 v +64 h -64 Z" />
+  <path fill="#999999" stroke="none" d="M 384,192 h +64 v +64 h -64 Z" />
+  <path fill="#999999" stroke="none" d="M 448,192 h +64 v +64 h -64 Z" />
+  <path fill="#999999" stroke="none" d="M 512,256 h +64 v +64 h -64 Z" />
+  <path fill="#999999" stroke="none" d="M 576,256 h +64 v +64 h -64 Z" />
+  <path fill="#999999" stroke="none" d="M 640,320 h +64 v +64 h -64 Z" />
+  <path fill="#999999" stroke="none" d="M 704,320 h +64 v +64 h -64 Z" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,0   h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,64  h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,128 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,192 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,256 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,320 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,384 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,448 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,0   v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 64,0  v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 128,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 192,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 256,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 320,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 384,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 448,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 512,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 576,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 640,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 704,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 768,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 832,0 v +448" />
+  <path fill="none" stroke="#000000" stroke-width="4" d="M 96,96 L 736,352" />
+</svg>
+
+---
+  
+# Bresenham's algorithm: result
+<!--  Adapted from: https://commons.wikimedia.org/wiki/File:Bresenham.svg -->
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.0"
+   width="700px"
+   height="448px"
+   viewBox="0 0 832 448"
+   id="Illustration of Bresenham's line algorithm">
+  <path fill="#000000" stroke="none" d="M 64,64   h +64 v +64 h -64 Z" />
+  <path fill="#000000" stroke="none" d="M 128,64  h +64 v +64 h -64 Z" />
+  <path fill="#000000" stroke="none" d="M 192,128 h +64 v +64 h -64 Z" />
+  <path fill="#000000" stroke="none" d="M 256,128 h +64 v +64 h -64 Z" />
+  <path fill="#000000" stroke="none" d="M 320,192 h +64 v +64 h -64 Z" />
+  <path fill="#000000" stroke="none" d="M 384,192 h +64 v +64 h -64 Z" />
+  <path fill="#000000" stroke="none" d="M 448,192 h +64 v +64 h -64 Z" />
+  <path fill="#000000" stroke="none" d="M 512,256 h +64 v +64 h -64 Z" />
+  <path fill="#000000" stroke="none" d="M 576,256 h +64 v +64 h -64 Z" />
+  <path fill="#000000" stroke="none" d="M 640,320 h +64 v +64 h -64 Z" />
+  <path fill="#000000" stroke="none" d="M 704,320 h +64 v +64 h -64 Z" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,0   h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,64  h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,128 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,192 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,256 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,320 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,384 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,448 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,0   v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 64,0  v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 128,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 192,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 256,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 320,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 384,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 448,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 512,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 576,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 640,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 704,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 768,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 832,0 v +448" />
+</svg>
+
+---
+
+# Aliasing
+<!--  Adapted from: https://commons.wikimedia.org/wiki/File:Bresenham.svg -->
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.0"
+   width="700px"
+   height="448px"
+   viewBox="0 0 832 448"
+   id="Illustration of Bresenham's line algorithm">
+  <path fill="#999999" stroke="none" d="M 64,64   h +64 v +64 h -64 Z" />
+  <path fill="#00cc00" stroke="none" d="M 128,64  h +64 v +64 h -64 Z" />
+  <path fill="#cc0000" stroke="none" d="M 128,128  h +64 v +64 h -64 Z" />
+  <path fill="#999999" stroke="none" d="M 192,128 h +64 v +64 h -64 Z" />
+  <path fill="#999999" stroke="none" d="M 256,128 h +64 v +64 h -64 Z" />
+  <path fill="#cc0000" stroke="none" d="M 320,128 h +64 v +64 h -64 Z" />
+  <path fill="#00cc00" stroke="none" d="M 320,192 h +64 v +64 h -64 Z" />
+  <path fill="#999999" stroke="none" d="M 384,192 h +64 v +64 h -64 Z" />
+  <path fill="#00cc00" stroke="none" d="M 448,192 h +64 v +64 h -64 Z" />
+  <path fill="#cc0000" stroke="none" d="M 448,256 h +64 v +64 h -64 Z" />
+  <path fill="#999999" stroke="none" d="M 512,256 h +64 v +64 h -64 Z" />
+  <path fill="#999999" stroke="none" d="M 576,256 h +64 v +64 h -64 Z" />
+  <path fill="#cc0000" stroke="none" d="M 640,256 h +64 v +64 h -64 Z" />
+  <path fill="#00cc00" stroke="none" d="M 640,320 h +64 v +64 h -64 Z" />
+  <path fill="#999999" stroke="none" d="M 704,320 h +64 v +64 h -64 Z" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,0   h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,64  h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,128 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,192 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,256 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,320 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,384 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,448 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,0   v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 64,0  v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 128,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 192,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 256,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 320,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 384,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 448,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 512,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 576,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 640,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 704,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 768,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 832,0 v +448" />
+  <path fill="none" stroke="#000000" stroke-width="4" d="M 96,96 L 736,352" />
+</svg>
+
+---
+
+class: small
+
+# Anti-Aliasing
+
+  * What if we use other pixels that are touched by the line, too?
+  
+  * Maybe not to show them in black, but some sort of gray?
+  
+  * How do we determine "how gray" a pixel should be?
+  
+  * Supersampling! 
+  
+  * Calculate more pixels than necessary, and take the average value 
+  
+  
+---
+
+# Supersampling
+<!--  Adapted from: https://commons.wikimedia.org/wiki/File:Bresenham.svg -->
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.0"
+   width="700px"
+   height="448px"
+   viewBox="0 0 832 448"
+   id="Illustration of Bresenham's line algorithm">
+  <path fill="#999999" stroke="none" d="M 64,64   h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 64,96   h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 96,64   h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 96,96   h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 128,96  h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 128,128  h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 160,96   h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 160,128   h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 192,96 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 192,128 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 224,128 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 224,160 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 256,128 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 256,160 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 288,160 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 288,192 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 320,160 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 320,192 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 352,160 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 352,192 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 384,192 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 384,224 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 416,192 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 416,224 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 448,224 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 448,256 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 480,224 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 480,256 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 512,224 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 512,256 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 544,256 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 544,288 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 576,256 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 576,288 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 608,288 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 608,320 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 640,288 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 640,320 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 672,288 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 672,320 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 704,320 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 704,352 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 736,320 h +32 v +32 h -32 Z" />
+  <path fill="#999999" stroke="none" d="M 736,352 h +32 v +32 h -32 Z" />
+  
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 0,32   h +832" />
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 0,96  h +832" />
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 0,160 h +832" />
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 0,224 h +832" />
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 0,288 h +832" />
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 0,352 h +832" />
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 0,416 h +832" />
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 32,0   v +448" />
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 96,0  v +448" />
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 160,0 v +448" />
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 224,0 v +448" />
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 288,0 v +448" />
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 352,0 v +448" />
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 416,0 v +448" />
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 480,0 v +448" />
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 544,0 v +448" />
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 608,0 v +448" />
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 672,0 v +448" />
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 736,0 v +448" />
+  <path fill="none" stroke="#EEEEEE" stroke-width="4" d="M 800,0 v +448" />
+  
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,0   h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,64  h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,128 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,192 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,256 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,320 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,384 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,448 h +832" />
+  
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,0   v +448" /> 
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 64,0  v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 128,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 192,0 v +448" /> 
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 256,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 320,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 384,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 448,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 512,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 576,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 640,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 704,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 768,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 832,0 v +448" />
+  <path fill="none" stroke="#000000" stroke-width="4" d="M 96,96 L 736,352" />
+</svg>
+
+---
+
+# Supersampling: Result
+
+<!-- Adapted from: https://commons.wikimedia.org/wiki/File:Bresenham.svg -->
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.0"
+   width="700px"
+   height="448px"
+   viewBox="0 0 832 448"
+   id="Illustration of Bresenham's line algorithm">
+  <path fill="#000000" stroke="none" d="M 64,64   h +64 v +64 h -64 Z" />
+  <path fill="#888888" stroke="none" d="M 128,64  h +64 v +64 h -64 Z" />
+  <path fill="#888888" stroke="none" d="M 128,128  h +64 v +64 h -64 Z" />
+  <path fill="#cccccc" stroke="none" d="M 192,64  h +64 v +64 h -64 Z" />
+  <path fill="#444444" stroke="none" d="M 192,128  h +64 v +64 h -64 Z" />
+  <path fill="#444444" stroke="none" d="M 256,128  h +64 v +64 h -64 Z" />
+  <path fill="#cccccc" stroke="none" d="M 256,192  h +64 v +64 h -64 Z" />
+  <path fill="#888888" stroke="none" d="M 320,128  h +64 v +64 h -64 Z" />
+  <path fill="#888888" stroke="none" d="M 320,192  h +64 v +64 h -64 Z" />
+  <path fill="#000000" stroke="none" d="M 384,192   h +64 v +64 h -64 Z" />
+  <path fill="#888888" stroke="none" d="M 448,192  h +64 v +64 h -64 Z" />
+  <path fill="#888888" stroke="none" d="M 448,256  h +64 v +64 h -64 Z" />
+  <path fill="#cccccc" stroke="none" d="M 512,192  h +64 v +64 h -64 Z" />
+  <path fill="#444444" stroke="none" d="M 512,256  h +64 v +64 h -64 Z" />
+  <path fill="#444444" stroke="none" d="M 576,256  h +64 v +64 h -64 Z" />
+  <path fill="#cccccc" stroke="none" d="M 576,320  h +64 v +64 h -64 Z" />
+  <path fill="#888888" stroke="none" d="M 640,256  h +64 v +64 h -64 Z" />
+  <path fill="#888888" stroke="none" d="M 640,320  h +64 v +64 h -64 Z" />
+  <path fill="#000000" stroke="none" d="M 704,320   h +64 v +64 h -64 Z" />
+
+  
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,0   h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,64  h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,128 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,192 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,256 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,320 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,384 h +832" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,448 h +832" />
+  
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 0,0   v +448" /> 
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 64,0  v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 128,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 192,0 v +448" /> 
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 256,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 320,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 384,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 448,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 512,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 576,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 640,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 704,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 768,0 v +448" />
+  <path fill="none" stroke="#CCCCCC" stroke-width="4" d="M 832,0 v +448" />
+</svg>
+
+---
+
+class: small
+
+# Anti-Aliasing
+
+<img src="/CI-2700/assets/img/Aliasing_a.png" width="100%"/><br/>
+
+<img src="/CI-2700/assets/img/Aliasing_a.png" width="10%"/>
+
+---
+
+class: small
+
+# Polygons
+<!-- Adapted from: https://commons.wikimedia.org/wiki/File:Assorted_polygons.svg --> 
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 510 120"
+   width="800"
+   height="280"
+   preserveAspectRatio="xMinYMin meet"
+   xml:space="preserve"
+   id="svg2"
+   version="1.1"
+   sodipodi:docname="Assorted_polygons.svg"><metadata
+     id="metadata18"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     id="namedview14"
+     showgrid="false"
+      /><g
+     id="g3606">
+    
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.875;"
+       id="path4"
+       d="M 10.114787,10 27.078676,104.38709 109.07079,84.858729 10.114787,10" />
+    <path
+       d="m 145.42856,11 -18,87 58,12 18,-87 z"
+       id="path8"
+       style="fill:none;stroke:#000000;stroke-width:1.875;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none" />
+       
+    <path
+       d="m 234,91 63,18 26,-44 -9,-43 -73,-13 -16,46 28,-18 47,13 -16,33 -20,-6 6,-16 h -26 z"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    <path
+       d="M 467.16363,8.9826508 444.96255,108.01735 378.35932,20.986857 499.01735,108.01735 477.78154,37.992815 332.02664,108.01735 z"
+       id="path12" style="fill:none;stroke:#000000;stroke-width:1.875;"/></g></svg>
+       
+  * Can be convex or not
+  
+  * Can self-overlap
+  
+  * *Simple* polygons: No self-intersections
+  
+---
+
+class: small
+
+# (Simple) Polygons: Flood Fill
+
+<!-- Adapted from: https://commons.wikimedia.org/wiki/File:Assorted_polygons.svg --> 
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="200 0 250 60"
+   width="200"
+   height="100"
+   preserveAspectRatio="xMinYMin meet"
+   xml:space="preserve"
+   id="svg2"
+   version="1.1"
+   sodipodi:docname="Assorted_polygons.svg"><metadata
+     id="metadata18"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     id="namedview14"
+     showgrid="false"
+      /><g
+     id="g3606">
+       
+    <path
+       d="m 234,91 63,18 26,-44 -9,-43 -73,-13 -16,46 28,-18 47,13 -16,33 -20,-6 6,-16 h -26 z"
+       id="path10"
+       style="fill:#0000ff;stroke:#000000;stroke-width:1.875;" />
+       
+    </g></svg>
+       
+  * Start at any pixel inside the polygon
+  
+  * If current pixel already has the target color, or the border color: return 
+  
+  * Otherwise, color current pixel with target color and recursively call Flood Fill for all four neighboring pixels
+
+---
+
+# Corner cutting
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   viewBox="0 0 200 120"
+   width="400"
+   height="200"
+   preserveAspectRatio="xMinYMin meet"
+   xml:space="preserve"
+   id="svg3"
+   version="1.1"><metadata
+     id="metadata18"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     id="namedview14"
+     showgrid="false"
+      /><g
+     id="g3606">
+       
+    <path
+       d="m 0,100 100,-100 100,100"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    </g></svg>
+    
+  * What if we want a round corner?
+  
+  * Idea: Take parts of the lines near the corners and start cutting
+    
+---
+
+# Corner cutting
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   viewBox="0 0 200 120"
+   width="400"
+   height="200"
+   preserveAspectRatio="xMinYMin meet"
+   xml:space="preserve"
+   id="svg3"
+   version="1.1"><metadata
+     id="metadata18"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     id="namedview14"
+     showgrid="false"
+      /><g
+     id="g3606">
+       
+    <path
+       d="m 0,100 80,-80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    <path
+       d="m 80,20 20,-20 20,20"
+       id="path10"
+       style="fill:none;stroke:#ff0000;stroke-width:1.875;" />
+       
+    <path
+       d="m 120,20 80,80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    </g></svg>
+    
+  * Now cut each of these two line segments in half, and connect the midpoints
+    
+---
+
+# Corner cutting
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   viewBox="0 0 200 120"
+   width="400"
+   height="200"
+   preserveAspectRatio="xMinYMin meet"
+   xml:space="preserve"
+   id="svg3"
+   version="1.1"><metadata
+     id="metadata18"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     id="namedview14"
+     showgrid="false"
+      /><g
+     id="g3606">
+       
+    <path
+       d="m 0,100 80,-80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    <path
+       d="m 80,20 10,-10 20,0 10,10"
+       id="path10"
+       style="fill:none;stroke:#ff0000;stroke-width:1.875;" />
+       
+    <path
+       d="m 120,20 80,80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    </g></svg>
+    
+  * Now we have three line segments 
+  
+  * Cut each in half again, and connect the end points
+    
+---
+
+# Corner cutting
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   viewBox="0 0 200 120"
+   width="400"
+   height="200"
+   preserveAspectRatio="xMinYMin meet"
+   xml:space="preserve"
+   id="svg3"
+   version="1.1"><metadata
+     id="metadata18"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     id="namedview14"
+     showgrid="false"
+      /><g
+     id="g3606">
+       
+    <path
+       d="m 0,100 80,-80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    <path
+       d="m 80,20 5,-5 15,-5 15,5 5,5"
+       id="path10"
+       style="fill:none;stroke:#ff0000;stroke-width:1.875;" />
+       
+    <path
+       d="m 120,20 80,80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    </g></svg>
+
+    
+---
+
+# Corner cutting
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   viewBox="0 0 200 120"
+   width="400"
+   height="200"
+   preserveAspectRatio="xMinYMin meet"
+   xml:space="preserve"
+   id="svg3"
+   version="1.1"><metadata
+     id="metadata18"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     id="namedview14"
+     showgrid="false"
+      /><g
+     id="g3606">
+       
+    <path
+       d="m 0,100 80,-80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    <path
+       d="m 80.00,20.00 2.50,-2.50 10.00,-5.00 15.00,0.00 10.00,5.00 2.50,2.50"
+       id="path10"
+       style="fill:none;stroke:#ff0000;stroke-width:1.875;" />
+       
+    <path
+       d="m 120,20 80,80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    </g></svg>
+    
+---
+
+# Corner cutting
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   viewBox="0 0 200 120"
+   width="400"
+   height="200"
+   preserveAspectRatio="xMinYMin meet"
+   xml:space="preserve"
+   id="svg3"
+   version="1.1"><metadata
+     id="metadata18"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     id="namedview14"
+     showgrid="false"
+      /><g
+     id="g3606">
+       
+    <path
+       d="m 0,100 80,-80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    <path
+       d="m 80.00,20.00 1.25,-1.25 6.25,-3.75 12.50,-2.50 12.50,2.50 6.25,3.75 1.25,1.25"
+       id="path10"
+       style="fill:none;stroke:#ff0000;stroke-width:1.875;" />
+       
+    <path
+       d="m 120,20 80,80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    </g></svg>
+    
+---
+
+# Corner cutting
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   viewBox="0 0 200 120"
+   width="400"
+   height="200"
+   preserveAspectRatio="xMinYMin meet"
+   xml:space="preserve"
+   id="svg3"
+   version="1.1"><metadata
+     id="metadata18"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     id="namedview14"
+     showgrid="false"
+      /><g
+     id="g3606">
+       
+    <path
+       d="m 0,100 80,-80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    <path
+       d="m 80.00,20.00 0.62,-0.62 3.75,-2.50 9.38,-3.12 12.50,0.00 9.38,3.12 3.75,2.50 0.62,0.62"
+       id="path10"
+       style="fill:none;stroke:#ff0000;stroke-width:1.875;" />
+       
+    <path
+       d="m 120,20 80,80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    </g></svg>
+    
+---
+
+# Corner cutting 
+
+  * We don't need to cut each line segment in half 
+  
+  * We can use cuts of 1/3 to 2/3, or any other fraction
+  
+  * This allows us to control the rounding
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   viewBox="0 0 200 120"
+   width="700"
+   height="200"
+   preserveAspectRatio="xMinYMin meet"
+   xml:space="preserve"
+   id="svg3"
+   version="1.1"><metadata
+     id="metadata18"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     id="namedview14"
+     showgrid="false"
+      /><g
+     id="g3606">
+       
+    <path
+       d="m 0,100 80,-80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    <path
+       d="m 80.00,20.00 0.62,-0.62 3.75,-2.50 9.38,-3.12 12.50,0.00 9.38,3.12 3.75,2.50 0.62,0.62"
+       id="path10"
+       style="fill:none;stroke:#ff0000;stroke-width:1.875;" />
+       
+    <path
+       d="m 120,20 80,80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    <path
+       d="m 200,100 80,-80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    <path
+       d="m 280.00,20.00 2.70,-2.70 2.62,-2.47 1.33,-1.17 1.95,-1.63 0.68,-0.51 1.62,-1.14 0.99,-0.66 1.30,-0.81 0.35,-0.17 1.14,-0.49 0.83,-0.33 1.29,-0.49 0.51,-0.17 1.13,-0.32 0.66,-0.16 0.81,-0.16 0.18,0.00 0.81,0.16 0.66,0.16 1.13,0.32 0.51,0.17 1.29,0.49 0.83,0.33 1.14,0.49 0.35,0.17 1.30,0.81 0.99,0.66 1.62,1.14 0.68,0.51 1.95,1.63 1.33,1.17 2.62,2.47 2.70,2.70"
+       id="path10"
+       style="fill:none;stroke:#ff0000;stroke-width:1.875;" />
+       
+    <path
+       d="m 320,20 80,80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    </g></svg>
+    
+---
+
+# Corner cutting with ration 1/3 to 2/3
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   viewBox="0 0 200 120"
+   width="400"
+   height="200"
+   preserveAspectRatio="xMinYMin meet"
+   xml:space="preserve"
+   id="svg3"
+   version="1.1"><metadata
+     id="metadata18"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     id="namedview14"
+     showgrid="false"
+      /><g
+     id="g3606">
+       
+    <path
+       d="m 0,100 80,-80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    <path
+       d="m 80,20 20,-20 20,20"
+       id="path10"
+       style="fill:none;stroke:#ff0000;stroke-width:1.875;" />
+       
+    <path
+       d="m 120,20 80,80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    </g></svg>
+    
+---
+
+# Corner cutting with ration 1/3 to 2/3
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   viewBox="0 0 200 120"
+   width="400"
+   height="200"
+   preserveAspectRatio="xMinYMin meet"
+   xml:space="preserve"
+   id="svg3"
+   version="1.1"><metadata
+     id="metadata18"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     id="namedview14"
+     showgrid="false"
+      /><g
+     id="g3606">
+       
+    <path
+       d="m 0,100 80,-80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    <path
+       d="m 80.00,20.00 13.40,-13.40 13.20,0.00 13.40,13.40"
+       id="path10"
+       style="fill:none;stroke:#ff0000;stroke-width:1.875;" />
+       
+    <path
+       d="m 120,20 80,80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    </g></svg>
+    
+---
+
+# Corner cutting with ration 1/3 to 2/3
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   viewBox="0 0 200 120"
+   width="400"
+   height="200"
+   preserveAspectRatio="xMinYMin meet"
+   xml:space="preserve"
+   id="svg3"
+   version="1.1"><metadata
+     id="metadata18"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     id="namedview14"
+     showgrid="false"
+      /><g
+     id="g3606">
+       
+    <path
+       d="m 0,100 80,-80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    <path
+       d="m 80.00,20.00 8.98,-8.98 8.78,-4.42 4.49,0.00 8.78,4.42 8.98,8.98"
+       id="path10"
+       style="fill:none;stroke:#ff0000;stroke-width:1.875;" />
+       
+    <path
+       d="m 120,20 80,80"
+       id="path10"
+       style="fill:none;stroke:#000000;stroke-width:1.875;" />
+       
+    </g></svg>
+    
+---
+
+# Subdivision Surfaces 
+
+  * You can basically do the same thing in 3D!
+
+<!-- source: https://commons.wikimedia.org/wiki/File:Catmull-Clark_subdivision_of_a_cube.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:odm="http://product.corel.com/CGS/11/cddns/" xml:space="preserve" width="432px" height="625px" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd"
+     viewBox="0 0 432 626">
+ <g id="Layer 1">
+  <defs>
+   <radialGradient id="id0" gradientUnits="userSpaceOnUse" cx="325" cy="309" r="47" fx="325" fy="309">
+    <stop offset="0" stop-color="#FFFFFF"/>
+    <stop offset="0.611765" stop-color="#90A4BD"/>
+    <stop offset="1" stop-color="#3F4857"/>
+   </radialGradient>
+   <radialGradient id="id1" gradientUnits="userSpaceOnUse" cx="224" cy="517" r="39" fx="224" fy="517">
+    <stop offset="0" stop-color="#FFFFFF"/>
+    <stop offset="0.568627" stop-color="#97AFCC"/>
+    <stop offset="1" stop-color="#353D47"/>
+   </radialGradient>
+  </defs>
+  <circle fill="url(#id0)" stroke="#000000" stroke-linejoin="bevel" cx="323" cy="311" r="47"/>
+  <path fill="#E3FFFF" d="M313 300l7 3 -2 7 -8 -2c1,-3 2,-6 3,-8z"/>
+  <path fill="#E8FFFF" d="M331 310l2 8 -8 1 0 -7 6 -2z"/>
+  <path fill="#FFFFFF" d="M324 298c-1,2 -3,3 -4,5 -1,2 -2,5 -3,7l-1 9 9 0 0 -7 7 -2c-1,-3 -2,-5 -2,-7 -2,-2 -4,-3 -6,-5z"/>
+  <path fill="#637486" stroke="#000000" stroke-linejoin="bevel" d="M31 59l74 -33 81 29 -74 40 -81 -36z"/>
+  <path fill="#6D7F93" stroke="#000000" stroke-linejoin="bevel" d="M180 147l-69 46 1 -98 74 -40 -6 92z"/>
+  <path fill="#768AA0" stroke="#000000" stroke-linejoin="bevel" d="M35 151l-4 -92 81 36 -1 98 -76 -42z"/>
+  <path fill="#697B8E" stroke="#000000" stroke-linejoin="bevel" d="M276 77l18 7 -9 41 -18 -18 9 -30z"/>
+  <path fill="#9EB6D3" stroke="#000000" stroke-linejoin="bevel" d="M325 99l29 -16 -31 -25 -29 26 31 15z"/>
+  <path fill="#697A8D" stroke="#000000" stroke-linejoin="bevel" d="M325 157l27 -4 12 -31 -38 13 -1 22z"/>
+  <path fill="#6F8195" stroke="#000000" stroke-linejoin="bevel" d="M285 125l11 29 29 3 1 -22 -41 -10z"/>
+  <path fill="#A2BDDB" stroke="#000000" stroke-linejoin="bevel" d="M354 83l10 40 -38 12 -1 -36 29 -16z"/>
+  <path fill="#5E6D7E" stroke="#000000" stroke-linejoin="bevel" d="M369 75l10 30 -15 17 -10 -39 15 -8z"/>
+  <path fill="#586677" stroke="#000000" stroke-linejoin="bevel" d="M350 57l-27 1 31 25 15 -8 -19 -18z"/>
+  <path fill="#5D6D7E" stroke="#000000" stroke-linejoin="bevel" d="M277 77l17 -19 29 0 -29 26 -17 -7z"/>
+  <path fill="#1A1D22" stroke="#000000" stroke-linejoin="bevel" d="M350 57l-27 -1 -29 2 29 0 27 -1z"/>
+  <path fill="#252A30" stroke="#000000" stroke-linejoin="bevel" d="M379 105l-13 28 -14 19 12 -29 15 -18z"/>
+  <path fill="#313740" stroke="#000000" stroke-linejoin="bevel" d="M267 107l18 18 11 29 -18 -21 -11 -26z"/>
+  <path fill="#A9C4E3" stroke="#000000" stroke-linejoin="bevel" d="M294 84l-9 41 41 10 -1 -36 -31 -15z"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M335 357c8,-7 10,-34 4,-50 -8,-24 -43,-34 -48,-30"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M342 354c8,-7 11,-34 4,-49 -6,-22 -33,-37 -49,-33"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M350 350c10,-11 10,-34 3,-49 -6,-20 -33,-39 -50,-33"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M357 344c8,-12 8,-29 2,-45 -6,-19 -29,-36 -44,-34"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M366 331c3,-10 -1,-30 -2,-33 -5,-18 -23,-31 -35,-34"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M315 358c-11,-7 -10,-37 -4,-53 7,-21 36,-33 43,-30"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M309 356c-13,-8 -12,-36 -7,-51 8,-25 35,-37 45,-35"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M298 351c-9,-8 -9,-32 -4,-47 8,-25 34,-40 43,-38"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M292 346c-9,-9 -10,-29 -5,-42 8,-25 31,-42 41,-40"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M284 337c-4,-12 -6,-24 -2,-34 7,-25 25,-36 33,-38"/>
+
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M320 359c-5,-10 -6,-38 -1,-53 4,-12 32,-28 40,-26"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M328 358c8,-8 7,-37 3,-52 -1,-9 -37,-26 -45,-25"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M277 322c-1,-6 0,-15 1,-20 8,-25 18,-30 28,-35"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M283 286c14,6 27,12 42,20 12,-8 25,-14 38,-21"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M366 290c0,1 -2,8 -41,22 -17,-4 -47,-16 -45,-20"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M369 297c-7,12 -27,22 -44,22 -20,1 -43,-13 -48,-20"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M349 271c11,11 18,22 21,35"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M370 305c-8,12 -22,21 -45,23 -23,-2 -41,-8 -49,-21"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M370 316c-8,10 -21,18 -45,20 -23,-1 -44,-8 -49,-21"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M369 325c-11,10 -27,19 -44,18 -22,0 -43,-8 -48,-21"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M364 335c-20,20 -69,16 -83,-3"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M356 345c-21,11 -45,10 -64,1"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M336 356c-7,0 -16,0 -23,0"/>
+  <path fill="none" stroke="#000000" stroke-linejoin="bevel" d="M325 306l0 50"/>
+  <path fill="#39424C" stroke="#000000" stroke-linejoin="bevel" d="M108 262l13 3 -13 3 -14 -2 14 -4z"/>
+  <path fill="#5F6E80" stroke="#000000" stroke-linejoin="bevel" d="M134 273l-11 5 -15 -10 13 -3 13 8z"/>
+  <path fill="#627284" stroke="#000000" stroke-linejoin="bevel" d="M95 266l-13 8 13 4 13 -10 -13 -2z"/>
+  <path fill="#889FB8" stroke="#000000" stroke-linejoin="bevel" d="M123 278l-14 8 -14 -8 13 -10 15 10z"/>
+  <path fill="#303841" stroke="#000000" stroke-linejoin="bevel" d="M121 265l11 2 11 9 -9 -3 -13 -8z"/>
+  <path fill="#37404A" stroke="#000000" stroke-linejoin="bevel" d="M94 266l-12 2 -9 9 9 -3 12 -8z"/>
+  <path fill="#475360" stroke="#000000" stroke-linejoin="bevel" d="M143 276l6 9 -4 2 -11 -14 9 3z"/>
+  <path fill="#75899E" stroke="#000000" stroke-linejoin="bevel" d="M136 291l9 -4 -11 -14 -11 5 13 13z"/>
+  <path fill="#9DB7D4" stroke="#000000" stroke-linejoin="bevel" d="M122 299l14 -8 -12 -13 -15 8 13 13z"/>
+  <path fill="#BAD7F8" stroke="#000000" stroke-linejoin="bevel" d="M110 306l12 -7 -13 -13 -11 14 12 6z"/>
+  <path fill="#A0BBD8" stroke="#000000" stroke-linejoin="bevel" d="M95 278l14 8 -11 13 -14 -7 11 -14z"/>
+  <path fill="#7C90A7" stroke="#000000" stroke-linejoin="bevel" d="M82 274l13 4 -11 14 -12 -4 10 -14z"/>
+  <path fill="#505E6C" stroke="#000000" stroke-linejoin="bevel" d="M73 277l9 -3 -9 14 -5 -2 5 -9z"/>
+  <path fill="#4A5664" stroke="#000000" stroke-linejoin="bevel" d="M149 285l6 11 -3 6 -7 -16 4 -1z"/>
+  <path fill="#798DA3" stroke="#000000" stroke-linejoin="bevel" d="M136 291l9 -4 7 15 -10 7 -6 -18z"/>
+  <path fill="#A1BCD9" stroke="#000000" stroke-linejoin="bevel" d="M122 299l14 -8 6 18 -15 7 -5 -17z"/>
+  <path fill="#D0EEFF" stroke="#000000" stroke-linejoin="bevel" d="M110 306l12 -7 5 17 -17 4 0 -14z"/>
+  <path fill="#FFFFFF" stroke="#000000" stroke-linejoin="bevel" d="M98 300l12 6 0 14 -18 -3 6 -17z"/>
+  <path fill="#A8C3E3" stroke="#000000" stroke-linejoin="bevel" d="M84 292l14 8 -6 17 -14 -7 6 -18z"/>
+  <path fill="#8399B1" stroke="#000000" stroke-linejoin="bevel" d="M73 288l11 4 -6 18 -12 -6 7 -16z"/>
+  <path fill="#566474" stroke="#000000" stroke-linejoin="bevel" d="M68 286l5 2 -7 16 -5 -6 7 -12z"/>
+  <path fill="#37404A" stroke="#000000" stroke-linejoin="bevel" d="M155 296l3 15 -4 8 -2 -16 3 -7z"/>
+  <path fill="#66778A" stroke="#000000" stroke-linejoin="bevel" d="M142 309l10 -7 2 17 -9 8 -3 -18z"/>
+  <path fill="#8FA7C2" stroke="#000000" stroke-linejoin="bevel" d="M127 316l15 -7 4 18 -17 7 -2 -18z"/>
+  <path fill="#A7C2E1" stroke="#000000" stroke-linejoin="bevel" d="M110 320l17 -4 2 18 -19 3 0 -17z"/>
+  <path fill="#ABC7E7" stroke="#000000" stroke-linejoin="bevel" d="M92 317l18 3 0 17 -19 -2 1 -18z"/>
+  <path fill="#97B0CC" stroke="#000000" stroke-linejoin="bevel" d="M78 310l14 7 -1 18 -17 -6 4 -19z"/>
+  <path fill="#718499" stroke="#000000" stroke-linejoin="bevel" d="M66 304l12 6 -4 19 -11 -8 3 -17z"/>
+  <path fill="#444F5C" stroke="#000000" stroke-linejoin="bevel" d="M61 298l5 6 -3 17 -4 -8 2 -15z"/>
+  <path fill="#15191D" stroke="#000000" stroke-linejoin="bevel" d="M158 311l-6 21 2 -13 4 -8z"/>
+  <path fill="#434E5A" stroke="#000000" stroke-linejoin="bevel" d="M146 327l-4 15 9 -8 3 -14 -8 7z"/>
+  <path fill="#6D7E92" stroke="#000000" stroke-linejoin="bevel" d="M129 334l17 -7 -4 15 -15 6 2 -14z"/>
+  <path fill="#859BB4" stroke="#000000" stroke-linejoin="bevel" d="M110 337l19 -3 -2 14 -17 2 0 -13z"/>
+  <path fill="#899FB9" stroke="#000000" stroke-linejoin="bevel" d="M110 337l-19 -2 3 14 16 1 0 -13z"/>
+  <path fill="#74879D" stroke="#000000" stroke-linejoin="bevel" d="M74 329l17 6 3 14 -16 -5 -4 -15z"/>
+  <path fill="#4E5B69" stroke="#000000" stroke-linejoin="bevel" d="M63 321l11 8 4 15 -11 -8 -4 -15z"/>
+  <path fill="#22282E" stroke="#000000" stroke-linejoin="bevel" d="M63 321l-4 -8 4 15 4 8 -4 -15z"/>
+  <path fill="#1B1F24" stroke="#000000" stroke-linejoin="bevel" d="M151 334l-6 8 -10 11 7 -11 9 -8z"/>
+  <path fill="#434E5A" stroke="#000000" stroke-linejoin="bevel" d="M127 348l15 -6 -8 11 -12 4 5 -9z"/>
+  <path fill="#5B6B7C" stroke="#000000" stroke-linejoin="bevel" d="M110 350l0 6 12 1 5 -9 -17 2z"/>
+  <path fill="#5E6E80" stroke="#000000" stroke-linejoin="bevel" d="M94 349l16 1 0 6 -12 2 -4 -9z"/>
+  <path fill="#4A5663" stroke="#000000" stroke-linejoin="bevel" d="M78 344l16 5 4 9 -14 -3 -6 -11z"/>
+  <path fill="#252B32" stroke="#000000" stroke-linejoin="bevel" d="M67 337l11 7 6 11 -12 -12 -5 -6z"/>
+  <path fill="#1C2026" stroke="#000000" stroke-linejoin="bevel" d="M122 357l-13 2 -11 -1 12 -2 12 1z"/>
+ </g>
+</svg>
+    
+---
+
+# Curves
+
+  * Sometimes we want to draw arbitrary curves
+  
+  * One approach: Perform corner cutting on a polygon
+  
+  * Drawback: Smoothness
+  
+  * Other approach: Splines!
+  
+---
+
+# Splines 
+
+<img src="/CI-2700/assets/img/woodspline.png" width="50%"/>
+
+---
+
+# Splines
+
+<!-- Source: https://commons.wikimedia.org/wiki/File:B-spline_curve.svg -->
+
+<svg height="423.0" viewBox="-11.5 -11.5 523.0 423.0" width="523.0" xmlns="http://www.w3.org/2000/svg">
+<polyline points="0.0,0.0 50.0,300.0 300.0,250.0 350.0,400.0 500.0,20.0 300.0,100.0" style="fill:none;stroke:black;stroke-width:0.5"/>
+<path d="M0.0 0.0 C50.0 300.0 116.666666667 286.666666667 168.222222222 284.888888889" style="fill:none;stroke:red"/>
+<path d="M168.222222222 284.888888889 C310.0 280.0 337.5 362.5 416.9921875 208.671875" style="fill:none;stroke:blue"/>
+<path d="M416.9921875 208.671875 C453.125 138.75 500.0 20.0 300.0 100.0" style="fill:none;stroke:red"/>
+<path d="M300.0 100.0 C300.0 100.0 300.0 100.0 300.0 100.0" style="fill:none;stroke:blue"/>
+<circle cx="0.0" cy="0.0" r="1.5" style="fill:black;stroke:black"/><circle cx="50.0" cy="300.0" r="1.5" style="fill:black;stroke:black"/>
+<circle cx="300.0" cy="250.0" r="1.5" style="fill:black;stroke:black"/><circle cx="350.0" cy="400.0" r="1.5" style="fill:black;stroke:black"/>
+<circle cx="500.0" cy="20.0" r="1.5" style="fill:black;stroke:black"/><circle cx="300.0" cy="100.0" r="1.5" style="fill:black;stroke:black"/>
+</svg>
+
+---
+
+# Bezier Curves
+
+
+<img src="/CI-2700/assets/img/Bezier_2_big.gif" width="50%"/><img src="/CI-2700/assets/img/Bezier_3_big.gif" width="50%"/>
+
+---
+
+class: center, middle
+
+# Sprites 
+
+---
+
+# Sprites 
+
+  * Sometimes we want pre-drawn art: *Sprites*
+  
+  * A sprite is a 2D image that is drawn into the scene 
+  
+  * Old consoles and arcade machine had hardware support for sprites 
+  
+  * Today they are very cheap to display 
+  
+  * Sprites can also be animated!
+
+---
+
+# Sprite Sheets
+
+<img src="/CI-2700/assets/img/spritesheet.png" width="90%"/>
+
+---
+
+# Sprite Animations
+
+<canvas id="mmanimation"></canvas>
+
+---
+
+# Sprite Animations
+
+<canvas id="mm1animation"></canvas>
+<br/>
+
+<canvas id="franimation"></canvas><br/>
+
+```JavaScript
+context.drawImage(image,
+    frameIndex * width / numberOfFrames, clip*height,
+    width / numberOfFrames, height,
+    0, 0,
+    width / numberOfFrames, height);
+```
+
+---
+
+# Goomba
+
+<img src="/CI-2700/assets/img/goomba.png" width="20%"/>
+
+---
+
+# Goomba, animated
+
+<img src="/CI-2700/assets/img/goomba_anim.gif" width="20%"/>
+
+---
+
+# Sprites in Unity
+
+<img src="/CI-2700/assets/img/spriteeditor.png" width="100%"/>
+
+---
+
+class: middle, center
+
+# And now for something completely different
+## Unity
+
+---
+
+# The problem with Unity
+
+<img src="/CI-2700/assets/img/unityproblem.jpg" width="80%"/>
+
+---
+
+# The problem with Unity
+
+  * Unity makes it really easy to make games 
+  
+  * This is great!
+  
+  * Unfortunately that also means that there are many less-than-great games made in Unity 
+  
+  * If you make less than $100 000/year, you can use the free version
+  
+  * What's the problem with the free version?
+  
+---
+
+# The problem with Unity
+
+<img src="/CI-2700/assets/img/unitysplash.png" width="100%"/>
+
+---
+
+# Why?
+
+  * Engines used to be one of the main selling point of games
+  
+  * Many gamers still equate engine with game quality
+  
+  * And now they see many less-than-great games with a "Made with Unity" splash screen
+  
+  * Therefore, a game made in Unity must be terrible
+  
+  * Except that's not true
+
+---
+
+# A solution?
+
+<img src="/CI-2700/assets/img/unrealsim.png" width="60%"/>
+
+---
+
+class: small
+
+# References
+
+  * <a href="http://gamecodeschool.com/unity/simple-2d-sprite-sheet-animations-in-unity/">Sprite Sheet Animations in Unity</a>
+  
+  * <a href="https://twitter.com/adrian_a_forest/status/887521247113879552">Twitter rant about game journalists emphasizing game engines</a>
+  
+  * <a href="http://askagamedev.tumblr.com/post/163450060501/in-his-latest-video-unity-has-an-image-problem">A counterpoint: There should be better curation on Steam, etc.</a>
+  
+  * <a href="https://github.com/KenneyNL/Unreal-Simulator-for-Unity">"Unreal simulator" for Unity</a>
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+    <script src="/CI-2700/assets/js/sprite-animation.js"></script>
+  </body>
+</html>

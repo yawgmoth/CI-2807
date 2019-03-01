@@ -1,0 +1,545 @@
+---
+permalink: /slides/lecture27.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 27: Player Analytics</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.8em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .tiny li {  font-size: 0.8em; }
+      
+      .tiny table {  font-size: 0.8em; }
+      
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Player Analytics
+
+---
+
+class: center, middle
+
+# Player Rankings 
+
+---
+
+# Player Ratings
+
+  - Let's say you have a multiplayer game 
+  
+  - Your (competitive) players want to know how good they are 
+  
+  - Players also don't want to play against players that are much stronger or weaker than them
+  
+  - But if a player beats a stronger player that should count more than if they beat a weaker player
+
+---
+
+class: small
+
+# ELO
+
+  - Chess, and many other games, use a rating system called ELO, where each player is assigned a numerical rating 
+  
+  - When two players play, the difference in their current rating is used to calculate their "estimated chances of winning"
+  
+  - Each match is worth a number of points
+  
+  - At the end of the match, the winning player gets a percentage of those points equal to their estimated chances of losing from the losing player
+  
+  - A player that was unlikely to win (because their rating was much lower than their opponents) can get more points from winning than an evenly matched player
+  
+---
+
+# ELO: Limitations 
+
+  - The ratings just provide an *estimate* for winning probabilities, but they do not tell us how good that estimate is 
+  
+  - Players might be incentivized to "sit on their rating"
+  
+  - ELO in team games may not accurately reflect any single player's skill
+  
+  - New players have to have some rating, which can be abused ("smurfing")
+  
+---
+
+class: small
+
+# Some Improvements
+
+  - Decaying ratings over time encourages active play
+  
+  - The Glicko/Glicko-2 rating systems consist of two numbers: the rating and a "reliability"
+  
+  - This addition helps with better comparing two player's "true" skill
+  
+  - It also helps with smurfing, because new players have a lower "reliability" on their rating 
+  
+  - Still does not take individual performance in team games into account (TrueSkill does/can)
+  
+---
+
+class: small
+
+# Rankings and Matchmaking
+
+  - Once every player has a rating, they can be ranked in descending order 
+  
+  - When creating matches to play, several aspects have to be taken into account:
+  
+     * Ratings
+     * Teams
+     * Parties
+     * Queue Times
+     
+  - Two main approaches:
+     
+     * Timed Queues 
+     * On-demand matches
+
+---
+
+class: center, middle 
+
+# Player Analytics
+
+---
+
+# Why Player Analytics?
+
+  - Games are expensive to make
+  
+  - Players often abandon games quickly
+  
+  - We want to know what players *do* in our games to keep them engaged
+  
+  - Related: We also want to make money  
+  
+---
+
+# Player Analytics
+
+  - We can collect data while players play the game 
+  
+  - This data can then be analyzed to answer questions/confirm hypotheses
+  
+  - The answers to these questions can then inform game design
+  
+  - Typically, you want the players to keep playing your game, and use all your content 
+  
+  - Or you might want to know *what kind* of content you should make more of
+
+---
+
+# Player Retention
+
+<img src="/CI-2700/assets/img/android_retention.png" width="100%"/>
+
+---
+
+# Player Retention
+
+  - Good first impression/new player experience 
+  
+  - Good challenge curve/flow
+  
+  - Delayed rewards (daily log-in bonus, loot chest with a key coming later, etc.)
+  
+  - Give player a personalization/progression choice
+  
+  - Social features, invite and team play rewards (see also: player acquisition)
+ 
+---
+
+class: small
+
+# Madden NFL
+
+  - Madden NFL is a game where you play American football 
+  
+  - Researchers (in collaboration with EA) analyzed game log data 
+  
+  - They built a statistical model to predict how many games a player would play 
+  
+  - Using this model, they identified features which result in higher player retention 
+  
+  - Game design can focus on improving these features
+  
+---
+
+# Madden NFL: Features 
+
+<img src="/CI-2700/assets/img/nflfeatures.png" width="100%"/>
+
+---
+
+# Player Modeling
+  
+  - You can personalize content, or just focus on more common types of players
+  
+  - How do you determine "types" of players?
+  
+  - Your game can track player actions and report back!
+  
+  - Especially in open world games, determining what players spend their time on is beneficial to focus future development or guide players to underexplored areas
+
+---
+
+# Player Profiles
+  
+  - On the other hand, you also want to know *who* plays your games 
+  
+  - Geographic region, age range, maybe personal details, personality
+  
+  - Why? So you can target ads 
+  
+  - Play patterns are also important: time of day, session length, number of games per week
+  
+---
+
+# Player Profiles: How do you get this data?
+
+  - IP Geolocation tells you the region
+  
+  - Provide a birthday bonus to incentivize players to tell you their birthday
+  
+  - Connect to facebook to get personal details
+  
+  - Statistical models: Play style and personality have been shown to be related 
+  
+---
+
+# Machine Learning for Player Analytics
+
+  - Some machine learning techniques can be used to analyze collected data 
+  
+  - For example, if we want to know which "types" of players exist, we can use clustering
+  
+  - If we want to *predict* what the player is likely to do, we can use supervised learning (e.g. a neural network)
+  
+  - We can also learn a player's preferences (e.g. which weapon they are likely to favor)
+  
+---
+
+# How to use this information in Game Play
+  
+  - Marketing is nice and important, but can we use this for actual mechanics?
+  
+  - Of course!
+  
+  - Say a large portion of your players typically play from 7-10pm
+  
+  - Put large in-game events at 8pm
+  
+  - You can cater the type of event to the typical player population
+  
+---
+
+# How to use this information in Game Play
+  
+  - If you know your players are going to favor a certain kind of weapon, you can focus on making more of these weapons in the future 
+  
+  - You can even use the learned models *during* development of future versions to predict where players might go more 
+  
+  - Player types can inform the kind of content you should focus on
+
+---
+
+# Game Play Statistics 
+
+  - So you have your game and you collect data
+  
+  - Then you analyze what content which players are consuming and when
+  
+  - But you already invested all this time and effort?
+  
+  - Let's look at an example
+
+---
+
+# Project Gotham Racing 4
+
+<img src="/CI-2700/assets/img/pgr4.jpg" width="100%"/>
+
+---
+
+class: small
+
+# Project Gotham Racing 4
+
+  - Single player *and* multi player 
+  
+  - 10 different game modes: career, arcade, network race, tournaments, time attack, etc.
+  
+  - 29 "event types": street race, elimination, cat and mouse, etc.
+  
+  - 134 cars with 7 different ratings (easy to hard to control)
+  
+  - 9 cities with a total of 121 race tracks
+  
+  - Development cost: "a fortune" (per Business Director Brian Woodhouse)
+  
+---
+
+class: small
+
+# Project Gotham Racing 4: Analysis
+
+  - 4 researchers (including one from the publisher) analyzed 3.1 million game logs 
+  
+  - Overall, 30-40% of the content was used in less than 1% of games
+  
+  - Game modes: Network tournaments were used in less than 0.1% of games 
+  
+  - 12 of the 29 event types were used in less than 1% of games 
+  
+  - 50 cars were used in less than 0.25% of races
+  
+  - 47 race tracks were used in less than 0.5% of races *each* (13% together)
+  
+  
+---
+
+class: small
+
+# Project Gotham Racing 4: What to do?
+
+  - First observation: More is not always better 
+  
+  - The data can be used when developing a successor 
+  
+  - But there would also have been a better way to develop *this* game: 
+  
+     * Release a small/core version of the game with less content 
+     * Add content *where it is needed*
+     * You will spend less money overall, even though you provide "free content updates"
+     
+  - Claim: An analysis like this might cost $50-$100k, but will save $0.5-$2 million
+
+---
+
+# Player Acquisition
+
+  - Marketing: Next week 
+  
+  - For now, let's talk about *mechanics* that encourage player acquisition
+
+  - Once you have players, you want them to invite their friends
+
+  - The power of social connections
+  
+---
+
+class: small
+
+# Player Acquisition 
+
+  - Say you have a game in which you tend to *your* farm
+  
+  - You can make money that allows you to buy more things for your farm
+  
+  - Some (fancy) things you can only buy with real money, though 
+  
+  - Unless your friend (who also plays the game) "gives" them to you (*they* don't have to pay) 
+  
+  - Of course you also *have to* tend to your crops (or they die)
+  
+  - But a friend can help you out on your farm
+  
+---
+
+# Player Acquisition: Other tactics
+
+  - Get a bonus for posting a status on facebook that allows your friends to perform some in-game action
+  
+  - Make content harder to beat alone
+  
+  - There is a fine line between designing mechanics for player acquisition and aggressive marketing
+  
+  - The actual game play should still be enjoyable
+  
+---
+
+# But we don't have any game yet!
+
+  - Many of the analytics options are only available to the developers 
+  
+  - But there are APIs to extract replays for many games 
+  
+  - You can run analytics on these replays to find out what players do in *other* games to learn their preference 
+  
+  - This can inform design decisions for your own game 
+  
+---
+
+class: center, middle 
+
+# Unity Analytics
+
+---
+
+class: small
+
+# Unity Analytics
+
+  - Unity has built-in support for data collection 
+  
+  - To enable analytics, open the Services window under Windows -&gt; General -&gt; Services and switch Analytics to "On"
+  
+  - By default it will collect:
+  
+      * New installs
+      * Daily/Monthly active users 
+      * Sessions (total/per user)
+      * Time spent 
+      * Users by geographic region, OS, life cycle
+      
+  - There are many other standard events you can use, or create custom ones
+  
+  - Also integrates with monetization options
+  
+---
+
+class: small
+
+# Unity Analytics: Funnels
+
+  - There are many ways to analyze the collected data
+  
+  - One of the more common ones: Funnels 
+  
+  - You measure the progress through some linear progression (e.g. the tutorial)
+  
+  - The "funnel" will show you how far players make it through the progression, i.e. where you lose players
+  
+```C#
+AnalyticsEvent.LevelStart(thisScene.name, 
+                                      thisScene.buildIndex);
+```
+
+---
+
+# Unity Analytics: Funnels
+  
+<img src="/CI-2700/assets/img/funnels.png" width="90%"/>
+
+---
+
+# Unity Analytics: Heatmaps
+
+  - You may also be interested *where* in your game things happen 
+  
+  - Where do players go often, where do they die 
+  
+  - There is a Heatmap extension for Unity analytics, where you send analytics events with a location 
+  
+  - Requires Unity Pro :(
+
+---
+
+# Unity Analytics: Heatmaps
+  
+<img src="/CI-2700/assets/img/heatmap.png" width="90%"/>
+
+---
+
+class: small
+
+# The EU General Data Protection Regulation
+
+  - Remember getting emails from every website telling you that they collect personally identifiable information?
+  
+  - That's because of the EU GDPR 
+  
+  - Use the Unity Analytics Data Privacy Plug-in
+  
+  - This plug-in includes a button you can place in your game for players to opt out of data collection (and see which data was already collected)
+  
+  - Make sure, *you* don't send personally identifiable information in your analytics events
+
+---
+
+# The Flip Side 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nqGcXOksFGg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+---
+
+class: small
+
+# References
+
+  - [The Glicko/Glicko-2 rating systems](http://www.glicko.net/glicko.html)
+  
+  - [Player Retention](https://medium.com/roblox-developer/player-retention-a-first-look-at-how-to-get-players-coming-back-to-your-game-9ae68826f466)
+  
+  - [Data-Driven Game Development](https://www.loggly.com/blog/data-driven-game-development-analytics/)
+  
+  - [Data Analytics for Game Development (NIER Track)](https://games.soe.ucsc.edu/sites/default/files/p940-hullett_0.pdf)
+  
+  - [Jim Whitehead on Analytics](https://slideplayer.com/slide/5354512/)
+  
+  - [Raph Koster on Social Mechanics](https://www.gdcvault.com/play/1014555/Social-Mechanics-for-Social-Games)
+  
+  - [Unity Analytics](https://blogs.unity3d.com/es/2016/05/03/analytics-the-player-lifecycle/)
+   
+   
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
+    <script src="https://yawgmoth.github.io/CI-2700/assets/js/3dutils.js"></script>
+    
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+   
+      
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+      
+    
+    </script>
+  
+  </body>
+</html>

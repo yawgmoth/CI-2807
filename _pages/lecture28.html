@@ -1,0 +1,559 @@
+---
+permalink: /slides/lecture28.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 28: Testing and Balancing</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.8em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .tiny li {  font-size: 0.8em; }
+      
+      .tiny table {  font-size: 0.8em; }
+      
+      .smalltext p {  font-size: 1em; }
+      
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Testing and Balancing
+
+---
+
+# Why testing?
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/7f3HDsgLV68" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+---
+
+class: center, middle
+
+# Phases of Game Testing 
+
+---
+
+# Alpha Testing 
+
+  - Parallel to development 
+  
+  - Game is still unfinished, changing rapidly
+  
+  - Probably not a lot of fun to play 
+  
+  - Art assets, UI, etc. might still be missing/be in a temporary state
+
+---
+
+# Beta Testing 
+
+  - The game itself should be "finished"
+  
+  - The main task is to find major issues 
+  
+  - Try to break the game in any way possible 
+  
+  - Open or Closed Beta: Invite Customers to play the game before release and find bugs 
+
+---
+
+# Pre-Production
+
+  - Final checks 
+  
+  - Make sure game actually installs and starts as planned in a production environment
+  
+  - Compliance checks and certification
+
+---
+
+# Alternative approaches 
+
+  - Indie development may not have such clear defined stages
+
+  - Early Access 
+  
+  - Continuous development and deployment
+  
+  - Working closer with the player community
+  
+---
+
+class: center, middle
+
+# Types of Bugs 
+
+---
+
+# The obvious ones 
+
+   - Crashes 
+   
+   - Game freezes 
+   
+   - Buttons don't work 
+   
+   - Screen stays black 
+   
+   - etc.
+   
+---
+
+# Game Bugs 
+
+   - Beyond just "classical" software bugs, games, as complex systems, also have many other sources for errors 
+   
+   - Some of these might be hard to find or judge 
+   
+   - For example, how do you determine if a mechanic is "fun"?
+   
+   - How do you judge if a game is "easy" or "hard"
+   
+   - Companies are trying to get players involved earlier
+   
+---
+
+class: small
+
+# Game Play Bugs 
+
+   - The designer has a vision for how the game should play 
+   
+   - There are two things that can go wrong there:
+   
+      * The players can not follow the vision of the designer, for example because the timing of mechanics/attacks is wrong
+      * It is better/easier to perform actions other than the ones the designer intended, basically exploiting the rules 
+      
+   - Problems with mechanics can be found through game play testing
+   
+   - To find possible exploits, the testers need to be creative/think like an adversary
+   
+---
+
+# Physics Problems
+
+   - Say you have a game where players can destroy the environment 
+   
+   - The player blows up a wall, and a barrel starts rolling uphill
+   
+   - This may be plausible, due to the explosion blast, but it may also be "unrealistic"
+   
+   - Challenge: How to do you quantify "unrealistic"?
+   
+---
+
+# AI Problems
+
+   - Even harder than determining if physics are "good" is determining if AI agents are "good"
+   
+   - The AI agents will not behave like humans
+   
+   - They might not even be "good"
+   
+   - But they should be "good enough"
+  
+  
+---
+
+class: center, middle 
+
+# Some (in)famous examples of bugs 
+
+---
+
+class: small
+
+# Skyrim
+
+<img src="/CI-2700/assets/img/flyingmammoth.jpg" width="100%"/>
+
+---
+
+class: small
+
+# Twilight Princess 
+
+<img src="/CI-2700/assets/img/twilightprincess.jpg" width="80%"/>
+
+When you get to this room, you have to talk to Shad *before* you save and quit. He will not be there on reload, and is necessary to progress.
+
+---
+
+class: small
+
+# Pokemon Red &amp; Blue
+
+<img src="/CI-2700/assets/img/missingno.jpg" width="100%"/>
+
+---
+
+class: small
+
+# The Sims 3
+
+<img src="/CI-2700/assets/img/simsbugs.jpg" width="100%"/>
+
+---
+
+class: small
+
+# Pool Of Radiance: Ruins of Myth Drannor
+
+<img src="/CI-2700/assets/img/poolofradiance.jpg" width="80%"/>
+
+Pool Of Radiance: Ruins of Myth Drannor was a mediocre RPG, but when you uninstalled it, it would also delete some important Windows system files and your computer wouldn't boot anymore.
+
+---
+
+class: center, middle 
+
+# Testing Aids 
+ 
+---
+
+class: small
+
+# Software Testing
+
+   - You can use the same techniques as for regular software testing 
+   
+   - Unit Tests: Test each functional unit
+   
+   - Regression Tests: Write a test for bugs that were fixed to prevent them from reoccuring
+   
+   - Smoke Tests: A quick test after every build to ensure the game still starts 
+    
+   - Soak Tests: Let the game run for many hours/days to detect memory leaks
+   
+---
+
+class: small
+
+# Unity Testing Framework 
+
+  - Under Window -&gt; General -&gt; Test Runner you can find Unity's test framework 
+  
+  - It is basically a wrapper around NUnit
+  
+```C#
+[UnityTest]
+public IEnumerator GameObjectAffectedByPhysics()
+{
+    var go = new GameObject();
+    go.AddComponent<Rigidbody>();
+    var originalPosition = go.transform.position.y;
+
+    yield return new WaitForFixedUpdate();
+
+    Assert.AreNotEqual(originalPosition,go.transform.position.y);
+}
+```
+
+---
+
+class: small
+
+# Monkey Testing 
+
+   - An infinite number of monkeys on infinitely many typewriters will [almost surely](https://en.wikipedia.org/wiki/Almost_surely) eventually [write Shakespeare](https://web.archive.org/web/20130120215600/http://www.vivaria.net/experiments/notes/publication/NOTES_EN.pdf)
+   
+   - Or they could test your game!
+   
+   - Feed random input into your game and make sure "nothing bad" happens
+   
+   - Just make sure to record the input so you can reproduce the bugs
+   
+   - Challenge: How do you define "nothing bad"?
+   
+(Note: Don't use actual monkeys)
+   
+---
+
+class: small
+
+# AI Play
+
+   - Monkeys are probably not going to beat your game
+   
+   - But maybe an AI could?
+   
+   - Build an AI agent that plays through the game (it doesn't need to be perfect)
+   
+   - In fact, it's better if it is not perfect, and tries unusual tactics 
+   
+   - If a bad AI can beat your game, so can your players!
+
+---
+
+class: center, middle 
+
+# Balancing
+
+---
+
+# Balancing 
+
+  - We already discussed "easy" vs. "hard"
+  
+  - But what can you do to change that?
+  
+  - Also, what if players actually play against each other?
+  
+  - And which rewards do you give players?
+  
+---
+
+# Balancing: Basics 
+
+  - The best basis for balancing is math 
+  
+  - You want to know the relative strength of every item/unit in your game 
+  
+  - Build an Excel sheet (or code) that can tell you how good any combination of items/units is
+  
+  - Tweak numbers in the Excel sheet until the relative strengths are what you want 
+  
+  - And then playtest!
+
+---
+
+# Random-Number Generation
+
+  - Many players hate Random Number Generation (RNG) in games 
+  
+  - But it actually serves important purposes
+  
+  - Randomization helps with replayability
+  
+  - It also helps with player engagement and retention 
+  
+  - The problem is "too much" randomness
+  
+---
+
+class: small
+
+# RNG for Replayability 
+
+  - Many games use randomized levels to keep things fresh 
+  
+  - Card games typically shuffle the deck 
+  
+  - Bobby Fischer suggested Chess960 because he felt chess got stale from people using memorized openings
+  
+  - If the outcome of a match is less certain it is also more likely that you'll try again if you lose
+  
+  - Conversely: If you lose, you can always just blame "bad luck", rather than admitting that you made mistakes
+  
+---
+
+class: small
+
+# RNG for Player Engagement and Retention
+
+  - Studies in rats: If a lever gives a reward every time, or consistently every n times, the rats actually get bored and stop using the lever. If it gives rewards randomly instead, they will keep trying.
+  
+  - If you give your players a legendary item every 10 bosses they are more likely to get bored than if they get it randomly 10% of the time 
+  
+  - People have trouble with perceiving randomness, though 
+  
+  - If a player kills 20 bosses and doesn't get a legendary, they will claim the game is broken, even though that should happen in 12% of the cases 
+  
+  - 1.5% of players would even have to kill 40 bosses to get a legendary
+  
+---
+
+# RNG is bad
+
+  - Now we have a problem: RNG is good for the game, but too much of it makes players feel bad 
+  
+  - What if we "fix" our randomness if it gets too bad 
+  
+  - You still want "some" randomness, but it should be much less likely to get extreme results 
+  
+  - This actually applies to game play as well as rewards!
+  
+---
+
+class: small
+
+# Random Number Smoothing 
+
+  - Consider a game with a percentage chance to get a critical hit ("crit") which deals double damage 
+  
+  - Say you have a 35% chance of dealing a critical hit
+  
+  - If a player is "really lucky" they might deal 5 crits in a row
+  
+  - Conversely, a player that is really unlucky might not get any crits in 10 attacks
+  
+  - What if we actually start with lower odds, but if you miss, you get a bonus on your chances?
+  
+---
+
+class: smalltext
+
+# Random Number Smoothing 
+
+<table><tr><td><img src="/CI-2700/assets/img/rage.png" width="200pt"/></td>
+<td>
+<ul>
+<li> This item used to exist in Smite
+
+<li>Your initial odds of landing a critical hit are lower
+
+<li>If you miss, you will get a higher chance of critical hits 
+
+<li>In effect, you still have a 35% chance of landing a critical hit, but it is less likely that you have many in a row, or many misses in a row</ul>
+</td></tr></table>
+
+With crit smoothing:
+<canvas id="rage"></canvas><br/>
+
+Without crit smoothing:
+<canvas id="rage1"></canvas><br/>
+
+---
+
+# Random Number Smoothing 
+
+  - Games do this all the time!
+  
+  - Diablo 3: If you don't get a legendary item for a long time, your odds are increased over time 
+  
+  - Crusaders of the Lost Idols: Every 4th chest is guaranteed to be a "golden chest"
+  
+  - Smite: Crit-smoothing items
+  
+  - League of Legends: Critical Strike Smoothing Algorithm
+
+---
+
+class: small
+
+# References
+
+  - [Three Major Stages of Game Testing](https://www.ixiegaming.com/blog/three-major-stages-of-game-testing/)
+  
+  - [Personal Experience of a Game Tester](http://www.cracked.com/personal-experiences-2415-the-ridiculous-tedious-world-video-game-testing.html)
+
+  - ["Luck in Games" by Richard Garfield](https://www.youtube.com/watch?v=av5Hf7uOu-o)
+  
+  - [Variable Reward Schedules](https://www.psychologytoday.com/us/blog/brain-wise/201311/use-unpredictable-rewards-keep-behavior-going)
+  
+  - [Genetic Algorithm for Game Balancing](https://www.youtube.com/watch?v=CvMzeZD3_g0)
+  
+  - [How do big game creators do automated testing of things like game balance?](https://www.quora.com/How-do-big-game-creators-do-automated-testing-of-things-like-game-balance)
+  
+  - [Solving Player Frustration with RNG](https://gamedevelopment.tutsplus.com/articles/solving-player-frustration-techniques-for-random-number-generation--cms-30428)
+  
+  - [Unraveling Riot's Critical Strike Algorithm](https://doranslab.gg/articles/crit-strike-algorithm.html)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
+    <script src="https://yawgmoth.github.io/CI-2700/assets/js/3dutils.js"></script>
+    
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+   var canvas;
+    canvas = document.getElementById("rage");
+	canvas.width = 800;
+	canvas.height = 6;
+    var i;
+    
+    var p = 0
+    
+    var ragef = function(ctx, p, n, incr, maxp) {
+        var i;
+        var origp = p;
+        var dmgsum = 0;
+        var distsum = 0;
+        var distcount = 0;
+        var lastcrit = 0;
+        for (i = 0; i < n; ++i)
+        {
+           r = Math.random();
+           ctx.beginPath();
+           if (r <= p)
+           {
+               distsum += (i-lastcrit);
+               lastcrit = i;
+               p = origp;
+               dmgsum += 20;
+               ctx.strokeStyle = "red";
+               ctx.fillStyle = "red";
+           }
+           else
+           {
+               dmgsum += 10;
+               p = p + incr;
+               if (p > maxp) 
+               {
+                  p = maxp;
+               }
+               ctx.strokeStyle = "green";
+               ctx.fillStyle = "green";
+           }
+           
+           ctx.rect(i*4, 0, 4, 4);
+           ctx.stroke();
+           ctx.fill();
+        }
+    }
+    
+    
+    ragef(canvas.getContext("2d"), 0.2, 200, 0.1, 0.8);
+    
+    var canvas1;
+    canvas1 = document.getElementById("rage1");
+	canvas1.width = 800;
+	canvas1.height = 6;
+    
+    ragef(canvas1.getContext("2d"), 0.35, 200, 0, 0.8);
+      
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+      
+    
+    </script>
+  
+  </body>
+</html>

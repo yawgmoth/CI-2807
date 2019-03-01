@@ -1,0 +1,355 @@
+---
+permalink: /slides/lecture9.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 9: Game Engine Basics</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Game Engine Basics
+
+---
+
+class: center, middle
+
+# Game Engines
+
+---
+
+class: small
+
+# What is a Game Engine
+
+  * Games are typically split between an engine and content 
+  
+  * The engine can usually support multiple different games (theoretically) 
+  
+  * Extensions to the game don't require changes to the engine (ideally)
+  
+  * Engine provides components for loading content, rendering, physics, networking, AI, sound, etc.
+  
+---
+
+class: small
+
+# Why?
+
+  * Rendering, physics, etc. are reusable components
+  
+  * Good software engineering practice says they should be written separately
+  
+  * The game itself becomes smaller, and easier to change 
+  
+  * It becomes easier to make more games
+  
+  * Game Engine can be licensed
+
+---
+
+class: center, middle
+
+# How do I write a Game Engine?
+
+## Don't!
+
+---
+
+class: center, middle
+
+# But let's talk about how you would
+
+---
+
+# This is all you need (basically)
+
+```C#
+
+while (true)
+{
+    foreach(GameObject go in scene)
+    {
+        go.Update();
+    }
+    scene.Render();
+    FrameSync();
+}
+
+```
+
+---
+
+class: small
+
+# What's this?
+
+```C#
+foreach(GameObject go in scene)
+```
+
+   * A <b>GameObject</b> is an entity in the game 
+    
+       - Can be concrete, like an enemy
+       
+       - Or abstract, like physics, networking, input, ...
+       
+   * The <b>Scene</b> is the collection of GameObjects that is currently loaded/active
+   
+---
+
+class: small
+
+# What's this?
+
+```C#
+go.Update();
+```
+
+   * Every GameObject has an Update method, which is called every frame
+   
+   * Can be used to move or animate the game object, run AI behavior, sound effects, etc. 
+   
+---
+
+class: small
+
+# Moving
+
+```C#
+   public void Update()
+   {
+       position += new Vector3(3,0,0)*Time.deltaTime;
+   }
+```
+
+  * Every frame the game object is moved in x direction 
+  
+  * Time.deltaTime represents the time since the last frame
+  
+  * The movement speed is 3 units per second 
+  
+---
+
+class: center, middle
+
+# Are there any problems with doing everything in Update()?
+
+---
+
+class: small
+
+# Frames Per Second (FPS)
+
+  * Ideally we want at least 25 FPS 
+  
+  * That means we have 40 ms per frame 
+  
+  * <b>All</b> Update() methods together need to need less than 40ms
+  
+  * We are also rendering things
+  
+  * What about slow calculations?
+  
+---
+
+# Threads
+
+  * Idea: Run computationally expensive calculations in their own thread 
+  
+  * Exchange information between threads using shared data structures
+  
+  * Access to data structures has to be synchronized to avoid consistency problems
+  
+  * What could possibly go wrong?
+  
+---
+
+# Synchronization problems 
+
+  * Thread A moves an object forward at a constant rate 
+  
+  * Thread B calculates the route for the object, and then moves it onto that route 
+  
+  * Which order are they going to be executed in?
+  
+  * How long does thread B need?
+  
+---
+
+# One solution: Messaging
+
+  * Only <b>one</b> (main) thread is allowed to touch the object's location
+  
+  * Other threads can <b>request</b> movement by sending a message to the main thread 
+  
+  * Can still do expensive computations in threads, but can not manipulate the scene
+  
+  * Main thread can rate-limit message processing
+  
+---
+
+class: middle, center
+
+# Scenes
+
+---
+
+# Scenes
+
+```C#
+    scene.Render();
+```
+
+  * Many game objects will have representations on screeen
+  
+  * 2D/3D graphics, GUI Elements, particle effects, etc.
+  
+  * Where do we actually get all of these things from?
+  
+---
+
+class: small
+
+# Scene graph
+
+  * Scene
+    - Living Room
+       * Fireplace
+          - Wood
+          - Fire
+       * Carpet 
+       * Couch
+       * Player
+          - Avatar
+          - Weapon 
+          - Pet
+    
+    - Hallway
+       * Ceiling light
+       * Coat hanger
+       
+---
+
+# Scene graph
+
+  * Spatial (or logical) grouping of game objects 
+  
+  * May load, move, manipulate entire sub-trees at once 
+  
+  * For example: Moving the player also moves their weapon and pet
+  
+---
+
+# Building a scene graph
+
+  * Load scene from file (e.g. XML)
+  
+  * Load 2D/3D models from model file 
+  
+  * Supported formats determined by game engine
+  
+---
+
+class: small
+
+# How do you ...
+
+  * Shoot a bullet?
+      - Create a Bullet Game Object
+      - Update() moves the bullet forward
+      - A physics collision removes the bullet from the scene
+      - Or use a raycast
+  * Detect collisions?
+      - Physics subsystem calculates collisions
+      - When a collision is found a message is sent to the objects involved
+  * Make a multiplayer-game?
+      - Networking runs in a thread 
+      - Other player moves: message is sent to GameObject representation of that player
+  * Change levels?
+      - Load a new scene
+      
+---
+
+class: middle, center
+
+# Game Engines
+
+---
+
+# 2D
+
+  - PyGame
+  
+  - Ren'Py
+  
+  - GameMaker
+  
+  - RPGMaker
+
+---
+
+# 3D
+
+  - id Tech
+
+  - Ogre3D
+  
+  - CryEngine
+  
+  - Lumberyard
+  
+  - Unreal
+  
+---
+
+# 2D and 3D: Unity 
+
+<img src="/CI-2700/assets/img/unity.jpg" width="100%"/>
+
+---
+
+class: small
+
+# References
+
+  * <a href="https://www.gamedev.net/articles/programming/general-and-gameplay-programming/making-a-game-engine-core-design-principles-r3210/">Making a Game Engine: Core Design Principles</a>
+  
+  * <a href="https://www.gamasutra.com/blogs/AhmedKhalifa/20170315/293689/Game_Engines_Galore.php">Game Engine Overview</a>
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create({"highlightStyle": "dark"});
+    </script>
+  </body>
+</html>

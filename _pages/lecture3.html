@@ -1,0 +1,414 @@
+---
+permalink: /slides/lecture3.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 3: Game Design</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .medium li {  font-size: 1.1em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Game Design
+
+---
+
+class: center, middle
+
+# Games as Systems
+
+---
+
+# What is a System?
+
+A system is
+
+  * a group of
+  
+  * interacting, 
+  
+  * interrelated, and
+
+  * interdependent
+  
+  * components
+  
+---
+
+# What is a System?
+
+A system is
+
+  * a group of
+  
+  * interacting, 
+  
+  * interrelated, and
+
+  * interdependent
+  
+  * <b>components</b>
+  
+---
+
+# Components?
+
+## What do we have in a game?
+
+ * Objects 
+ 
+ * Attributes 
+ 
+ * Relationships 
+ 
+ * Environment
+  
+---
+
+class: middle, center
+
+# Components?
+
+## What do we have in a game?
+ 
+Super Mario
+
+---
+
+class: small
+
+# Components 
+
+  * Objects
+    - Player
+    - Enemies (Goomba, Koopa Troopa)
+    - Items (Mushroom, coin, flower)
+    - Level geometry
+    - Score, lives
+    - Buttons (input)
+  * Attributes 
+    - Where is Mario? Is he in the air (jumping)?
+    - Is Mario small/large?
+    - Which way is the Goomba facing?
+    - Is the Koopa Troopa in its shell?
+  * Relationships
+    - Pressing buttons makes Mario move/jump/shoot
+    - Mushroom makes Mario grow
+    - Jumping on Goomba destroys it
+    - Running into Goomba makes the player lose a life and start over
+    - Coins give points
+  * Environment
+    - NES: Controller, memory, TV screen
+    - Single player, local multiplayer
+    
+---
+
+class: small
+
+# Framing
+
+  * Formal
+    - View the game as a set of rules
+    - Closed off from the outside environment
+    - Super Mario gameplay
+    
+  * Experiental
+    - View the game as an experience for the players
+    - Not about the mechanics, but about the effect they have on the player 
+    - Super Mario as a test of skill/reaction time
+    
+  * Cultural
+    - View the game as a cultural artifact
+    - Impact of the game on society/culture
+    - Super Mario as a pioneer in video games 
+    - Impact of gender dynamics: Mario rescuing the princess
+
+---
+
+# Rules: Game Mechanics
+
+The game mechanics describe the interactions between the objects in detail 
+
+  * Controls 
+  
+  * Friendly behavior
+  
+  * Enemy behavior
+  
+  * Level behavior 
+  
+  * Win/loss conditions, scoring
+  
+---
+
+# Controls
+
+Controls are easy:
+
+  * Left/right make Mario move left/right 
+
+  * Button A makes Mario jump 
+
+  * Button B makes Mario shoot a fireball
+
+--
+
+But Mario can not always shoot fireballs?
+
+---
+
+class: small
+
+# Interaction
+
+Let's add an interaction rule:
+
+  * If Mario collides with a fire flower power-up ... 
+  
+--
+
+Actually, we need something to interact with:
+
+  * Attribute: Mario can have the "shoot" ability (bool)
+  
+  * If Mario collides with a fire flower power-up he gets the shoot ability 
+  
+  * If Mario collides with an enemy, and he has the shoot ability, he loses it
+
+---
+
+# Controls
+
+Controls are (now) easy:
+
+  * Left/right make Mario move left/right 
+
+  * Button A makes Mario jump 
+
+  * Button B makes Mario shoot a fireball <b>if Mario has the shoot ability</b>
+  
+---
+
+# Enemy Behavior: AI! (sort of)
+
+What does a Goomba do?
+
+  * Face left initially (attribute)
+  
+  * Walk
+  
+  * If a wall is hit (interaction with the level!), flip 180 degrees
+  
+  * Keep walking
+  
+--
+
+I would not call this "AI", but what is important is that it <b>plays well</b>
+
+---
+
+# Summary 
+
+  * Games consist of objects, attributes and interactions, and are situtated in an environment 
+  
+  * The mechanics define the rules by which objects interact and change their attributes 
+  
+  * Game design consists of defining these interactions
+  
+  * Important: Player experience (we will talk about this in a future class)
+  
+---
+
+class: middle, center
+
+# How could we modify Super Mario?
+
+---
+
+class: middle, center
+
+# How could we modify Super Mario?
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/SaoHMjS04vU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<a href="http://stabyourself.net/mari0/">stabyourself.net/mari0</a>
+
+---
+
+class: center, middle
+
+# Goals
+
+## What do we want the player to do?
+
+---
+
+class: medium
+
+# Goals
+
+  * Reach the end of the level/section/story chapter
+  
+  * Win a particular game/combat 
+    - Can be combined with a "metagame"
+    - Many PvP online games do this 
+    
+  * Quests/incremental advantages/scoring
+  
+  * Don't give the player any particular goal at all (sandbox)
+  
+  * Combinations
+  
+---
+
+# Levels, sections, chapters
+
+  * Linear progression 
+  
+  * Easy to define 
+  
+  * Can control player experience more finely
+  
+  * Players are now asking for more autonomy
+  
+  * Level-based design can still work well!
+  
+---
+
+# Game/combat wins
+
+  * Typically for competitive games
+  
+  * Each game is self-contained 
+  
+  * Outside progression adds a meta-game 
+  
+  * Often tied to monetization strategy
+    - Win games to unlock characters/weapons/cosmetic items
+    - Or buy them
+    
+  * Can also be used as a teaching tool
+  
+---
+
+# Quests/incremental advantages/scoring
+
+  * Kill monsters until it gets hard
+  
+  * Get a better weapon 
+  
+  * Killing monsters is easier again 
+  
+  * Repeat 
+  
+  * Taken to the extreme: Idle games
+  
+---
+
+# Sandbox
+
+  * Create a world with many options 
+  
+  * Let the players choose what to do
+  
+  * Typically there is some conflict present
+  
+---
+
+# Combinations
+
+  * Scoring and levels: Improve on simple binary win/lose 
+  
+  * Quests and sandbox: Guide player 
+  
+  * Incremental advantage and levels: Make future levels easier 
+  
+  * Meta-game in combat-based games often provides incremental advantages or points
+ 
+ 
+---
+
+# Achievements
+  
+<iframe width="560" height="315" src="https://www.youtube.com/embed/hFM4eIAou5M" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+---
+
+class: center, middle
+
+# Game Design Document
+
+---
+
+# Game Design Document
+
+A living, changing document containing
+  
+  * Game Pitch
+  
+  * Setting
+  
+  * Rules (interactions)
+  
+  * Goals 
+  
+More details tomorrow!
+  
+---
+
+# For the <b>project</b>, additionally
+
+  * A name for the game
+  
+  * Team members and relevant skills
+  
+  * Due on 21/1 before class 
+  
+  * Email to me: <a href="mailto:markus.eger.ucr@gmail.com">markus.eger.ucr@gmail.com</a>
+  
+---
+
+# Resources
+
+  * Salen, Katie, and Zimmerman, Eric. *Rules of play: Game design fundamentals*. MIT press, 2004.
+  
+  * <a href="https://www.youtube.com/watch?v=hFM4eIAou5M">Extra Credits: Achievements</a>
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>

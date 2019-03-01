@@ -1,0 +1,172 @@
+---
+permalink: /slides/lecture10.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 10: Unity, part 2</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Unity
+
+---
+
+# Unity - Reminder
+
+  * A "level" in Unity is called a *Scene*
+  
+  * A scene consists of *Game Objects* in a hierarchy
+  
+  * Each game object has multiple *Components*
+  
+     - Transform
+     - Geometry
+     - Physics
+     - Scripts
+
+---
+
+# Unity 2D/3D
+
+  * Last time we built a 3D game 
+  
+  * Let's build a 2D game today!
+  
+  * With our own physics
+  
+---
+
+# Physics
+
+Remember physics?
+
+$$
+\vec{v} = \int \vec{a} \cdot \operatorname{d}t
+$$
+
+$$
+\vec{s} = \int \vec{v} \cdot \operatorname{d}t
+$$
+
+$$
+\vec{a} = 9.81 \frac{m}{s^2} \cdot \operatorname{down}
+$$
+
+---
+
+# Discretized Physics
+
+What if we have a loop that increments time by some small amount?
+
+$$
+\vec{v} = \sum \vec{a} \cdot \Delta t
+$$
+
+$$
+\vec{s} = \sum \vec{v} \cdot \Delta t
+$$
+
+$$
+\vec{a} = 9.81 \frac{m}{s^2} \cdot \operatorname{down}
+$$
+
+---
+
+# Discretized Physics in code
+
+Very easy to do in Unity:
+
+```C#
+acceleration = -9.81 * Vector3.up;
+
+velocity += acceleration * Time.deltaTime;
+
+transform.position += velocity * Time.deltaTime;
+```
+
+---
+
+# Discretized Physics in code
+
+Problems to solve:
+
+   * 2D?
+
+   * Set acceleration to a better value
+   
+   * Handle user input (move sideways?)
+   
+   * Collisions?
+
+---
+
+class: center, middle
+
+# Demo time
+
+## Get the demo project on <a href="https://github.com/yawgmoth/UnityDemo2D">github</a>
+
+---
+
+class: small
+
+# Assets
+
+  * <a href="https://github.com/Unity-Technologies/2d-extras">Unity 2D Extras</a> (Tilemap extensions)
+
+---
+
+class: small
+
+# References
+
+  * <a href="https://unity3d.com">Unity 3D</a>
+  
+  * <a href="https://unity3d.com/es/learn/tutorials/topics/2d-game-creation/intro-and-session-goals?playlist=17093">2D tutorial</a>
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+  </body>
+</html>

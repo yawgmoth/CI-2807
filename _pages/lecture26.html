@@ -1,0 +1,481 @@
+---
+permalink: /slides/lecture26.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 26: Networked Games</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.8em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .tiny li {  font-size: 0.8em; }
+      
+      .tiny table {  font-size: 0.8em; }
+      
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Networked Games
+
+---
+
+class: center, middle
+
+# Networking 
+
+---
+
+# Why Networking?
+
+   - Players enjoy interacting with other players
+   
+   - Killers like messing with people 
+   
+   - Achievers like having leaderboards and showing off their achievements
+   
+   - Socializers like interacting with other people 
+   
+   - AI is not (yet?) perfect
+   
+---
+
+# Networking Requirements
+
+   - Fast: Should not adversely affect gameplay
+
+   - Reliable: (Small) connection problems should not ruin the game 
+   
+   - Fair: No player is preferred/affected by other player's connection problems
+
+   - Secure: Players can't cheat   
+   
+---
+
+# Peer-to-Peer Games
+
+  - In the olden days, games would simply connect all players with each other 
+  
+  - Every player runs the game on their machine 
+  
+  - When someone moves, the move is sent to all players and their copy of the game state performs it 
+  
+  - How can we synchronize the moves, so that all players have the same game state?
+  
+---
+
+# Lockstep Networking
+
+  - Let's assume our game has "turns"
+  
+  - When it is a player's turn, they send the action they perform to everyone else 
+  
+  - Players synchronize game states using turn order 
+  
+  - Note: Real-time games can use this, too, by using "very short turns" (e.g. 10ms)
+  
+---
+
+# Lockstep Networking: Limitations
+
+  - The game needs to be deterministic
+
+  - Connection problems produce noticeable wait times 
+  
+  - Worse, *any* player's connection problems affect *every* player 
+  
+  - Also, what if the players do not agree on the game state (perhaps because someone is cheating)?
+  
+---
+
+# Quick Aside: Reproducibility
+
+  - Game States may also become inconsistent for benign reasons
+  
+  - For example: The physics simulation may produce different results 
+  
+  - One cause: Physics engines use random order of resolving collisions
+  
+  - Other option: Floating point math is not consistent across different machines 
+  
+---
+
+class: small
+
+# Quick Aside: Reproducibility of Floating Point math 
+
+  - The (original) Intel FPU used 80 bit floats internally 
+  
+  - Float and double data types had 32 and 64 bit, though 
+  
+  - When the value was written from the FPU to memory, it was rounded 
+  
+  - However, the timing of that was unpredictable (e.g. on context-switches)
+  
+  - And, of course, compiler flags, register allocation, etc. can all also affect the behavior
+
+---
+
+# Client-Server Games
+
+  - Instead of letting every player keep track of the game state themselves, let's use a central server 
+  
+  - The server is the authority on the correctness of the game state, the clients only display it 
+  
+  - When a player wants to perform an action, a request is sent to the server, and the action is only performed if the player is allowed to do so
+  
+---
+
+# Client-Server Games: Challenges
+
+  - The server needs to respond to client requests quickly
+  
+  - However, there can still be a delay between the request and the answer 
+  
+  - Clients should (ideally) not know anything the player should not know 
+  
+  - What if there are network delays?
+  
+---
+
+class: tiny
+
+# A word from John Carmack
+
+"While I can remember and justify all of my decisions about networking from DOOM through Quake, the bottom line is that I was working with the wrong basic assumptions for doing a good internet game. My original design was targeted at &lt; 200ms connection latencies. People that have a digital connection to the internet through a good provider get a pretty good game experience. Unfortunately, 99% of the world gets on with a slip or ppp connection over a modem, often through a crappy overcrowded ISP. This gives 300+ ms latencies, minimum. Client. User's modem. ISP's modem. Server. ISP's modem. User's modem. Client. God, that sucks. Ok, I made a bad call. I have a T1 to my house, so I just wasn't familiar with PPP life. I'm addressing it now."
+
+---
+
+# Client-Side Prediction
+
+  - In the original model, if you press a button, you have to wait for the server to answer to actually move
+  
+  - But the client could know/expect/*predict* that the button press will cause movement 
+  
+  - Then, when the server confirms the coordinates, the client synchronizes with that information
+  
+  - Problem: The client tells the server about updates "in the past"
+  
+---
+
+class: small
+
+# Dead-Reckoning
+
+  - Remember Newton's first law? Objects in motion will stay in motion (unless a force acts on them)
+  
+  - The client can assume that for non-player objects 
+  
+  - When the server sends another update, the client reconciles the actual information with their prediction
+  
+  - For example: If a character is moving forward, the client can keep moving them forward until the server tells them otherwise
+  
+  - The client can also use the game mechanics to predict changes in movement (e.g. through collision)
+  
+---
+
+class: small
+
+# Example: With 100ms delay
+
+  - t = 0: Player 1 sees player 2 in crosshair and presses "fire" button, client sends the "shoot" action to the server; client 1 predicts that player 2 was hit and killed 
+  
+  - t = 100ms: The server receives the "shoot" action from player 1, but player 2 is not longer in the crosshair 
+  
+  - t = 200ms: Client 1 gets response from server; Player 1 missed the shot, and player 2 isn't dead after all
+  
+  - Player 1 feels bad, because they "definitely" hit player 2
+
+---
+
+# Lag Reduction
+
+  - The server keeps track of past game states 
+  
+  - When a player performs an action, the server applies it to the game state at the appropriate time in the past 
+  
+  - This means the server must also re-apply other players' actions that happen afterwards
+  
+  - Advantage: Most of the time, a player's action will have the effect they see on their screen
+  
+---
+
+class: small
+
+# Example: With 100ms delay
+
+  - t = 0: Player 1 sees player 2 in crosshair and presses "fire" button, client sends the "shoot" action to the server; client 1 predicts that player 2 was hit and killed 
+  
+  - t = 100ms: The server receives the "shoot" action from player 1 *with the timestamp information*, and applies it to the game state at t = 0, resulting in a new game state in which player 2 is dead
+  
+  - t = 200ms: Client 1 gets response from server, they hit player 2 and killed them
+  
+---
+
+class: small
+
+# But what about player 2?
+
+  - t = 0: Player 2 is visible to player 1
+  
+  - t = 100ms: Player 2 is behind a wall
+  
+  - t = 200ms: Client 2 gets a message from the server telling them that player 2 died (at t=0)
+  
+  - Player 2 feels bad because they were hit "while they were behind a wall"
+  
+---
+
+class: small
+
+# Trade-off 
+
+  - This system is actually fair: Both players have the same chances 
+  
+  - However, it favors active behavior, because a player's own actions are reflected in the game state more readily than actions that are performed *on* the player 
+  
+  - In many cases, especially in shooters, players are running towards or away from their enemies
+  
+  - Often the delay is also not large enough for players to actually notice, since they also need some time to process what is happening to them
+  
+  - Keeping track of historical states is expensive for many players
+  
+---
+
+# Trust the Client?
+
+  - As we discussed earlier: The client can not be trusted
+  
+  - How about Hybrid Hit Detection (such as in Battlefield 3)?
+  
+  - The *client* says when they hit someone 
+  
+  - The server performs a plausibility test
+
+---
+
+# Cheating 
+
+  - The server is the authority on the game state 
+  
+  - However, to be able to predict movement, the client needs to know the positions of other players 
+  
+  - By extracting information from the binary game state, cheat programs can "see" enemies through walls 
+  
+  - Other cheating methods include disabling or manipulating the z-Buffer to draw hidden enemies
+  
+---
+
+# Anti-Cheating measures 
+
+There is no method that is 100% effective against all forms of cheating, but a few things that are done are:
+  
+  - Scan game binaries for modifications 
+  
+  - Look for known cheat software that is running 
+  
+  - Run game in a sandbox that can't be tampered with
+  
+  - Check for graphics card driver modifications/settings
+
+---
+
+# Scalability
+
+  - Games vary in the number of concurrent players 
+  
+  - If you only have a few dozen players, one server can handle them 
+  
+  - For hundreds or thousands of players, more sophisticated techniques are needed 
+  
+---
+
+# MMO Server Architecture 
+
+<img src="/CI-2700/assets/img/mmo.jpg" width="70%"/>
+
+---
+
+class: small
+
+# MMO Game Servers
+
+  - Typically the game is split into maps/regions/areas 
+  
+  - Each area can be served by multiple physical servers 
+  
+  - When a player moves from one area to another they are transferred to a server for that area 
+  
+  - Two players in the same area may still be on different servers
+  
+  - When a server becomes too crowded, it may be split into two ("sharding")
+  
+---
+
+# A Quick Word on MMO Servers
+
+  - Having multiple servers saves resources, but also splits the player base 
+  
+  - As games evolve, some areas get abandoned 
+  
+  - With a split up player base, this effect becomes more pronounced 
+
+  - MMO companies have started using concepts like "megaservers" or "(dynamic) sharding" to merge players from multiple servers in low-population areas
+
+---
+
+class: middle, center
+
+# Networking in Unity
+
+---
+
+class: small
+
+# Networking in Unity
+
+  - Unity provides a `NetworkManager` class to handle common network tasks
+  
+  - There is also a (very) basic matchmakig UI (for testing purposes)
+  
+  - For each player you need to have one "player game object" to handle how they can affect the game 
+  
+  - Other game objects need to define whether the server has authority over what happens to them, or a player
+  
+  - Games with specific networking needs should implement their own 
+  
+---
+
+# Networked player movement 
+
+```C#
+using UnityEngine;
+using UnityEngine.Networking;
+
+public class Controls : NetworkBehaviour
+{
+    void Update()
+    {
+        if (!isLocalPlayer)
+        {
+            // exit from update if this is not the local player
+            return;
+        }
+
+        // handle player input for movement
+    }
+}
+```
+
+---
+
+class: small
+
+# Networking-Aware Game Objects 
+
+  - Add a `NetworkIdentity` component to your game objects
+  
+  - Add a `NetworkTransform` component to game objects to synchronize their positions/rotations/scaling
+  
+  - Spawn new objects using `NetworkServer.Spawn`
+  
+  - Make your scripts derive from `NetworkBehavior` instead of `MonoBehavior`
+  
+  - In your scripts, only modify the game object when `hasAuthority` is true (or `isServer`)
+  
+  - If you want to synchronize non-transform attributes, mark them with `[SyncVar]`
+  
+---
+
+class: small
+
+# Networking in WebGL builds
+
+  - The built-in NetworkManager etc. work with WebGL builds 
+  
+  - If you want to build your own, you can't use raw sockets 
+  
+  - Other options: `WWW` or `UnityWebRequest`, which can be used to send HTTP requests 
+  
+  - The server needs to enable Cross-Origin Resource Sharing
+  
+  - Do not block on network requests (WebGL is single-threaded)
+
+---
+
+class: tiny
+
+# References
+  
+   * [What Every Programmer Needs To Know About Game Networking](https://gafferongames.com/post/what_every_programmer_needs_to_know_about_game_networking/)
+   
+   * [1500 Archers on a 28.8: Network Programming in Age of Empires and Beyond](http://www.gamasutra.com/view/feature/3094/1500_archers_on_a_288_network_.php)
+   
+   * [Client-Server Game Architecture](http://www.gabrielgambetta.com/client-server-game-architecture.html)
+   
+   * [Latency Compensating Methods in Client/Server In-game Protocol Design and Optimization](https://developer.valvesoftware.com/wiki/Latency_Compensating_Methods_in_Client/Server_In-game_Protocol_Design_and_Optimization#Lag_Compensation)
+   
+   * [The pitfalls of verifying floating-point computations](https://hal.archives-ouvertes.fr/file/index/docid/281429/filename/floating-point-article.pdf)
+   
+   * [Hybrid Hit Detection in BF3](https://www.reddit.com/r/battlefield3/comments/n2oiy/we_need_someone_to_create_a_guide_for_the_new/c35xc2m/)
+   
+   * [Valve AntiCheat mistakenly bans 12000 players](https://www.rockpapershotgun.com/2010/07/26/valve-anti-cheat-software-goes-a-bit-glados/)
+   
+   * [Networking in Unity](https://docs.unity3d.com/Manual/UNetOverview.html)
+   
+   
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
+    <script src="https://yawgmoth.github.io/CI-2700/assets/js/3dutils.js"></script>
+    
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+   
+      
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+      
+    
+    </script>
+  
+  </body>
+</html>

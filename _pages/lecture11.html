@@ -1,0 +1,261 @@
+---
+permalink: /slides/lecture11.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 11: Unity, part 3</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Unity
+
+---
+
+# Unity - Useful Tricks and Features
+
+  * Controller Support
+  * Particle Systems
+  * Animations
+  * Prefabs
+  * Coroutines
+  * Raycast
+  * Layers
+  * Render-to-Texture
+  
+---
+
+# Controller support
+
+  * Controller support is very easy!
+  
+  * Just use Input.GetAxis, Input.GetButton etc.
+  
+  * Controllers should work out of the box!
+
+---
+
+# Particle Systems 
+
+  * Consist of a generator and particle properties
+  
+  * The generator emits particles 
+  
+  * Particles are usually simple sprites with colors
+  
+  * Can be used to make nice fire, smoke, etc.
+  
+  * Built-in system in Unity!
+
+---
+
+# Animations 
+
+  * Animations in Unity use two components: 
+     
+      - Animator 
+      - Animation Controller
+      
+  * Of course you also need Animation Clips
+  
+  * You can make your own to animate basically anything
+
+---
+
+# Prefabs
+
+  * Prefabs are collections of game objects and components that you want to reuse
+
+  * Assemble in Scene, drag into Assets 
+
+  * You can edit the Prefab separately (since Unity 2018.3)
+
+---
+
+# Coroutines 
+
+  * Remember threads?
+  
+  * Sometimes all you want is for a function to run independently, pause for a bit and then continue
+  
+  * Or you need to wait for a download of some resource 
+  
+  * Use Coroutines! They run in the main thread, and can use all Unity API functions 
+  
+  * Alternative: IJob interface
+
+---
+
+class: small
+
+# Raycasts 
+
+   * Sometimes you want to know what the user clicks
+   
+   * ```Camera.main.ScreenPointToRay(Input.mousePosition);```
+   
+   * ```Physics.Raycast(ray, out res)```
+   
+   * Returns true if you hit anything
+   
+   * You will get information about what you hit in ```res```
+   
+   * Also works with other rays (targeting, line-of-sight calculations, etc.)
+
+---
+
+# Tags and Layers 
+
+  * You can assign Tags and Layers to game objects 
+  
+  * Tags can be used to tell you which type of game object you have (player, enemy, etc.)
+
+  * Layers are mostly used by the Camera to determine what to show 
+  
+  * Can also be used by Raycast to ignore certain objects 
+
+---
+
+# Render-to-Texture 
+
+  * Usually, Cameras render what they see to the screen
+  
+  * You can also set up a Camera to render to a texture 
+  
+  * And then put that texture onto a game object 
+  
+  * Model surveillance cameras, add a minimap, mirrors, portals, etc.
+
+---
+
+class: center, middle
+
+# Demo time
+
+## Get the demo project on <a href="https://github.com/yawgmoth/UnityTricks">github</a>
+
+---
+
+class: center, middle
+
+# Tomorrow: 3D Graphics
+
+<div id="container"></div>
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+      
+      
+      function setupScene(width, height, element)
+    {       
+        const VIEW_ANGLE = 70;
+        const ASPECT = width / height;
+        const NEAR = 0.1;
+        const FAR = 10000;
+
+        // Get the DOM element to attach to
+        const rescontainer =
+            document.getElementById(element);
+       
+        const resrenderer = new THREE.WebGLRenderer();
+        const rescamera =
+            new THREE.PerspectiveCamera(
+                VIEW_ANGLE,
+                ASPECT,
+                NEAR,
+                FAR
+            );
+            
+        rescamera.position.z = 10;
+        const resscene = new THREE.Scene();
+        resscene.add(rescamera);
+        resrenderer.setSize(width, height);
+
+        
+        rescontainer.appendChild(resrenderer.domElement);
+
+        const respointLight =
+          new THREE.PointLight(0xFFFFFF, 3);
+
+        respointLight.position.x = 0;
+        respointLight.position.y = 1;
+        respointLight.position.z = 8;
+        resscene.add(respointLight);
+        var result = {scene: resscene, renderer: resrenderer, camera: rescamera, update: function (object) {} };
+        return result;
+    }
+      
+      
+    var cubeinfo = setupScene(window.innerWidth/2, window.innerHeight/2, "container");
+    cubeinfo.update = function ( object ) {
+            const timer = Date.now() * 0.0001;
+            if ( object.isMesh === true ) {
+                object.rotation.z = timer * 15;
+                object.rotation.x = timer * 22;
+            }
+        };
+        
+    var mesh = new THREE.Mesh(new THREE.BoxGeometry( 4, 4, 4 ), new THREE.MeshNormalMaterial());
+
+    cubeinfo.scene.add(mesh);
+    
+    function doUpdate(info)
+    {
+        info.scene.traverse(info.update);
+        info.renderer.render(info.scene, info.camera);
+    }
+
+    function update () {
+      // Draw!
+      doUpdate(cubeinfo);
+      // Schedule the next frame.
+      requestAnimationFrame(update);
+    }
+
+    // Schedule the first frame.
+    requestAnimationFrame(update);
+    </script>
+  </body>
+</html>

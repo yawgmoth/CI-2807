@@ -1,0 +1,472 @@
+---
+permalink: /slides/lecture23.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 23: Physics Simulation</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.8em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .tiny table {  font-size: 0.8em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Physics Simulation
+
+---
+
+class: small
+
+# Why Physics?
+
+  * Physics is used for a wide variety of purposes in video games 
+  
+  * On a basic level, games often mirror real(-ish) environments, and players expect "real" physics 
+  
+  * Even when the "physics" of a game are less involved, many of the same concepts are used 
+  
+  * For example: Collision detection
+  
+  * But today we will be talking about masses and forces
+  
+---
+
+# Physics simulation
+
+  * Real-world physics happens in an (arguably) continuous environment 
+  
+  * Computers are not very good with that 
+  
+  * Our physics simulations are just approximations to the actual physics 
+  
+  * Important: Numerically stable, and fast
+  
+  * Sometimes you can "cheat"
+  
+---
+
+class: small
+
+# Newton's laws of motion 
+
+  * First law: Objects in motion stay in motion, objects at rest stay at rest, unless a force acts on them 
+  
+  * Second law: The sum of forces on an object is equal to its mass times its acceleration 
+  
+  * Third law: Every force has an equal and opposite force 
+  
+  * Bonus: The law of universal gravitation: Every two bodies attract each other with a force equal to the product of their masses divided by the square of their distance
+  
+While these laws break at extreme scales (very small objects or very fast movement), in most games we will not encounter these edge-cases.
+
+---
+
+class: small
+
+# Newton's laws of motion 
+
+$$
+\sum \vec{F} = 0 \Leftrightarrow \frac{\operatorname{d}{v}}{\operatorname{d}{t}} = 0
+$$
+
+$$ 
+\vec{F} = m \cdot \vec{a}
+$$
+
+$$
+\vec{F_A} = -\vec{F_B}
+$$
+
+$$
+\vec{F_G} = G \cdot \frac{m_1 m_2}{r^2}
+$$
+
+---
+
+# How are these laws useful?
+
+  * We have a few objects in our scene 
+  
+  * None of them should move, unless a force acts on them 
+  
+  * If a force acts on an object, it is accelerated depending on its mass 
+  
+  * If two objects bump into each other, the sum of the force vectors on impact is zero
+  
+  * All objects theoretically pull each other object towards them
+
+---
+
+# Point Mass 
+
+  * Let's start simple: We have an object that only has a mass, and no size 
+  
+  * That means it can't rotate
+  
+  * Also, collisions are easy to determine
+  
+  * Our point masses will have a mass, position (vector) and velocity (vector)
+  
+---
+
+# Physics equations
+
+$$
+\vec{s} = \int \vec{v} \cdot \operatorname{d}t
+$$
+
+$$
+\vec{v} = \int \vec{a} \cdot \operatorname{d}t
+$$
+
+$$ 
+\vec{a} = \frac{\vec{F}}{m}
+$$
+
+---
+
+# Discretized Physics
+
+We update our point mass positions in discrete time steps (e.g. every 20ms)
+
+$$
+\vec{s} = \sum \vec{v} \cdot \Delta t
+$$
+
+$$
+\vec{v} = \sum \vec{a} \cdot \Delta t
+$$
+
+$$ 
+\vec{a} = \frac{\vec{F}}{m}
+$$
+
+---
+
+# Discretized Physics
+
+```C#
+acceleration = force/mass;
+
+velocity = velocity + acceleration * Time.deltaTime;
+
+transform.position = transform.position + 
+                     velocity * Time.deltaTime;
+
+```
+
+---
+
+# Discretized Physics 
+
+<img src="/CI-2700/assets/img/forces.gif" width="90%"/>
+
+---
+
+class: small
+
+# Rigid Body Physics 
+
+  * Usually we want our objects to have a size, though
+  
+  * A rigid body has a volume 
+  
+  * We can (mostly) use the same math as for a point mass with the same mass, located at the center of mass of the rigid body 
+  
+  * The center of mass is the geometric center if the object has uniform density (for games that is usually good enough)
+  
+  * Exceptions: Rotations and collisions
+
+---
+
+# Angular Velocity
+
+  * Similar to a forward (movement) velocity, a rigid body can have an angular (rotational) velocity 
+  
+  * The *force* in this case is called *torque*
+  
+  * The *mass* is called *moment of inertia*, and describes how hard it is to get an object to rotate
+  
+$$
+\tau = I \alpha
+$$
+
+---
+
+# Applying Torque 
+
+<img src="/CI-2700/assets/img/torque.png" width="100%"/>
+
+---
+
+# Torque in 3 Dimensions
+
+  * In 3 dimensions the moment of inertia is a 3x3 matrix 
+  
+  * This matrix describes how hard it is to rotate the object around each axis 
+  
+  * For example
+
+      - A tightrope walker is holding a long pole 
+      - The pole is easy to rotate around its core 
+      - It helps with balancing, because it is harder to rotate around its length
+
+---
+
+class: small
+
+# Collisions
+
+  * If two point masses collide, their velocities are converted into potential energy 
+  
+  * This potential energy is then released as a repulsion force 
+  
+  * The angle of their movement relative to the normal at the impact location determines their new movement 
+  
+<img src="/CI-2700/assets/img/elastic.gif" width="60%"/>
+
+---
+
+class: small
+
+# Collision energy loss
+
+  * In real collisions, the objects do not keep all energy as kinetic energy 
+  
+  * Some energy is released as heat and sound
+  
+  * The *coefficient of restitution* determines how much of the incoming velocities is preserved 
+  
+  * A value of 0 would mean the maximum amount of energy is lost, the two objects would "stick together"
+  
+  * A value of 1 means a perfectly elastic collision, in which all kinetic energy is preserved
+
+---
+
+class: small
+
+# Friction
+
+ * When we talk about friction we usually mean "dry friction": Two solid objects rubbing against each other 
+ 
+ * Friction is a force that opposes movement 
+ 
+ * There are no (practical) precise mathematical formulas for frictions
+ 
+ * Instead we use approximations
+ 
+ * Friction is directly dependent on the mass of the objects (or rather, their normal force)
+ 
+ * It is independent of the sliding velocity 
+ 
+---
+
+# The Coulomb Model of Friction 
+
+$$
+F_f \le \mu \cdot F_n
+$$
+
+Friction is less than or equal to the friction coefficient times the normal force.
+
+The friction coefficient defines how much friction two materials have with each other.
+
+The normal force defines how much surface pressure the objects have with each other.
+
+Why "less than or equal to?"
+
+--
+
+Friction can not move an object backwards.
+
+---
+
+class: small
+
+# Static and Kinetic Friction
+
+  * It is actually usually harder to get an object to slide across a surface than to keep moving 
+  
+  * *Static* friction describes how hard it is to get moving
+  
+  * *Kinetic* friction describes how much a moving object affected
+  
+  * Both use the same equation, but different constants
+  
+  * For example: Aluminium and steel have a static friction coefficient of 0.61, and a kinetic friction coefficient of 0.47
+  
+---
+
+class: small
+
+# Drag
+
+  * Another common type of friction is air resistance, or drag 
+  
+  * Unlike dry friction, drag is dependent on the velocity of the object 
+  
+  * Drag increases quadratically with the speed 
+  
+  * Additionally, the drag increases with a larger cross section area of the object 
+
+---
+
+# Gravity
+
+In the beginning we related the acceleration of an object to its mass and the forces acting on it.
+
+$$ 
+\vec{a} = \frac{\vec{F}}{m}
+$$
+
+One such force is gravity.
+
+---
+
+class: small
+
+# Gravity 
+
+  * Remember from earlier: The law of universal gravitation: Every two bodies attract each other with a force equal to the product of their masses divided by the square of their distance
+  
+  * Of course, most of the time these attractions don't matter 
+  
+  * Most gravitational forces are insignificant next to the one from earth 
+  
+  * So: Instead of modeling gravity physically correct, just add a force that goes "down"
+  
+  * Unless your game needs something else
+  
+---
+
+# Other forces
+
+  * Understanding the basics behind physics allows us to develop games that violate them in targeted ways
+ 
+  * Physics can make for very exciting game mechanics 
+  
+  * In addition to the forces we discussed, it's possible to include others, such as explosions, or magnetism 
+  
+  * Sometimes just playing with gravity can be fun
+  
+---
+
+# Celestial dynamics
+
+<img src="/CI-2700/assets/img/orbitalis.png" width="60%"/>
+
+(0rbitalis) 
+
+---
+
+# Playing with gravity 
+
+<iframe width="800" height="411" src="https://www.youtube.com/embed/o0R9q5Qc2NQ?start=332" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+(Prey (2006))
+
+---
+
+# Other forces
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/1ZD57KzjMVs?start=42" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+(Guildwars 2)
+  
+---
+
+class: small
+
+# Numerical Stability
+
+  * One problem with our simplified model of integration is numerical stability 
+  
+  * If our timesteps are not measured accurately, or there are floating point rounding errors, we may add more to the velocity than expected 
+  
+  * This problem compounds as the simulation continues
+  
+  * Ideally, you will have a low, constant physics update rate 
+  
+  * Problems happen if your simulation takes longer than the time between updates
+ 
+
+---
+
+# Physics puzzle
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/HEfHFsfGXjs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+  
+---
+
+class: small
+
+# References
+  
+   * [Video Game Physics](https://www.toptal.com/game/video-game-physics-part-i-an-introduction-to-rigid-body-dynamics)
+   
+   * [List of Moments of Inertia](https://en.wikipedia.org/wiki/List_of_moments_of_inertia)
+   
+   * [Learn Game Physics](https://www.gamedesigning.org/learn/game-physics/)
+   
+   * [Elastic Collision in 3D](http://exploratoria.github.io/exhibits/mechanics/elastic-collisions-in-3d/)
+   
+   * [Stable Rigid-body Physics](https://www.gamasutra.com/features/gdcarchive/2001/rhodes_paper.pdf)
+   
+   * [Super Planet Crash: Physics Based Game](http://www.stefanom.org/spc/)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
+    <script src="https://yawgmoth.github.io/CI-2700/assets/js/3dutils.js"></script>
+    
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+   
+      
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+      
+    
+    </script>
+  
+  </body>
+</html>

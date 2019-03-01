@@ -1,0 +1,401 @@
+---
+permalink: /slides/lecture4.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 4: Game Design Document</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .medium li {  font-size: 1.1em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      
+      .left-column {
+        color: #777;
+        width: 40%;
+        height: 92%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 55%;
+        float: right;
+        padding-top: 1em;
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Game Design Document
+
+---
+
+# Game Design Document (GDD)
+
+A living, changing document containing
+  
+  * Game Pitch ("hook")
+  
+  * Setting
+  
+  * Rules (interactions)
+  
+  * Goals 
+  
+---
+
+# Game Design Document
+
+  * GDDs have been described as "obsolete"
+  
+  * Prototyping has become easier
+  
+  * There is usually still *some* documentation about a game before it is actually implemented
+  
+  * GDDs differ from company to company 
+  
+---
+
+# Game Pitch
+
+  * The most important part of the GDD 
+  
+  * You want the reader to become interested ("hooked")
+  
+  * One approach: Relate to an existing game and provide a twist
+  
+  * Another approach: Mention a unique idea/setting/mechanic
+  
+  * In practice, also: Argue using proven concepts
+  
+---
+
+# What's the pitch?
+
+<img src="/CI-2700/assets/img/tetris.gif" height="400px"/>
+
+(Tetris)
+
+---
+
+# What's the pitch?
+
+<img src="/CI-2700/assets/img/minecraft.jpg" width="90%"/>
+
+(Minecraft)
+
+---
+
+# What's the pitch?
+
+<img src="/CI-2700/assets/img/portal2.jpg" width="90%"/>
+
+(Portal 2)
+
+---
+
+# What's the pitch?
+
+<img src="/CI-2700/assets/img/mariokart.gif" width="90%"/>
+
+(Mario Kart)
+
+---
+
+# What's the pitch?
+
+<img src="/CI-2700/assets/img/guitar-hero.jpg" width="90%"/>
+
+(Guitar Hero)
+
+---
+
+# Ideation
+
+  * What do you want players to feel/experience?
+  * What mechanics do you want to incorporate?
+  * What do you see in the world around you?
+  * Which games are already fun?
+  * Which technology is available?
+  * Which art assets, world, IP do you have?
+  * Who do you want to play your game?
+  * Random page on wikipedia, tvtropes, a dictionary, ...
+  
+---
+
+# Setting
+
+  * Characters 
+  
+  * World 
+  
+  * Story
+  
+  * Not applicable to all games (Tetris?)
+  
+---
+
+# Characters
+
+  * Personality
+  
+  * Goals 
+  
+  * Relationships, conflicts
+  
+  * Who is the player?
+  
+---
+
+# World
+
+  * Time/technological level 
+  
+  * Location, real or fictional 
+  
+  * Relevant factions/groups
+  
+  * Where is the player?
+  
+---
+
+# Story
+
+  * Characters want to achieve their goals 
+  
+  * Conflicting goals result in obstacles
+  
+  * What does the player need to do?
+  
+  * How does the player progress through the story?
+  
+  * Non-linear stories, sandbox games
+  
+---
+
+# Story-telling time!
+
+  * Characters 
+  
+  * World 
+  
+  * Story 
+  
+---
+
+class: middle, center
+
+# Story-telling time 
+
+## Game?
+  
+---
+
+# Rules/mechanics
+
+  * Objects, attributes, and relationships
+  
+  * Describes gameplay formally and provides basis for implementation
+  
+  * What does the player do in the game/how is it challenging?
+  
+  * Informal description is helpful
+  
+  * Compare to design in software engineering
+  
+---
+
+# Goals
+
+  * What is the player supposed to achieve?
+  
+  * Is there a win/loss condition, quests, etc.
+  
+  * Why should someone play the game?
+  
+  * Not always a clear answer
+  
+---
+
+# Aesthetics
+
+  * What should the game look/feel like 
+  
+  * Art assets (<a href="https://opengameart.org/">opengameart.org</a>, Unity asset store)
+  
+  * UI Style
+  
+  * Sound?
+  
+  * Can provide concept art, prototype screenshots, etc.
+   
+---
+
+# For the project 
+
+  * Team name, game name 
+  
+  * Rules and goals for the game 
+  
+  * Setting/story, if applicable
+  
+  * Team members and relevant skills
+
+---
+
+# For the project 
+
+  * Team name, game name 
+  
+  * <b>Rules and goals for the game </b>
+  
+  * Setting/story, if applicable
+  
+  * Team members and relevant skills
+  
+---
+
+class: middle, center
+
+# For example
+
+## <a href="/CI-2700/assets/pdf/GDD.pdf">Hoverrace</a>
+
+---
+
+class: small
+
+# From the design document to a game
+
+  * Like in software engineering, the design document tells you how to start implementing
+  
+  * Objects fall into three categories:
+  
+     - Objects with behavior (code)
+     
+     - Passive scene objects 
+     
+     - Abstract objects (buttons)
+     
+  * In Unity: Create a scene, and populate with objects 
+  
+  * Add behavior/code step by step
+  
+---
+
+class: small
+
+# Hoverrace scene 
+
+.left-column[ 
+  <img src="/CI-2700/assets/img/scene.png" width="100%"/>
+]
+
+.right-column[
+   
+* Player
+   
+* AI Opponent
+   
+* Checkpoints 
+   
+* Terrain, water
+   
+* UI
+   
+* etc
+]
+
+---
+
+# Further notes on game design
+
+  * Try to play games with an open eye
+  
+  * Explicitly identify objects, attributes and relationships
+  
+  * Think about *why* objects relate in a certain way
+  
+  * What could you change about the game to keep it the same/similar, what would change it 
+  
+  * Exploit behavior, find unintended functionality
+  
+---
+
+# Every Frame a Painting
+
+  * Don't assume that any detail is added randomly
+  
+  * Game designers have very particular experiences in mind 
+  
+  * Compare to films: Very subtle effects are used intentionally by the directors
+ 
+  * Warning: This may change your experience of games (or movies)
+  
+---
+
+class: small
+
+# On Monday
+
+  * Every group has 10 minutes 
+  
+  * Introduce yourselves (name, team name)
+  
+  * Present 3-5 game ideas (one sentence each)
+  
+  * If you want, you can use slides (email a pdf to me before class or send me a link)
+  
+  * I will provide feedback on which ideas I think are feasible
+  
+  * I will also have some of my own ideas, just in case
+  
+---
+
+# Resources
+
+  * <a href="https://www.gamasutra.com/view/feature/131791/the_anatomy_of_a_design_document_.php">The Anatomy of a Design Document</a>
+  
+  * <a href="https://www.gamasutra.com/blogs/LeandroGonzalez/20160726/277928/How_to_Write_a_Game_Design_Document.php">How to write a Game Design Document</a>
+  
+  * <a href="https://tvtropes.org/pmwiki/pmwiki.php/Main/Tropes">TVTropes</a>
+  
+  * <a href="https://www.youtube.com/watch?v=5UE3jz_O_EM">Every Frame a Painting: Shot/Reverse Shot</a>
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>

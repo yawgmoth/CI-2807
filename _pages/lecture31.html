@@ -1,0 +1,480 @@
+---
+permalink: /slides/lecture31.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 31: Review</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.8em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .smaller li {  font-size: 0.85em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Review
+
+---
+
+class: center, middle
+
+#  Pathfinding
+
+---
+
+# Question
+
+<img src="/CI-2700/assets/img/austriaroads.png" width="100%"/>
+
+Find a path from Graz to Munich using Breadth-First Search
+
+--
+
+Find a path from Graz to Munich using Depth-First Search, when the neighbors are ordered *alphabetically*.
+
+---
+
+# Question
+
+<img src="/CI-2700/assets/img/austriaroads.png" width="100%"/>
+
+Find a path from Graz to Munich using Greedy Search with the following heuristic values:
+
+Bregenz: 101, Bruck: 203, Eisenstadt: 400, Graz: 301, Klagenfurt: 202, Lienz: 201, Linz: 200, Salzburg: 100, Vienna: 300
+
+Find a path from Graz to Munich using A*.
+
+---
+
+class: center, middle
+
+# Movement
+
+---
+
+# Question
+
+What is a NavMesh?
+
+---
+
+# Question 
+
+What is a steering behavior? What does it do to control a character?
+
+---
+
+# Question 
+
+Say you have a guard that you want to walk back and forth between two points. How would you accomplish that using steering behaviors?
+
+---
+
+# Question 
+
+What are the three components of flocking behaviors?
+
+---
+
+class: center, middle
+
+# AI Behavior
+
+---
+
+# Question 
+
+What is a decision tree?
+
+---
+
+# Question 
+
+What is a behavior tree?
+
+---
+
+# Question 
+
+Design a decision tree for a soccer forward (delantero).
+
+--
+
+Design a behavior tree for a soccer forward (delantero).
+ 
+
+---
+
+# Question 
+
+Imagine a game where you and an opponent alternate with choosing bits for a binary number, until the number has 3 digits. If the resulting number is prime, you get points equal to its value, otherwise you lose points equal to its value. Draw the game tree for this game. What is your best first move?
+
+Example:
+
+You pick 0, your opponent picks 1, then you pick 1. The number is 011 in binary, or 3 in decimal, so you get 3 points.
+
+---
+
+class: center, middle
+
+# Advanced AI
+
+---
+
+# Question 
+
+How does Monte Carlo Tree Search work?
+
+---
+
+# Question 
+
+What is gradient descent?
+
+--
+
+Name one of its main limitations.
+
+---
+
+class: center, middle
+
+# Procedural Content Generation
+
+---
+
+# Question 
+
+Why would we want to generate content with code?
+
+--
+
+Name 5 things we can generate procedurally.
+
+---
+
+# Question 
+
+Say you want to create a game where you explore an abandoned mine. How could you automatically generate such a mine?
+
+---
+
+# Question 
+
+What are L-Systems?
+
+--
+
+What are they most commonly used for, and why?
+
+---
+
+class: center, middle
+
+# Physics Simulation
+
+---
+
+# Question 
+
+Say you have an object with 100kg, and apply a force of 10N to it. What acceleration will the object experience?
+
+--
+
+If we apply this force for 5 seconds, how fast will the object be moving afterwards?
+
+--
+
+If the object starts at the origin (0,0,0), we apply the force for 5 seconds, where will the object be located after a total of 10 seconds? (Assume the physics simulation runs once per second)
+
+---
+
+# Question 
+
+The coulomb model of friction states that the friction force is 
+
+$$
+F_f \le \mu \cdot F_n
+$$
+
+Explain the terms in this equation.
+
+--
+
+Name a scenario in which the friction force can be less than the right hand side of the equation.
+
+---
+
+# Question 
+
+What is drag?
+
+--
+
+How does drag differ from dry friction?
+
+
+---
+
+class: center, middle 
+
+# Collision Detection
+
+---
+
+# Question 
+
+When is the dot product of two vectors greater than, less than, and equal to zero, (given their relative directions)?
+
+---
+
+# Question 
+
+Say we have 3 spheres, S1, S2, and S3, each with radius 2. S1 is located at (0,0,0), S2 is located at (3,4,0), and S3 is located at (4,0,3). Which of these sphere intersect, if any?
+
+
+---
+
+# Question
+
+Let there be a sphere S1 at (8,4,2) with radius 5, and another sphere S2 with radius 1 at (0,0,0). S2 then starts moving in x-direction with 1m/s. At what time 
+do the two spheres collide?
+
+--
+
+Hint:
+
+You can take the position of S2 as (t,0,0), and find the (smaller) value for t for which the two spheres collide.
+
+---
+
+# Question
+
+Given a ray R starting at (0,1,0), in direction (1,0,0), where is the projection of the center of the sphere S1, which is located at (6,3,0), on that ray?
+
+--
+
+Assume the sphere has radius 4. Does the ray intersect the sphere? If yes, where?
+
+--
+
+Assume the sphere has radius 5. Does the ray intersect the sphere? If yes, where?
+
+---
+
+# Question
+
+Given a plane going through the point (1,2,3) with normal (0.71,0,-0.71), for each of these three points determine if it lies in front, behind or on the plane.
+
+P1 = (3,4,5)
+
+P2 = (5,4,3)
+
+P3 = (0,0,0)
+
+---
+
+# Question
+
+Given a plane going through the point (1,2,3) with normal (0.71,0,-0.71), determine where a ray starting at (0,0,3) in direction (1,0,0) intersects that plane.
+
+---
+
+# Question 
+
+What is the separating planes theorem?
+
+---
+
+# Question 
+
+Given the axis aligned bounding boxes of two objects, what can you say about the collision between the two objects if:
+
+  - The AABBs collide?
+  
+  - The AABBs don't collide?
+  
+  
+---
+
+# Question 
+
+What is Lockstep networking? What are its main limitations?
+
+---
+
+# Question 
+
+How does client-side prediction work? Why is it used?
+
+---
+
+# Question 
+
+Describe lag-reduction in client-server games. What are its advantages and drawbacks?
+
+---
+
+# Question 
+
+How can you detect cheating in games?
+
+---
+
+class: center, middle 
+
+# Player Analytics
+
+---
+
+# Question 
+
+Say you develop a PVP game in which three teams of three players each compete for an objective. How would you rank these players?
+
+--
+
+How would you assign players to matches?
+
+---
+
+# Question 
+
+Name 3 things you can do to keep players engaged longer with your game.
+
+---
+
+# Question 
+
+From the data you collected about your players, most of them play the game during their lunch break, from noon to 2pm. How could you use this information?
+
+---
+
+class: center, middle
+
+# Testing and Balancing
+
+---
+
+# Question 
+
+Name 2 kinds of bugs that are specific to games. 
+
+--
+
+Name an example for each of these two kinds.
+
+---
+
+# Question 
+
+What is monkey testing?
+
+---
+
+class: smaller
+
+# Question 
+
+In your game players can get a sword that should deal 100 damage on average according to your balancing. Which of these five options would you choose, and why?
+
+  - A sword that always deals 100 damage 
+  
+  - A sword that deals a random amount of damage between 75 and 125 (uniformly distributed)
+  
+  - A sword that deals a random amount of damage between 50 and 150, with a normal distribution centered at 100
+  
+  - A sword that deals 100 damage on the first hit, 80 on the second hit, and 120 on the third hit
+  
+  - A sword that deals between 80 and 100 damage at random (uniformly distributed), but if you deal less than 100 damage, you get 10 bonus damage on the next attack (stacking, until you deal 100 or more damage)
+  
+---
+
+class: center, middle
+
+# Games
+
+---
+
+# Question
+
+Name three examples for non-traditional games.
+
+--
+
+Describe an idea for a non-traditional game.
+
+---
+
+class: center, middle
+
+# Monetization and Publishing
+
+---
+
+# Question
+
+What is a "Whale" in the context of free-to-play games?
+
+--
+
+What percentage of players can you expect to get money from in a free-to-play game?
+
+---
+
+# Question 
+
+Name at least two different providers you could publish your game through.
+
+
+
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    
+    
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+    <script src="sprite-animation.js"></script>
+  </body>
+</html>

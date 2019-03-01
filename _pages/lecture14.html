@@ -1,0 +1,1042 @@
+---
+permalink: /slides/lecture14.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 14: Homogeneous Coordinates, Matrices, Quaternions</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.8em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Homogeneous Coordinates, Matrices, Quaternions
+
+---
+
+class: center, middle
+
+# Coordinates
+
+## Or: Where do we draw things?
+
+---
+
+# Coordinates
+
+$$ \vec{v} = \begin{pmatrix} 
+x \\\\ 
+y
+\end{pmatrix} $$
+
+--
+
+## Movement
+
+$$ \vec{v}' = \vec{v} + \begin{pmatrix} 
+\Delta x \\\\ 
+\Delta y
+\end{pmatrix} $$
+
+--
+
+## Rotation? Scaling? Combinations?
+
+---
+
+# Homogeneous coordinates
+
+$$ \begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+1
+\end{pmatrix} $$
+
+---
+
+class: small
+
+# Homogeneous coordinates
+
+$$ \begin{pmatrix} 
+a_1 & b_1 & c_1 \\\\
+a_2 & b_2 & c_2 \\\\
+a_3 & b_3 & c_3 
+\end{pmatrix}
+\cdot
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+1 
+\end{pmatrix} 
+= 
+\begin{pmatrix} 
+a_1\cdot x + b_1 \cdot y + c_1 \\\\
+a_2\cdot x + b_2 \cdot y + c_2 \\\\
+a_2 \cdot x + b_3 \cdot y + c_3 \end{pmatrix}
+$$
+
+---
+
+class: small
+
+# Homogeneous coordinates
+
+$$ \begin{pmatrix} 
+a_1 & b_1 & c_1 \\\\
+a_2 & b_2 & c_2 \\\\
+0 & 0 & 1 
+\end{pmatrix}
+\cdot
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+1 
+\end{pmatrix} 
+= 
+\begin{pmatrix} 
+a_1\cdot x + b_1 \cdot y + c_1 \\\\
+a_2\cdot x + b_2 \cdot y + c_2 \\\\
+1 \end{pmatrix}
+$$
+
+---
+
+class: small
+
+# Homogeneous coordinates
+
+$$ \begin{pmatrix} 
+1 & 0 & 2 \\\\
+0 & 1 & 0 \\\\
+0 & 0 & 1 
+\end{pmatrix}
+\cdot
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+1 
+\end{pmatrix} 
+= 
+\begin{pmatrix} 
+1\cdot x + 0 \cdot y + 2 \\\\
+0\cdot x + 1 \cdot y + 0 \\\\
+0 \cdot x + 0 \cdot y + 1 \end{pmatrix}
+$$
+
+---
+
+class: small
+
+# Homogeneous coordinates
+
+$$ \begin{pmatrix} 
+1 & 0 & 2 \\\\
+0 & 1 & 0 \\\\
+0 & 0 & 1 
+\end{pmatrix}
+\cdot
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+1 
+\end{pmatrix} 
+= 
+\begin{pmatrix} 
+ x + 2 \\\\
+ y \\\\
+ 1 \end{pmatrix}
+$$
+
+---
+
+class: small
+
+# Homogeneous coordinates
+
+$$ \begin{pmatrix} 
+1 & 0 & 0 \\\\
+0 & 1 & 2 \\\\
+0 & 0 & 1 
+\end{pmatrix}
+\cdot
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+1 
+\end{pmatrix} 
+= 
+\begin{pmatrix} 
+1\cdot x + 0 \cdot y + 0 \\\\
+0\cdot x + 1 \cdot y + 2 \\\\
+0 \cdot x + 0 \cdot y + 1 \end{pmatrix}
+$$
+
+---
+
+class: small
+
+# Homogeneous coordinates
+
+$$ \begin{pmatrix} 
+1 & 0 & 0 \\\\
+0 & 1 & 2 \\\\
+0 & 0 & 1 
+\end{pmatrix}
+\cdot
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+1 
+\end{pmatrix} 
+= 
+\begin{pmatrix} 
+ x \\\\
+ y + 2 \\\\
+ 1 \end{pmatrix}
+$$
+
+---
+
+class: small
+
+# Homogeneous coordinates: Translation
+
+$$ \begin{pmatrix} 
+1 & 0 & \Delta x \\\\
+0 & 1 & \Delta y \\\\
+0 & 0 & 1 
+\end{pmatrix}
+\cdot
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+1 
+\end{pmatrix} 
+= 
+\begin{pmatrix} 
+ x + \Delta x \\\\
+ y + \Delta y \\\\
+ 1 \end{pmatrix}
+$$
+
+---
+
+# Homogeneous coordinates: Rotation?
+
+Let's rotate 
+$$ \vec{v} = 
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+1
+\end{pmatrix} $$
+by 90 degrees
+
+---
+
+# Homogeneous coordinates: Rotation?
+
+$$ \begin{pmatrix} 
+a_1 & b_1 & c_1 \\\\
+a_2 & b_2 & c_2 \\\\
+0 & 0 & 1 
+\end{pmatrix}
+\cdot
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+1
+\end{pmatrix} = 
+\begin{pmatrix} 
+-y \\\\ 
+x \\\\ 
+1
+\end{pmatrix} $$
+
+---
+
+class: small
+
+# Homogeneous coordinates: Rotation
+
+$$ \begin{pmatrix} 
+0 & -1 & 0 \\\\
+1 & 0 & 0 \\\\
+0 & 0 & 1 
+\end{pmatrix}
+\cdot
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+1 
+\end{pmatrix} 
+= 
+\begin{pmatrix} 
+-y \\\\
+x \\\\
+1 \end{pmatrix}
+$$
+
+---
+
+class: small
+
+# How do you rotate by an arbitrary angle?
+
+How do you rotate 
+$$ \vec{v} =
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+1 
+\end{pmatrix} 
+$$
+by `\(\alpha \)`?
+
+---
+
+class: small
+
+# How do you rotate by an arbitrary angle?
+
+What's the angle `\( \beta \)` between `\( \vec{v} \)` and the x axis?
+
+---
+
+class: small
+
+# How do you rotate by an arbitrary angle?
+
+What's the angle `\( \beta \)` between `\( \vec{v} \)` and the x axis?
+
+$$ 
+\tan(\beta) = \frac{y}{x} = \frac{\sin(\beta)}{\cos(\beta)}
+$$
+
+Note:
+
+$$
+x = c \cdot \cos(\beta)
+$$
+$$
+y = c \cdot \sin(\beta)
+$$
+
+---
+
+class: small 
+
+# Rotate
+
+Now we rotate by `\(\alpha \)`
+
+$$
+\tan(\beta + \alpha) = \frac{\sin(\beta + \alpha)}{\cos(\beta + \alpha)} = \frac{y'}{x'}
+$$
+
+We want to construct a matrix such that 
+
+$$
+\begin{pmatrix} 
+a_1 & b_1 & c_1 \\\\
+a_2 & b_2 & c_2 \\\\
+0 & 0 & 1 
+\end{pmatrix}
+ \cdot 
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+1 
+\end{pmatrix} 
+=
+\begin{pmatrix} 
+x' \\\\ 
+y' \\\\ 
+1 
+\end{pmatrix} 
+$$
+
+Recall: <br/>
+`\(x = c \cdot \cos(\beta)\)` <br/>
+`\(y = c \cdot \sin(\beta)\)`
+
+---
+
+# What is the rotation supposed to do?
+
+$$
+\begin{pmatrix} 
+a_1 & b_1 & c_1 \\\\
+a_2 & b_2 & c_2 \\\\
+0 & 0 & 1 
+\end{pmatrix}
+ \cdot 
+\begin{pmatrix} 
+c \cdot \cos(\beta) \\\\ 
+c \cdot \sin(\beta) \\\\ 
+1 
+\end{pmatrix} 
+=
+\begin{pmatrix} 
+x' \\\\ 
+y' \\\\ 
+1 
+\end{pmatrix} 
+$$
+
+$$
+x' = a_1 \cdot c \cdot \cos(\beta) + b_1 \cdot c \cdot \sin(\beta) + c_1
+$$
+$$
+y' = a_2 \cdot c \cdot \cos(\beta) + b_2 \cdot c \cdot \sin(\beta) + c_2
+$$
+
+$$
+\frac{y'}{x'} = \frac{\sin(\beta + \alpha)}{\cos(\beta + \alpha)} = \frac{\sin(\beta) \cos(\alpha) + \cos(\beta) \sin(\alpha)}{\cos(\beta) \cos(\alpha) - \sin(\beta) \sin(\alpha)}
+$$
+
+---
+
+# We can choose the values
+
+$$
+\frac{y'}{x'} = \frac{\sin(\beta) \cos(\alpha) + \cos(\beta) \sin(\alpha)}{\cos(\beta) \cos(\alpha) - \sin(\beta) \sin(\alpha)}
+$$
+
+$$
+a_1 \cdot c \cdot \cos(\beta) + b_1 \cdot c \cdot \sin(\beta) + c_1 = \\\\
+d \cdot (\cos(\beta) \cos(\alpha) - \sin(\beta) \sin(\alpha))
+$$
+
+$$
+a_2 \cdot c \cdot \cos(\beta) + b_2 \cdot c \cdot \sin(\beta) + c_2 = \\\\
+d \cdot (\sin(\beta) \cos(\alpha) + \cos(\beta) \sin(\alpha))
+$$
+
+---
+
+# Some algebra
+
+$$
+c \cdot(\cos(\beta) \cdot a_1 + \sin(\beta)\cdot b_1) = \\\\
+d \cdot (\cos(\beta) \cos(\alpha) - \sin(\beta) \sin(\alpha))
+$$
+
+$$
+c \cdot (\sin(\beta) \cdot b_2 + \cos(\beta) \cdot a_2) = \\\\
+d \cdot (\sin(\beta) \cos(\alpha) + \cos(\beta) \sin(\alpha))
+$$
+
+$$
+R = 
+\begin{pmatrix} 
+\cos(\alpha) & -\sin(\alpha) & 0 \\\\
+\sin(\alpha) & \cos(\alpha) & 0 \\\\
+0 & 0 & 1 
+\end{pmatrix}
+$$
+
+---
+
+# What's the point?
+
+  - Yay, we got a matrix!
+  
+  - Why do we care?
+  
+  - Also, what were c and d?
+  
+  - Why would I ever use this?
+  
+---
+
+# Matrix multiplication!
+
+Matrix multiplication is associative, that means:
+
+$$
+A \cdot (B \cdot \vec{v}) = (A \cdot B) \cdot \vec{v}
+$$
+
+This means, we can compose rotations and translations, and then apply the <b>composed</b> transform to a vector.
+
+Especially useful if we have many vectors to manipulate!
+
+---
+
+class: small
+
+# Neat tricks
+
+  - (Our) matrices can be inverted
+  
+     - The inverse of a translation matrix performs the reverse translation 
+     
+     - The inverse of a rotation matrix performs the reverse rotation 
+     
+  - Rotation is always around the origin, what if our object is not at `\((0,0)\:\)`  ?
+  
+     - Translate it to the origin first, then rotate, then translate it back to where it should be 
+     
+     - `\( T \cdot R \cdot T^{-1}\)` 
+     
+---
+
+class: small
+
+# More neat tricks
+
+  - We can also do other transformations, like reflection, shears, scaling, etc.
+  
+$$
+\begin{pmatrix} 
+0.5 & 0 & 0 \\\\
+0 & 0.5 & 0 \\\\
+0 & 0 & 1 
+\end{pmatrix}
+ \cdot 
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+1 
+\end{pmatrix} 
+=
+\begin{pmatrix} 
+0.5x \\\\ 
+0.5y \\\\ 
+1 
+\end{pmatrix}
+$$
+     
+  - The same approach can be used for 3D coordinates
+  
+---
+
+class: small
+
+# Homogeneous coordinates in 3D
+
+$$
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+z \\\\
+1 
+\end{pmatrix} 
+$$
+
+---
+
+class: small
+
+# Homogeneous coordinates in 3D
+
+$$ \begin{pmatrix} 
+a_1 & b_1 & c_1 & d_1 \\\\
+a_2 & b_2 & c_2 & d_2 \\\\
+a_3 & b_3 & c_3 & d_3 \\\\
+0 & 0 & 0 & 1
+\end{pmatrix}
+\cdot
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+z \\\\
+1 
+\end{pmatrix} 
+= 
+\begin{pmatrix} 
+a_1\cdot x + b_1 \cdot y + c_1 \cdot x + d_1\\\\
+a_2\cdot x + b_2 \cdot y + c_2 \cdot y + d_2 \\\\
+a_3 \cdot x + b_3 \cdot y + c_3 \cdot z + d_3 \\\\
+1 \end{pmatrix}
+$$
+
+---
+
+class: small
+
+# Translation in 3D
+
+<center>
+$$ \begin{pmatrix} 
+1 & 0 & 0 & \Delta x \\
+0 & 1 & 0 & \Delta y \\
+0 & 0 & 1 & \Delta z \\
+0 & 0 & 0 & 1
+\end{pmatrix}
+\cdot
+\begin{pmatrix} 
+x \\ 
+y \\ 
+z \\
+1 
+\end{pmatrix} 
+= 
+\begin{pmatrix} 
+x + \Delta x \\
+y + \Delta y \\
+z + \Delta z \\
+1 \end{pmatrix}
+$$
+</center>
+
+---
+
+class: middle, center
+
+# Rotation in 3D?
+
+## Maybe we can reuse the 2D rotation?
+
+---
+
+class: small 
+
+# Rotation in 3D
+<center>
+$$
+R = 
+\begin{pmatrix} 
+\cos(\alpha) & -\sin(\alpha) & 0 & 0 \\\\
+\sin(\alpha) & \cos(\alpha) & 0 & 0 \\\\
+0 & 0 & 1 & 0 \\\\
+0 & 0 & 0 & 1 
+\end{pmatrix}
+$$
+</center>
+What does this do?
+
+--
+
+  * Apparently it leaves the z coordinate unchanged 
+  
+  * Rotates x and y 
+  
+  * Rotation around the z axis!
+  
+---
+
+class: small 
+
+# Rotation around the y axis?
+
+<center>
+$$
+R_y = 
+\begin{pmatrix} 
+\cos(\alpha) & 0 & \sin(\alpha) & 0  \\
+0 & 1 & 0 & 0 \\
+-\sin(\alpha) & 0 & \cos(\alpha) & 0 \\
+0 & 0 & 0 & 1 
+\end{pmatrix}
+$$
+</center>
+
+Notice anything?
+
+---
+
+class: small 
+
+# Rotation around the x axis
+<center>
+$$
+R_x = 
+\begin{pmatrix} 
+1 & 0 & 0 & 0 \\
+0 & \cos(\alpha) & - \sin(\alpha) & 0 \\
+0 & \sin(\alpha) & \cos(\alpha) & 0 \\
+0 & 0 & 0 & 1 
+\end{pmatrix}
+$$
+</center>
+
+---
+
+class: small 
+
+# Rotation around arbitrary vector
+
+  * What if we want to rotate around something other than the x, y or z axis?
+  
+  * Any rotation can be represented by these basis rotations!
+  
+  * Euler angles
+  
+  * We can compose rotations using matrix multiplication!
+  
+  * Order is important!
+  
+$$
+R = R_y \cdot R_x \cdot R_z
+$$
+
+---
+
+class: small 
+
+# Practice
+
+What's the matrix that rotates an object by 60 degrees around the y axis, *after* it moves it `\(\sqrt{3}\:\:\)` units in the z direction?
+
+How does it change the vector v?
+
+$$
+\vec{v} = \begin{pmatrix} 
+1 \\\\
+1 \\\\
+0
+\end{pmatrix}
+$$
+
+Helpful:
+$$
+\sin(60) = \frac{\sqrt{3}}{2}, \cos(60) = \frac{1}{2}, \sqrt{3} \approx 1.73
+$$
+
+---
+
+class: small 
+
+# Gimbal Lock
+
+<img src="/CI-2700/assets/img/Gimbal_lock.png" width="70%"/>
+
+---
+
+# Interpolating between rotations 
+
+<div class="webgl-content">
+      <div id="gameContainer" style="width: 700px; height: 400px"></div>
+      <div class="footer">
+        <div class="webgl-logo"></div>
+        <div class="fullscreen" onclick="gameInstance.SetFullscreen(1)"></div>
+      </div>
+    </div>
+    
+---
+
+# Quaternions!
+
+  * Alternative representation for 3D rotations 
+  
+  * Use *four* coordinates/numbers
+  
+  * Can be converted to/from rotation matrices
+  
+  * Any rotation can be represented as a single rotation around an axis
+  
+$$
+q = \cos\left(\frac{\theta}{2}\right) + \sin\left(\frac{\theta}{2}\right) \cdot (x \cdot i + y \cdot j + z \cdot k)
+$$
+
+---
+
+# Quaternion properties
+
+Composition is easy:
+
+$$
+q' = q \cdot p \not = p \cdot q
+$$
+
+Self-inverse (for rotations):
+
+$$
+q \equiv -q
+$$
+
+Rotating a vector:
+
+$$
+v' = q \cdot v \cdot q^{-1}
+$$
+
+---
+
+# Quaternions in Unity
+
+  * Rotations in Unity *are* quaternions 
+  
+  * You can multiply two quaternions to compose them
+  
+  * You can multiply a quaternion and a vector to rotate it
+  
+  * You can interpolate between quaternions to get smooth rotations:
+  
+```
+Quaternion.Slerp(p, q, t)
+```
+
+---
+
+class: middle, center
+
+# Rendering
+
+---
+
+class: small
+
+# Recall from last week
+
+  * Model coordinates need to be translated to world coordinates (where is the mesh)
+  
+  * World coordinates are then translated to Camera coordinates (where in the field of view of the camera is the mesh?)
+  
+  * The Camera coordinates need to be projected onto a Viewport (objects that are further away become smaller)
+  
+---
+
+class: small
+
+# Recall from last week
+
+  * Model coordinates need to be translated to world coordinates (where is the mesh): *Model matrix*
+  
+  * World coordinates are then translated to Camera coordinates (where in the field of view of the camera is the mesh?): *View Matrix*
+  
+  * The Camera coordinates need to be projected onto a Viewport (objects that are further away become smaller): *Projection Matrix*
+  
+---
+
+class: small
+
+# View Matrix
+
+  * So far we have talked about how to move the objects in our scene around
+  
+  * But where is the Camera?
+  
+  * That's where the *View Matrix* comes in 
+  
+Futurama, Season 2, Episode 14:
+
+*The engines don’t move the ship at all. The ship stays where it is and the engines move the universe around it.*
+
+---
+
+# View Matrix
+
+<img src="/CI-2700/assets/img/frustum.jpg" width="100%"/>
+
+---
+
+class: small
+
+# View Matrix
+
+  * Instead of defining where the Camera is, we give it a fixed position
+  
+  * Then, we move the scene into the field of view of the Camera
+  
+  * The picture is always in the xy plane
+  
+  * Larger z coordinates means something is further away from the Camera!  
+  
+  * Added bonus: We can do all these movements with a matrix
+  
+---
+
+class: small
+
+# Projection Matrix
+
+  * Now we need to figure out what our objects look like
+  
+  * Objects that are further away should be smaller 
+  
+$$
+\begin{pmatrix} 
+1 & 0 & 0 & 0  \\\\
+0 & 1 & 0 & 0 \\\\
+0 & 0 & 0 & 0 \\\\
+0 & 0 & 1 & 0 
+\end{pmatrix}
+\cdot
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+z \\\\
+1 
+\end{pmatrix} 
+=
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+0 \\\\
+z 
+\end{pmatrix} 
+$$
+
+---
+
+class: small
+
+# What now?
+
+  * We said earlier that the last coordinate is always 1
+  
+  * What are we supposed to do with this?
+  
+$$
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+0 \\\\
+z 
+\end{pmatrix} 
+$$
+
+---
+
+class: small
+
+# Actually ...
+
+  * To map from homogeneous coordinates to 3D vectors, we actually perform this operation:
+  
+$$
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+z \\\\
+w
+\end{pmatrix} 
+\equiv 
+\begin{pmatrix} 
+x/w \\\\ 
+y/w \\\\ 
+z/w
+\end{pmatrix} 
+$$
+
+  * Our w was just always 1, so we could just discard it
+  
+---
+
+class: small
+
+# Projection Matrix
+  
+$$
+\begin{pmatrix} 
+1 & 0 & 0 & 0  \\\\
+0 & 1 & 0 & 0 \\\\
+0 & 0 & 0 & 0 \\\\
+0 & 0 & 1 & 0 
+\end{pmatrix}
+\cdot
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+z \\\\
+1 
+\end{pmatrix} 
+=
+\begin{pmatrix} 
+x \\\\ 
+y \\\\ 
+0 \\\\
+z 
+\end{pmatrix} 
+\equiv 
+\begin{pmatrix} 
+x/z \\\\ 
+y/z \\\\ 
+0 
+\end{pmatrix}
+$$
+
+  * The further away an object is, the smaller it is 
+  
+  * We projected our objects onto the xy plane at z=0
+  
+---
+
+# Matrices: summary
+
+   * We can represent arbitrary 3D movements as matrices 
+   
+   * The camera placement is represented by moving the objects to a fixed camera 
+   
+   * Projecting the objects onto the view plane is another matrix 
+   
+   * All of these matrices are composed 
+   
+$$
+M = M_P \cdot M_V \cdot M_M
+$$
+
+---
+
+class: small
+
+# References
+
+  * <a href="http://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/">OpenGL tutorial on matrices</a>
+
+  * <a href="https://www.youtube.com/watch?v=o1n02xKP138">Math for Game Programmers: Understanding Homogeneous Coordinates</a>
+  
+  * <a href="https://www.youtube.com/watch?v=4mXL751ko0w">Quaternion description video</a>
+  
+  * <a href="https://eater.net/quaternions">Interactive videos about Quaternions</a>
+  
+  * <a href="https://docs.unity3d.com/ScriptReference/Quaternion.html">Unity Quaternion documention</a>
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script src="/CI-2700/assets/unity/gimbal/TemplateData/UnityProgress.js"></script>
+    <script src="/CI-2700/assets/unity/gimbal/Build/UnityLoader.js"></script>
+    <script>
+      var gameInstance = UnityLoader.instantiate("gameContainer", "/CI-2700/assets/unity/gimbal/Build/webbuild.json", {onProgress: UnityProgress});
+    </script>
+  
+    
+    
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+  </body>
+</html>

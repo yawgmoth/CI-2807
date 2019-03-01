@@ -1,0 +1,736 @@
+---
+permalink: /slides/lecture22.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 22: Procedural Content Generation</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.8em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .tiny table {  font-size: 0.8em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Procedural Content Generation
+
+---
+
+# The cost of making games 
+
+<img src="/CI-2700/assets/img/gamecost.png" width="100%"/>
+
+---
+
+class: small
+
+# Procedural Content Generation
+
+  * Making games requires a lot of effort 
+  
+  * Apart from coding, there are also art assets, music, a story, etc. that need to be created 
+  
+  * Some of these creation processes can be (partially) automated, or assisted: Procedural Content Generation (PCG)
+  
+  * Two problems
+  
+     - Generating content is not always easy
+     - Generating *good* content is usually even harder
+     
+---
+
+class: small
+
+# What can we generate?
+
+  * Levels
+  
+  * Enemies 
+  
+  * Quests 
+  
+  * Dialog
+  
+  * Narrative 
+  
+  * Plants 
+  
+  * 3D objects
+  
+  * Rules 
+  
+  * Games 
+  
+  
+---
+
+class: small
+
+# PCG Methods 
+
+  * Search-based
+  
+  * Solver-based 
+  
+  * Grammar-based 
+  
+  * Cellular Automata
+  
+  * Noise
+  
+  * Machine Learning
+  
+---
+
+class: center, middle 
+
+# Search-based approaches
+  
+---
+
+# Search-based approaches 
+
+  * Remember pathfinding?
+  
+  * Sometimes we want to "find" a path that doesn't even exist yet 
+  
+  * For example, to dig a cave/maze 
+  
+  * Or to connect two cities with roads 
+  
+  * The cost function for this will involve some gameplay or aesthetic properties
+  
+---
+
+# Search-based approaches: Road generation
+
+<img src="/CI-2700/assets/img/roadgen.png" width="100%"/>
+
+---
+
+class: small
+
+# Search-based approaches 
+
+  * So far, we've used actual geometry to search for paths
+  
+  * What if every node in our graph is a "level" for a game
+  
+  * Some levels are incomplete, bad, impossible to finish, etc.
+  
+  * Say we can connect two levels with their difference (e.g. adding a block in Super Mario)
+  
+  * If we know what a "good" level looks like, we can search through this graph
+
+---
+
+# Search-based approaches: Story generation
+
+  * We can also have the computer generate a story 
+  
+  * Stories are sequences of actions that reach a conclusion 
+  
+  * That sounds a lot like planning!
+  
+  * Idea: Author defines a "world" consisting of actions the actors can take, and a goal for the story
+  
+---
+
+# Search-based approaches: Story generation
+
+  * Let's generate a heist!
+
+  * We have a bandit, a bank, a clerk, a safe, etc.
+  
+  * Goal: The bandit has the safe
+  
+  * Story: The clerk takes the safe and brings it to the bandit's house
+  
+  * Is that a good story?
+  
+---
+
+class: small
+
+# Search-based approaches: Story generation
+
+  * The problem is that the planner finds an efficient solution
+  
+  * Stories are not necessarily efficient
+  
+  * In particular, not every character always works towards the goal of the story 
+  
+  * Introduce intentions: Actors can only execute actions if they aid their own goal 
+  
+  * Introduce conflict: Actors can plan to execute actions, but other actors might interfere
+  
+  * There are many more extension, e.g. to add interactivity
+  
+---
+
+class: center, middle 
+
+# Solver-based approaches
+  
+---
+
+# Solver-based approaches 
+
+  * What if we know certain properties a "good" level/quest/art asset has to have?
+  
+  * If we phrase our level design problem in a logical way these properties become constraints in the formula 
+  
+  * There are tools that find assignments of logical variables to formulas that take constraints into account 
+  
+  * Such an assignment is then a level/quest/art asset 
+  
+---
+
+class: small
+
+# Example: CatSAT
+
+  * Say we want to generate a quest 
+  
+  * There are 3 types of quests: Retrieve, deliver, and kill 
+  
+  * There are 4 types of enemies: Bandits, another kingdom, orcs, and wolves
+  
+  * There are some constraints on the possible quests:
+       - You can't retrieve an item from the wolves
+       - No more than 2 types of enemies should be present in any quest 
+       - The bandits do not work together with the other kingdom 
+       - etc.
+
+---
+
+# Example: CatSAT 
+
+
+```C#
+var p = new Problem("quest");
+...
+var retrieve = (Proposition)"retrieve";
+...
+var wolves = (Proposition)"wolves";
+...
+p.Inconsistent(wolves, retrieve);
+...
+p.AtMost(2, bandits, others, orcs, wolves);
+...
+p.Solve();
+
+```
+
+---
+
+class: center, middle 
+
+# Grammar-based approaches
+ 
+---
+
+# Grammar-based PCG
+
+Remember grammars?
+  
+$$
+A \rightarrow B A C\\\\
+A \rightarrow \varepsilon\\\\
+B \rightarrow b\\\\
+C \rightarrow c
+$$
+
+---
+
+# Tracery
+
+```JS
+{
+  "origin": "#greeting#, #noun#!",
+  
+  "greeting": ["Howdy", "Hello", 
+               "Greetings", "What's up", 
+               "Hey", "Hi"],
+  
+  "noun": ["world", "solar system", 
+           "galaxy", "local cluster", 
+           "universe"]
+}
+```
+
+---
+
+# Cheap Bots, Done Quick 
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Germans even have a word for worrying about cats:  Katzensorge</p>&mdash; GermanWords (@words_german) <a href="https://twitter.com/words_german/status/1069297382268067841?ref_src=twsrc%5Etfw">December 2, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+---
+
+# L-Systems 
+
+  * Named after the Hungarian theoretical biologist and botanist Aristid Lindenmayer
+  
+  * Idea: Instead of words, a grammar generates plant growth
+  
+  * For example: F draws a line "forward", - turns left, + turns right, the brackets store and retrieve the current drawing position
+  
+
+$$
+X \rightarrow F+[[X]-X]-F[-FX]+X\\\\
+F \rightarrow FF
+$$
+
+---
+
+# L-Systems
+
+<img src="/CI-2700/assets/img/lsystem.svg" width="70%"/>
+
+---
+
+class: small
+
+# Shape Grammars
+
+  * We can use a similar idea as L-Systems for 3D geometry 
+  
+  * In a grammar you start with a sentence and divide it into parts with meaning
+  
+  * In a Shape Grammar, you start with a block, and divide it into parts with meaning 
+  
+  * For example: 
+     - Start with a cylinder, cut it into n slices radially
+     - For each of the slices you cut out a part in the center and decorate the edges 
+     - You now have a gothic window 
+     
+  * Note: If you do this well, you can change n, the cutout shape, and the decoration arbitrarily
+
+---
+
+# Shape Grammars
+
+<img src="/CI-2700/assets/img/gothic.jpg" width="100%"/>
+
+---
+
+class: center, middle 
+
+# Cellular Automata-based approaches 
+
+---
+
+class: small
+
+# Cellular Automata 
+
+  * Cellular Automata are zero-player games on a grid 
+  
+  * The basic idea is: Every cell has some states (sometimes just "on" and "off"), and there are rules for how to update the grid 
+  
+  * Most famous Cellular Automaton rules: Conway's Game of Life
+  
+     - If a cell is "on" and has two or three (of its eight) neighbors that are also "on", it will continue being "on", otherwise it is turned "off"
+     - If a cell is "off" and has exactly three (of its eight) neighbors that are "on", it will turn "on", otherwise it stays turned "off"
+  
+---
+
+# Cellular Automata 
+
+<canvas id="c" width="800" height="600"></canvas>
+
+---
+
+class: small
+
+# Cellular Automata 
+
+  * How is this useful?
+  
+  * Different rules make different shapes!
+  
+  * Let's say we want to generate caves:
+      - Fill the grid randomly with "on" and "off" cells 
+      - A cell is turned "on" if five or more of its neighbors are "on"
+      - Run for a number of generations
+      
+---
+
+# Cellular Automata 
+
+<img src="/CI-2700/assets/img/cavegen.png" width="100%"/>
+
+---
+
+class: center, middle 
+
+# Noise-based approaches
+
+---
+
+# Midpoint Displacement
+
+  * Say we want to generate some (2D) hills 
+  
+  * We draw a straight line to begin with
+  
+  * Then we cut the line in half, and add some random noise to the center pointer
+  
+  * Afterwards, we recursively perform the same operation on the two new line segments
+  
+---
+
+# Midpoint Displacement 
+
+<img src="/CI-2700/assets/img/midpointdispl.png" width="50%"/>
+
+---
+
+# Midpoint Displacement
+
+```JavaScript
+var displace = function (a,b, size)
+{
+    if (a == b || (a+1) == b) return;
+
+    var mid = a/2 + b/2;
+
+    var x = geometry.vertices[mid].x;
+    var y = (geometry.vertices[a].y + geometry.vertices[b].y)/2;
+    var z = geometry.vertices[mid].z;
+
+    geometry.vertices[mid] = new THREE.Vector3( x, 
+                              y + size*(Math.random() - 0.5), 
+                              z);
+
+    displace(a, mid, size/2);
+    displace(mid, b, size/2);
+
+}
+```
+
+---
+
+# Midpoint Displacement
+
+<div id="container"/>
+
+---
+
+class: center, middle 
+
+# Machine Learning-based approaches
+
+---
+
+# Markov Chain Generation
+
+  * A Markov chain consists of states and transition probabilities 
+  
+  * We start in some state, and then choose the next state based on these probabilities 
+  
+  * For example: Each letter in a word is a state, and there are different probabilities for the next letter (in English, an x will not often follow a w)
+  
+  * You can also use multiple previous letters/states
+  
+---
+
+# Markov Chain Generation: Words
+
+  * Let's generate names for data structures!
+  
+  * Input: Names of existing data structures 
+  
+  * Train Markov Chain on sequences of letters 
+  
+  * Output: Start at a random state and follow a few transitions
+  
+```
+Brodalqueap
+Routingtree
+Xorlinger
+Xorlinktree
+Quadedgram
+Associatist
+```
+  
+---
+
+# Markov Chain Level Generation 
+
+<img src="/CI-2700/assets/img/smbgen.png" width="100%"/>
+
+---
+
+class: center, middle 
+
+# Challenges with Procedurally Generated Content 
+
+---
+
+# Challenges
+
+  * We've seen many ways to generate content 
+  
+  * How do we ensure that the content is good?
+  
+  * "Good" depends on the game, and the content 
+  
+  * If a random tree doesn't look perfect it's probably less bad than if a generated level is unwinnable
+  
+  * On the other hand: How many different things can we generate? (Expressive Range)
+
+---
+
+# Overenthusiastic generation
+
+<img src="/CI-2700/assets/img/keyforge.png" width="100%"/>
+
+(Keyforge)
+
+
+  
+---
+
+class: small
+
+# References
+  
+  * [Procedural Generation of Roads](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1467-8659.2009.01612.x)
+  
+  * [CatSAT](https://github.com/ianhorswill/CatSAT)
+  
+  * [Tracery Tutorial](http://air.decontextualize.com/tracery/)
+  
+  * [Cheap Bots, Done Quick](https://cheapbotsdonequick.com/)
+  
+  * [German Words Bot Source](https://cheapbotsdonequick.com/source/words_german)
+  
+  * [Markov Chain Word Generator](http://www.samcodes.co.uk/project/markov-namegen/)
+  
+  * [Linear levels through n-grams](http://www.kmjn.org/publications/NgramLevels_MT14.pdf)
+  
+---
+
+class: small
+
+# References
+
+  * [PCG Book (Free PDF available)](http://pcgbook.com/) by Noor Shaker, Julian Togelius, and Mark J. Nelson
+  
+  * [Procedural Content Generation Workshop](https://2018.pcgworkshop.com/)
+  
+  * [PCG Wiki](http://pcg.wikidot.com/)
+  
+  * [Keyforge: Problematic Deck Names](https://junkee.com/keyforge-computer-generated-names-ban/183365)
+  
+  * [Games By Angelina: An AI that creates video games](http://www.gamesbyangelina.org/)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
+    <script src="https://yawgmoth.github.io/CI-2700/assets/js/3dutils.js"></script>
+    
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+   
+      
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+      
+      var lineinfo = setupScene(window.innerWidth/2, window.innerHeight/2, "container");
+
+
+    var material = new THREE.LineBasicMaterial( { color: 0xffffff } );
+
+    var geometry = new THREE.Geometry();
+    var i;
+    for (i = 0; i < 33; ++i)
+    {
+        geometry.vertices.push(new THREE.Vector3( -10 + i*0.6, 0, 0) );
+    }
+    var displace = function (a,b, size)
+    {
+        if (a == b || (a+1) == b) return;
+
+        var mid = a/2 + b/2;
+
+        var x = geometry.vertices[mid].x;
+        var y = (geometry.vertices[a].y + geometry.vertices[b].y)/2;
+        var z = geometry.vertices[mid].z;
+
+        geometry.vertices[mid] = new THREE.Vector3( x, y + size*(Math.random() - 0.5), z);
+
+        displace(a, mid, size/2);
+        displace(mid, b, size/2);
+
+    }
+    var lastupdate = Date.now();
+    lineinfo.update = function ( object ) {
+            var update = Date.now();
+            if (update - lastupdate > 50)
+            {
+               displace(0,32, 3.0);
+               geometry.verticesNeedUpdate = true;
+               lastupdate = update;
+            }
+        };
+
+
+    var line = new THREE.Line( geometry, material );
+
+    lineinfo.scene.add( line );
+    // Schedule the first frame.
+    requestAnimationFrame(update);
+    
+    var canvas = document.getElementById('c').getContext('2d'),
+    cells = [];
+canvas.strokeStyle = '#e1e1e1';
+canvas.fillStyle = 'cadetblue';
+
+golinit();
+
+/**
+ * Initialize game.
+ *
+ * Will place a Gosper glider gun in the world and start simulation.
+ */
+function golinit() {
+    for (var i=0; i<64; i++) {
+        cells[i] = [];
+        for (var j=0; j<64; j++) {
+            cells[i][j] = 0;
+        }
+    }
+    
+    // Prefilled cells
+    [
+        // Gosper glider gun
+        [1, 5],[1, 6],[2, 5],[2, 6],[11, 5],[11, 6],[11, 7],[12, 4],[12, 8],[13, 3],[13, 9],[14, 3],[14, 9],[15, 6],[16, 4],[16, 8],[17, 5],[17, 6],[17, 7],[18, 6],[21, 3],[21, 4],[21, 5],[22, 3],[22, 4],[22, 5],[23, 2],[23, 6],[25, 1],[25, 2],[25, 6],[25, 7],[35, 3],[35, 4],[36, 3],[36, 4],
+        
+        // Random cells
+        // If you wait enough time these will eventually take part
+        // in destroying the glider gun, and the simulation will be in a "static" state.
+     //   [60, 47],[61,47],[62,47],
+     //   [60, 48],[61,48],[62,48],
+      //  [60, 49],[61,49],[62,49],
+        [60, 51],[61,51],[62,51],
+    ]
+    .forEach(function(point) {
+        cells[point[0]][point[1]] = 1;
+    });
+    
+    golupdate();
+}
+
+/**
+ * Check which cells are still alive.
+ */
+function golupdate() {
+    
+    var result = [];
+    
+    /**
+     * Return amount of alive neighbours for a cell
+     */
+    function _countNeighbours(x, y) {
+        var amount = 0;
+        
+        function _isFilled(x, y) {
+            return cells[x] && cells[x][y];
+        }
+        
+        if (_isFilled(x-1, y-1)) amount++;
+        if (_isFilled(x,   y-1)) amount++;
+        if (_isFilled(x+1, y-1)) amount++;
+        if (_isFilled(x-1, y  )) amount++;
+        if (_isFilled(x+1, y  )) amount++;
+        if (_isFilled(x-1, y+1)) amount++;
+        if (_isFilled(x,   y+1)) amount++;
+        if (_isFilled(x+1, y+1)) amount++;
+        
+        return amount;
+    }
+    
+    cells.forEach(function(row, x) {
+        result[x] = [];
+        row.forEach(function(cell, y) {
+            var alive = 0,
+                count = _countNeighbours(x, y);
+            
+            if (cell > 0) {
+                alive = count === 2 || count === 3 ? 1 : 0;
+            } else {
+                alive = count === 3 ? 1 : 0;
+            }
+            
+            result[x][y] = alive;
+        });
+    });
+    
+    cells = result;
+    
+    goldraw();
+}
+
+/**
+ * Draw cells on canvas
+ */
+function goldraw() {
+    canvas.clearRect(0, 0, 1512, 512);
+    cells.forEach(function(row, x) {
+        row.forEach(function(cell, y) {
+            canvas.beginPath();
+            canvas.rect(x*8, y*8, 8, 8);
+            if (cell) {
+                canvas.fill();
+            } else {
+                canvas.stroke();
+            }
+        });
+    });
+    setTimeout(function() {golupdate();}, 70);
+    //window.requestAnimationFrame(update); // Too fast!
+}
+    </script>
+  
+  </body>
+</html>

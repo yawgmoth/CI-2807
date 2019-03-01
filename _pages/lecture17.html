@@ -1,0 +1,851 @@
+---
+permalink: /slides/lecture17.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 17: Pathfinding</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.8em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .tiny table {  font-size: 0.8em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Pathfinding
+
+---
+
+class: center, middle
+
+#  Game AI
+
+---
+
+# Game AI
+
+The first rule of game AI:
+
+### It does not matter how smart/dumb your AI is, as long as it *plays well*
+
+---
+
+# Pathfinding 
+
+ * In many games you have moving, computer-controlled opponents
+ 
+ * These opponents need to determine where they are going 
+ 
+ * Simplest approach: Walk back and forth between walls, fixed points, etc.
+ 
+ * What if we want them to actually find a target?
+ 
+ * Pathfinding!
+ 
+---
+
+class: center, middle
+
+# An example 
+
+## Let's talk about the oldest survival game in which you have to escape from the Undead 
+
+--
+
+## Pacman!
+
+---
+
+# Pacman 
+
+<img src="/CI-2700/assets/img/pacman.png" width="50%"/>
+
+---
+
+# Pacman Ghost AI 
+
+  * There are four ghosts: Blinky, Pinky, Inky, and Clyde
+
+  * They chase Pacman 
+  
+  * But they all have different "personalities"
+  
+  * How?
+  
+  * What are they actually doing?
+  
+---
+
+class: small
+
+# Pacman Ghost AI 
+
+Some disclaimers:
+
+  * The ghosts actually have three modes: scatter, chase and frightened 
+  
+  * In scatter mode each of them tries to get to his own corner 
+  
+  * In frightened mode, they move randomly and can be eaten 
+  
+  * Scatter and chase modes alternate temporally; frightened mode is triggered by eating a power-up
+  
+  * We will only be talking about chase mode 
+  
+---
+
+# Pacman Ghost AI: The maze 
+
+<img src="/CI-2700/assets/img/pacmanmaze.png" width="50%"/>
+
+---
+
+# Pacman Ghost AI
+
+  * Each ghost has a current position/cell and a target position/cell 
+  
+  * Ghosts can not turn around
+  
+  * Whenever a ghost comes to an intersection, it has to decide where to go 
+  
+  * This decision is based on what their target is 
+  
+---
+
+# Pacman Ghost AI
+
+  * Only Blinky is actually "chasing" Pacman
+
+  * Pinky is trying to get to where Pacman "will be"
+
+  * Inky does something weird, his target depends on Pacman's position *and* Blinky's position
+  
+  * Clyde tries to chase Pacman if he is far away, but if he gets too close he will try to go back to his own corner
+
+---
+
+# Pacman Ghost AI: Pathfinding
+
+  * How do the ghosts calculate the path to their target cell?
+  
+  * They don't!
+  
+  * Instead, before an intersection, they look at the next cell in each direction, and pick the direction that is closest to the target
+  
+<img src="/CI-2700/assets/img/ghostdecision.png" width="80%"/>
+
+---
+
+# Pacman Ghost AI
+
+What is the problem with this approach?
+
+--
+
+<img src="/CI-2700/assets/img/cantreach.png" width="80%"/>
+
+---
+
+# Pacman Ghost AI
+
+  * The ghosts only make decisions one intersection at a time
+
+  * Sometimes they reach their goal 
+  
+  * What we need is actual pathfinding: Calculating a route from the current position to a goal
+  
+  * Note: This wasn't actually a problem for Pacman, but generally we want an actual path to the goal
+  
+---
+
+# What can we do?
+
+<img src="/CI-2700/assets/img/pacmanmaze.png" width="50%"/>
+
+---
+
+# What can we do?
+
+<img src="/CI-2700/assets/img/mazenodes.png" width="50%"/>
+
+---
+
+# What can we do?
+
+<img src="/CI-2700/assets/img/mazegraph.png" width="50%"/>
+
+---
+
+# Graphs
+
+  * A graph G = (V,E) consists of *vertices* (nodes) V and *edges* (connections) `\( E \subseteq V \times V \)`
+  
+  * Graphs can be connected, or have multiple components
+  
+  * Graphs can be directed (one-way streets) or undirected 
+  
+  * Edges can have weights (costs) associated with them: `\( w: E \mapsto \mathbb{R} \)`
+  
+  * We can represent many things in graphs
+  
+---
+
+# The (undirected) Pathfinding problem
+
+Given a graph G = (V,E), with edge weights w, a start node `\( s \in V \)`, a destination node `\( d \in V \)`, find a sequence of vertices `\( v_1, v_2, \ldots, v_n  \)`, such that `\(v_1 = s, v_n = d \)` and `\( \forall i: (v_i, v_{i+1}) \in E \)`
+
+We call the sequence `\( v_1, v_2, \ldots, v_n \)` a *path*, and the *cost* of the path is `\( \sum_i w((v_i,v_{i+1})) \)`
+
+--
+
+This means what you would expect: To find a path from a start node to a destination node means to find vertices to walk through that lead from the start to the 
+destination by being connected with edges. The cost is the sum of the costs of edges that need to be traversed.
+
+---
+
+# Another example: Romania 
+
+<img src="/CI-2700/assets/img/romania.png" width="100%"/>
+
+---
+
+# How could we find a path?
+
+<img src="/CI-2700/assets/img/pathproblem.png" width="100%"/>
+
+---
+
+class: small
+
+# Depth-First Search
+
+  * Pick an order (say, north first, and then clockwise)
+  
+  * If we are at the destination, we are done, and return the path
+  
+  * If we have already been here, we return without a result
+  
+  * Otherwise, for each path in order:
+
+      * Perform Depth First Search for the next node 
+      
+      * If there is a result: return that path 
+
+---
+
+# Depth-First Search
+
+<img src="/CI-2700/assets/img/pathproblem.png" width="100%"/>
+
+---
+
+# Depth-First Search
+
+<img src="/CI-2700/assets/img/dfs/1.png" width="100%"/>
+75
+
+---
+
+# Depth-First Search
+
+<img src="/CI-2700/assets/img/dfs/2.png" width="100%"/>
+75 + 71 = 146
+
+---
+
+# Depth-First Search
+
+<img src="/CI-2700/assets/img/dfs/3.png" width="100%"/>
+75 + 71 + 151 = 297
+
+---
+
+# Depth-First Search
+
+<img src="/CI-2700/assets/img/dfs/4.png" width="100%"/>
+75 + 71 + 151 + 99 = 396
+
+---
+
+# Depth-First Search
+
+<img src="/CI-2700/assets/img/dfs/5.png" width="100%"/>
+75 + 71 + 151 + 99 + 211 = 607
+
+---
+
+# Depth-First Search: What if?
+
+<img src="/CI-2700/assets/img/dfs/reuse.png" width="100%"/>
+
+---
+
+# Depth-First Search: Revisiting nodes
+
+<img src="/CI-2700/assets/img/dfs/revisit.png" width="100%"/>
+
+---
+
+# Depth-First Search: What if?
+
+<img src="/CI-2700/assets/img/dfs/longway.png" width="100%"/>
+
+---
+
+# Depth-First Search: Long way
+
+<img src="/CI-2700/assets/img/dfs/longwaysol.png" width="100%"/>
+
+---
+
+class: small
+
+# Breadth-First Search
+
+  * Save a "frontier" as a list, initialized with the starting node 
+  
+  * If the goal is in the frontier, we are done 
+  
+  * Else, for each node in the frontier, add all of its neighbors that have not been visited yet to a new frontier 
+  
+  * Repeat with the new frontier
+  
+---
+  
+# Breadth-First Search
+
+<img src="/CI-2700/assets/img/pathproblem.png" width="100%"/>
+
+---
+
+# Breadth-First Search
+
+<img src="/CI-2700/assets/img/bfs/1.png" width="100%"/>
+
+---
+
+# Breadth-First Search
+
+<img src="/CI-2700/assets/img/bfs/2.png" width="100%"/>
+
+
+---
+
+# Breadth-First Search
+
+<img src="/CI-2700/assets/img/bfs/3.png" width="100%"/>
+
+---
+
+class: small
+
+# Limitations
+
+  * Depth-First Search can lead to some very long paths 
+  
+  * If we had an infinite graph, Depth-First Search will probably even fail completely
+  
+  * Breadth-First Search may need a lot of memory to remember the frontier and paths to get there 
+  
+  * Both of them ignore costs
+  
+---
+
+class: small
+
+# Some improvements
+
+  * We can limit the depth that Depth-First Search should explore
+  
+     - Now it will "work" on infinite graphs 
+     - We may also avoid some of the long paths
+  
+  * Idea: start with a depth limit of 1, run Depth-First Search, and if it can't find a path, increase the depth limit
+  
+  * This is called "Iterative Deepening"
+  
+  * To account for costs, we can use the cost as the order for Depth-First Search, and only make Breadth-First Search expand the node it can reach with the lowest cost in each iteration
+  
+---
+
+class: small
+
+# Heuristic Search
+
+  * All of these techniques are called "uninformed"
+  
+  * What if we can give the path finding algorithm some more information?
+  
+  * For example, we may not know how to drive everywhere, but we can measure the straight line distance
+  
+  * This "extra" information is called a "heuristic"
+  
+  * Search algorithms can use it to "guide" the search process
+  
+---
+
+# Heuristic Search: General algorithm
+
+  * Keep a "frontier" as a list, initialized with the start node 
+  
+  * If the goal is in the frontier, we are done
+  
+  * Expand "the best" node from the frontier by adding all of its neighbors that have not been visited yet to the frontier 
+  
+What's "the best" node?
+
+---
+
+# Greedy Search
+
+  * Let's use our heuristic!
+  
+  * We consider the node with the lowest heuristic to be "the best"
+  
+  * Heuristic: straight line distance to Bucharest
+  
+---
+
+class: tiny
+
+# Greedy Search
+
+<table><tr><td>
+<img src="/CI-2700/assets/img/pathproblem.png" width="90%"/></td><td> 
+Heuristic:<br/>
+<table>
+<tr><td>Arad</td><td>366</td></tr>
+<tr><td>Bucharest</td><td>0</td></tr>
+<tr><td>Craiova</td><td>160</td></tr>
+<tr><td>Drobeta</td><td>242</td></tr>
+<tr><td>Eforie</td><td>161</td></tr>
+<tr><td>Fagaras</td><td>176</td></tr>
+<tr><td>Giurgiu</td><td>77</td></tr>
+<tr><td>Hirsova</td><td>151</td></tr>
+<tr><td>Iasi</td><td>226</td></tr>
+<tr><td>Lugoj</td><td>244</td></tr>
+<tr><td>Mehadia</td><td>241</td></tr>
+<tr><td>Neamt</td><td>234</td></tr>
+<tr><td>Oradea</td><td>380</td></tr>
+<tr><td>Pitesti</td><td>100</td></tr>
+<tr><td>Rimnicu Vilcea</td><td>193</td></tr>
+<tr><td>Sibiu</td><td>253</td></tr>
+<tr><td>Timisoara</td><td>329</td></tr>
+<tr><td>Urziceni</td><td>80</td></tr>
+<tr><td>Vaslui</td><td>199</td></tr>
+<tr><td>Zerind</td><td>374</td></tr>
+</table>
+</td></tr></table>
+Frontier: Arad (366)
+
+---
+
+class: tiny
+
+# Greedy Search
+
+<table><tr><td>
+<img src="/CI-2700/assets/img/greedy/1.png" width="90%"/></td><td> 
+Heuristic:<br/>
+<table>
+<tr><td>Arad</td><td>366</td></tr>
+<tr><td>Bucharest</td><td>0</td></tr>
+<tr><td>Craiova</td><td>160</td></tr>
+<tr><td>Drobeta</td><td>242</td></tr>
+<tr><td>Eforie</td><td>161</td></tr>
+<tr><td>Fagaras</td><td>176</td></tr>
+<tr><td>Giurgiu</td><td>77</td></tr>
+<tr><td>Hirsova</td><td>151</td></tr>
+<tr><td>Iasi</td><td>226</td></tr>
+<tr><td>Lugoj</td><td>244</td></tr>
+<tr><td>Mehadia</td><td>241</td></tr>
+<tr><td>Neamt</td><td>234</td></tr>
+<tr><td>Oradea</td><td>380</td></tr>
+<tr><td>Pitesti</td><td>100</td></tr>
+<tr><td>Rimnicu Vilcea</td><td>193</td></tr>
+<tr><td>Sibiu</td><td>253</td></tr>
+<tr><td>Timisoara</td><td>329</td></tr>
+<tr><td>Urziceni</td><td>80</td></tr>
+<tr><td>Vaslui</td><td>199</td></tr>
+<tr><td>Zerind</td><td>374</td></tr>
+</table>
+</td></tr></table>
+Frontier: Sibiu (253), Timisoara (329), Zerind (374)
+
+---
+
+class: tiny
+
+# Greedy Search
+
+<table><tr><td>
+<img src="/CI-2700/assets/img/greedy/2.png" width="90%"/></td><td> 
+Heuristic:<br/>
+<table>
+<tr><td>Arad</td><td>366</td></tr>
+<tr><td>Bucharest</td><td>0</td></tr>
+<tr><td>Craiova</td><td>160</td></tr>
+<tr><td>Drobeta</td><td>242</td></tr>
+<tr><td>Eforie</td><td>161</td></tr>
+<tr><td>Fagaras</td><td>176</td></tr>
+<tr><td>Giurgiu</td><td>77</td></tr>
+<tr><td>Hirsova</td><td>151</td></tr>
+<tr><td>Iasi</td><td>226</td></tr>
+<tr><td>Lugoj</td><td>244</td></tr>
+<tr><td>Mehadia</td><td>241</td></tr>
+<tr><td>Neamt</td><td>234</td></tr>
+<tr><td>Oradea</td><td>380</td></tr>
+<tr><td>Pitesti</td><td>100</td></tr>
+<tr><td>Rimnicu Vilcea</td><td>193</td></tr>
+<tr><td>Sibiu</td><td>253</td></tr>
+<tr><td>Timisoara</td><td>329</td></tr>
+<tr><td>Urziceni</td><td>80</td></tr>
+<tr><td>Vaslui</td><td>199</td></tr>
+<tr><td>Zerind</td><td>374</td></tr>
+</table>
+</td></tr></table>
+Frontier: Fagaras (176), Rimnicu Vilcea (193), Timisoara (329), Zerind (374), Oradea (380)
+
+---
+
+class: tiny
+
+# Greedy Search
+
+<table><tr><td>
+<img src="/CI-2700/assets/img/greedy/3.png" width="90%"/></td><td> 
+Heuristic:<br/>
+<table>
+<tr><td>Arad</td><td>366</td></tr>
+<tr><td>Bucharest</td><td>0</td></tr>
+<tr><td>Craiova</td><td>160</td></tr>
+<tr><td>Drobeta</td><td>242</td></tr>
+<tr><td>Eforie</td><td>161</td></tr>
+<tr><td>Fagaras</td><td>176</td></tr>
+<tr><td>Giurgiu</td><td>77</td></tr>
+<tr><td>Hirsova</td><td>151</td></tr>
+<tr><td>Iasi</td><td>226</td></tr>
+<tr><td>Lugoj</td><td>244</td></tr>
+<tr><td>Mehadia</td><td>241</td></tr>
+<tr><td>Neamt</td><td>234</td></tr>
+<tr><td>Oradea</td><td>380</td></tr>
+<tr><td>Pitesti</td><td>100</td></tr>
+<tr><td>Rimnicu Vilcea</td><td>193</td></tr>
+<tr><td>Sibiu</td><td>253</td></tr>
+<tr><td>Timisoara</td><td>329</td></tr>
+<tr><td>Urziceni</td><td>80</td></tr>
+<tr><td>Vaslui</td><td>199</td></tr>
+<tr><td>Zerind</td><td>374</td></tr>
+</table>
+</td></tr></table>
+Frontier: Bucharest (0), Rimnicu Vilcea (193), Timisoara (329), Zerind (374), Oradea (380)
+
+---
+
+# A* Search
+
+  * Greedy search sometimes does not give us the optimal result 
+  
+  * It tries to get to the goal as fast as possible, but ignores the cost of actually getting to each node 
+  
+  * Idea: Instead of using the node with the lowest heuristic value, use the node with the lowest sum of heuristic value and cost to get to
+  
+  * This is called A* search
+  
+---
+
+class: tiny
+
+# A* Search
+
+<table><tr><td>
+<img src="/CI-2700/assets/img/pathproblem.png" width="90%"/></td><td> 
+Heuristic:<br/>
+<table>
+<tr><td>Arad</td><td>366</td></tr>
+<tr><td>Bucharest</td><td>0</td></tr>
+<tr><td>Craiova</td><td>160</td></tr>
+<tr><td>Drobeta</td><td>242</td></tr>
+<tr><td>Eforie</td><td>161</td></tr>
+<tr><td>Fagaras</td><td>176</td></tr>
+<tr><td>Giurgiu</td><td>77</td></tr>
+<tr><td>Hirsova</td><td>151</td></tr>
+<tr><td>Iasi</td><td>226</td></tr>
+<tr><td>Lugoj</td><td>244</td></tr>
+<tr><td>Mehadia</td><td>241</td></tr>
+<tr><td>Neamt</td><td>234</td></tr>
+<tr><td>Oradea</td><td>380</td></tr>
+<tr><td>Pitesti</td><td>100</td></tr>
+<tr><td>Rimnicu Vilcea</td><td>193</td></tr>
+<tr><td>Sibiu</td><td>253</td></tr>
+<tr><td>Timisoara</td><td>329</td></tr>
+<tr><td>Urziceni</td><td>80</td></tr>
+<tr><td>Vaslui</td><td>199</td></tr>
+<tr><td>Zerind</td><td>374</td></tr>
+</table>
+</td></tr></table>
+Frontier: Arad (0 + 366)
+  
+---
+
+class: tiny
+
+# A* Search
+
+<table><tr><td>
+<img src="/CI-2700/assets/img/as/1.png" width="90%"/></td><td> 
+Heuristic:<br/>
+<table>
+<tr><td>Arad</td><td>366</td></tr>
+<tr><td>Bucharest</td><td>0</td></tr>
+<tr><td>Craiova</td><td>160</td></tr>
+<tr><td>Drobeta</td><td>242</td></tr>
+<tr><td>Eforie</td><td>161</td></tr>
+<tr><td>Fagaras</td><td>176</td></tr>
+<tr><td>Giurgiu</td><td>77</td></tr>
+<tr><td>Hirsova</td><td>151</td></tr>
+<tr><td>Iasi</td><td>226</td></tr>
+<tr><td>Lugoj</td><td>244</td></tr>
+<tr><td>Mehadia</td><td>241</td></tr>
+<tr><td>Neamt</td><td>234</td></tr>
+<tr><td>Oradea</td><td>380</td></tr>
+<tr><td>Pitesti</td><td>100</td></tr>
+<tr><td>Rimnicu Vilcea</td><td>193</td></tr>
+<tr><td>Sibiu</td><td>253</td></tr>
+<tr><td>Timisoara</td><td>329</td></tr>
+<tr><td>Urziceni</td><td>80</td></tr>
+<tr><td>Vaslui</td><td>199</td></tr>
+<tr><td>Zerind</td><td>374</td></tr>
+</table>
+</td></tr></table>
+Frontier: Sibiu (140 + 253), Timisoara (118 + 329), Zerind (75 + 374)
+
+---
+
+class: tiny
+
+# A* Search
+
+<table><tr><td>
+<img src="/CI-2700/assets/img/as/2.png" width="90%"/></td><td> 
+Heuristic:<br/>
+<table>
+<tr><td>Arad</td><td>366</td></tr>
+<tr><td>Bucharest</td><td>0</td></tr>
+<tr><td>Craiova</td><td>160</td></tr>
+<tr><td>Drobeta</td><td>242</td></tr>
+<tr><td>Eforie</td><td>161</td></tr>
+<tr><td>Fagaras</td><td>176</td></tr>
+<tr><td>Giurgiu</td><td>77</td></tr>
+<tr><td>Hirsova</td><td>151</td></tr>
+<tr><td>Iasi</td><td>226</td></tr>
+<tr><td>Lugoj</td><td>244</td></tr>
+<tr><td>Mehadia</td><td>241</td></tr>
+<tr><td>Neamt</td><td>234</td></tr>
+<tr><td>Oradea</td><td>380</td></tr>
+<tr><td>Pitesti</td><td>100</td></tr>
+<tr><td>Rimnicu Vilcea</td><td>193</td></tr>
+<tr><td>Sibiu</td><td>253</td></tr>
+<tr><td>Timisoara</td><td>329</td></tr>
+<tr><td>Urziceni</td><td>80</td></tr>
+<tr><td>Vaslui</td><td>199</td></tr>
+<tr><td>Zerind</td><td>374</td></tr>
+</table>
+</td></tr></table>
+Frontier: Rimnicu Vilcea (220 + 193), Fagaras (239 + 176), Timisoara (118 + 329), Zerind (75 + 374), Orodea (291 + 380)
+
+---
+
+class: tiny
+
+# A* Search
+
+<table><tr><td>
+<img src="/CI-2700/assets/img/as/3.png" width="90%"/></td><td> 
+Heuristic:<br/>
+<table>
+<tr><td>Arad</td><td>366</td></tr>
+<tr><td>Bucharest</td><td>0</td></tr>
+<tr><td>Craiova</td><td>160</td></tr>
+<tr><td>Drobeta</td><td>242</td></tr>
+<tr><td>Eforie</td><td>161</td></tr>
+<tr><td>Fagaras</td><td>176</td></tr>
+<tr><td>Giurgiu</td><td>77</td></tr>
+<tr><td>Hirsova</td><td>151</td></tr>
+<tr><td>Iasi</td><td>226</td></tr>
+<tr><td>Lugoj</td><td>244</td></tr>
+<tr><td>Mehadia</td><td>241</td></tr>
+<tr><td>Neamt</td><td>234</td></tr>
+<tr><td>Oradea</td><td>380</td></tr>
+<tr><td>Pitesti</td><td>100</td></tr>
+<tr><td>Rimnicu Vilcea</td><td>193</td></tr>
+<tr><td>Sibiu</td><td>253</td></tr>
+<tr><td>Timisoara</td><td>329</td></tr>
+<tr><td>Urziceni</td><td>80</td></tr>
+<tr><td>Vaslui</td><td>199</td></tr>
+<tr><td>Zerind</td><td>374</td></tr>
+</table>
+</td></tr></table>
+Frontier: Fagaras (239 + 176), Pitesti (317 + 100), Timisoara (118 + 329), Zerind (75 + 374), Craiova (366 + 160), Orodea (291 + 380)
+
+---
+
+class: tiny
+
+# A* Search
+
+<table><tr><td>
+<img src="/CI-2700/assets/img/as/4.png" width="90%"/></td><td> 
+Heuristic:<br/>
+<table>
+<tr><td>Arad</td><td>366</td></tr>
+<tr><td>Bucharest</td><td>0</td></tr>
+<tr><td>Craiova</td><td>160</td></tr>
+<tr><td>Drobeta</td><td>242</td></tr>
+<tr><td>Eforie</td><td>161</td></tr>
+<tr><td>Fagaras</td><td>176</td></tr>
+<tr><td>Giurgiu</td><td>77</td></tr>
+<tr><td>Hirsova</td><td>151</td></tr>
+<tr><td>Iasi</td><td>226</td></tr>
+<tr><td>Lugoj</td><td>244</td></tr>
+<tr><td>Mehadia</td><td>241</td></tr>
+<tr><td>Neamt</td><td>234</td></tr>
+<tr><td>Oradea</td><td>380</td></tr>
+<tr><td>Pitesti</td><td>100</td></tr>
+<tr><td>Rimnicu Vilcea</td><td>193</td></tr>
+<tr><td>Sibiu</td><td>253</td></tr>
+<tr><td>Timisoara</td><td>329</td></tr>
+<tr><td>Urziceni</td><td>80</td></tr>
+<tr><td>Vaslui</td><td>199</td></tr>
+<tr><td>Zerind</td><td>374</td></tr>
+</table>
+</td></tr></table>
+Frontier: Pitesti (317 + 100), Timisoara (118 + 329), Zerind (75 + 374), Bucharest (450 + 0), Craiova (366 + 160), Orodea (291 + 380)
+
+---
+
+class: tiny
+
+# A* Search
+
+<table><tr><td>
+<img src="/CI-2700/assets/img/as/5.png" width="90%"/></td><td> 
+Heuristic:<br/>
+<table>
+<tr><td>Arad</td><td>366</td></tr>
+<tr><td>Bucharest</td><td>0</td></tr>
+<tr><td>Craiova</td><td>160</td></tr>
+<tr><td>Drobeta</td><td>242</td></tr>
+<tr><td>Eforie</td><td>161</td></tr>
+<tr><td>Fagaras</td><td>176</td></tr>
+<tr><td>Giurgiu</td><td>77</td></tr>
+<tr><td>Hirsova</td><td>151</td></tr>
+<tr><td>Iasi</td><td>226</td></tr>
+<tr><td>Lugoj</td><td>244</td></tr>
+<tr><td>Mehadia</td><td>241</td></tr>
+<tr><td>Neamt</td><td>234</td></tr>
+<tr><td>Oradea</td><td>380</td></tr>
+<tr><td>Pitesti</td><td>100</td></tr>
+<tr><td>Rimnicu Vilcea</td><td>193</td></tr>
+<tr><td>Sibiu</td><td>253</td></tr>
+<tr><td>Timisoara</td><td>329</td></tr>
+<tr><td>Urziceni</td><td>80</td></tr>
+<tr><td>Vaslui</td><td>199</td></tr>
+<tr><td>Zerind</td><td>374</td></tr>
+</table>
+</td></tr></table>
+Frontier: Bucharest (418 + 0), Timisoara (118 + 329), Zerind (75 + 374), Craiova (366 + 160), Orodea (291 + 380)
+
+---
+
+class: small
+
+# A* Search
+
+  * To find *optimal* solution, keep expanding nodes until the goal node is the best node in the frontier
+  
+  * A* is actually guaranteed to find the optimal solution if the heuristic is:
+  
+     - Admissible: Never overestimate the cost 
+     - Consistent: For a node x and its neighbor y, the heuristic value for x has to be less than or equal to that of y plus the cost of getting from x to y
+     - Every consistent heuristic is also admissible
+     
+  * You can also reduce the memory requirements of A* by using Iterative Deepening
+  
+---
+
+class: small
+
+# Search
+
+  * While we have looked at finding paths in physical spaces so far, there are many other applications 
+  
+  * Take, for example, Super Mario
+  
+  * An AI could play the game using A*
+  
+<img src="/CI-2700/assets/img/marioas.png" width="50%"/>
+  
+---
+
+# References 
+
+  * ["The Pacman Dossier"](http://www.gamasutra.com/view/feature/3938/the_pacman_dossier.php)
+  
+  * *Artificial Intelligence: A Modern Approach* by Russel and Norvig, chapter 3: Search
+  
+  * [An interactive demo of different search algorithms](https://qiao.github.io/PathFinding.js/visual/)
+  
+  * [The Super Mario 2009 AI competition](http://julian.togelius.com/Togelius2010The.pdf)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+   
+      
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+    <script src="sprite-animation.js"></script>
+  </body>
+</html>

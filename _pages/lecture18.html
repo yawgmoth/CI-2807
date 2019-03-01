@@ -1,0 +1,456 @@
+---
+permalink: /slides/lecture18.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 18: Movement</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.8em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .tiny table {  font-size: 0.8em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Movement
+
+---
+
+class: center, middle
+
+#  Nav Meshes
+
+---
+
+# Nav Meshes
+
+  * Yesterday we talked about how to find a path in a graph 
+  
+  * But our game worlds are usually not graphs 
+  
+  * How do we build a graph, then?
+  
+  * If we take every position a character can reach as a node in a graph, the graph will be huge 
+  
+  * Solution: Nav Meshes
+  
+---
+
+class: small
+
+# Convex Polyhedra
+
+  * Remember what we said about convex shapes?
+  
+--
+
+  * Any point inside a convex shape can be reached from any other in a straight line!
+  
+  * So let's cut our game world into convex shapes 
+  
+  * 2D: Polygon, 3D: Polyhedron
+  
+  * The center of each shape is a node in our graph 
+  
+  * Two nodes are connected if their shapes share an edge (2D) or plane (3D)
+
+---
+
+# Example: World of Warcraft
+
+<img src="/CI-2700/assets/img/wowhalaaview.png" width="80%"/>
+
+---
+
+# Example: World of Warcraft
+
+<img src="/CI-2700/assets/img/wowhalaa.jpg" width="80%"/>
+
+---
+
+# Example: World of Warcraft
+
+<img src="/CI-2700/assets/img/wowhalaa2.jpg" width="80%"/>
+
+---
+
+# Example: World of Warcraft
+
+<img src="/CI-2700/assets/img/wowhalaa3.jpg" width="80%"/>
+
+---
+
+# Example: World of Warcraft
+
+<img src="/CI-2700/assets/img/wowhalaa4.jpg" width="80%"/>
+
+---
+
+class: small
+
+# How do I get a Nav Mesh?
+
+  * Nav Meshes can often be automatically calculated
+  
+  * Unity has built-in support for Nav Meshes (with pathfinding!)
+  
+  * Windows -> AI -> Navigation 
+  
+  * Then you select all game objects that constitute the level, and select "Navigation Static"
+
+  * When you have selected everything you can "bake" the NavMesh  
+  
+---
+
+class: small
+
+# How do I use a Nav Mesh in Unity?
+
+  * Add a NavMesh Agent component to your AI character 
+  
+  * Then you can simply tell the agent to move to a certain position 
+  
+  * The NavMesh Agent component will handle pathfinding *and* movement
+  
+```C#
+GetComponent<NavMeshAgent>().destination = goal.position;
+```
+
+
+---
+
+class: center, middle
+
+# Steering Behaviors
+
+---
+
+# Steering Behaviors 
+
+  * Let's say our character moves like a car 
+  
+  * It can accelerate and break
+  
+  * It can also turn while going forward 
+  
+  * This works well, even for humanoid characters
+  
+---
+
+# Steering Behaviors: Vehicle Model 
+
+Every timestep:
+
+   * Determine angle to target
+   
+   * Turn character towards target (up to a maximum angle)
+
+   * Move the character forward by it's speed
+   
+Were do we get the target? Note: We are talking about "target positions", but it may be useful to use a "target direction" or "target velocity" instead.
+
+---
+
+# Steering Behaviors: Seek
+
+Set any position in the scene as the target 
+
+<img src="/CI-2700/assets/img/seek.png" width="100%"/>
+
+--
+
+Problem: The character will circle its target
+
+---
+
+# Steering Behaviors: Arrival
+
+What do drivers do when they get closer to their destination?
+
+--
+
+They slow down! Our character could do the same!
+
+If the distance to the target is less than a threshold, reduce the speed.
+
+---
+
+# Steering Behaviors: Flee
+<begin><table><tr><td width="60%">
+   * We can now get *to* a target 
+   
+   * What if we want to get *away* from a target?
+   
+   * Fleeing!
+   
+   * Set the actual target in the opposite direction of what we're fleeing from!
+</td><td><img src="/CI-2700/assets/img/flee.png" width="100%"/></td></tr></table>
+
+---
+
+class: small
+
+# Steering Behaviors: Wander
+
+What if we want to have a character that just wanders around?
+
+--
+
+* We could set targets randomly, but that might lead to some sudden changes
+
+* Better: Keep the target on a sphere in front of the character, and only move it on that sphere
+
+* The size of the sphere and the maximum change on it determines how sudden the direction of the character changes
+
+---
+
+class: small
+
+# Steering Behaviors: Wander
+
+<img src="/CI-2700/assets/img/wander.png" width="90%"/>
+
+---
+
+# Path following
+
+ * Path following is easy
+
+ * Make the target the first point on your path
+
+ * When the character gets close, change the target to the next point
+
+ * Repeat until the end is reached
+ 
+---
+
+# Path following
+
+ * There is room for improvement! (as we'll see in the demo)
+ 
+ * Instead of using each point on the path as a target, we can *interpolate* between the points to the one that is closest to the agent 
+ 
+ * We should also add an offset in the direction of the path 
+ 
+ * This way our agent will always try to get onto the path close to where they currently are
+ 
+---
+
+# Composition
+
+ * The nice thing about steering behaviors is that they can be combined easily
+
+ * When you have multiple steering behaviors, just add up their targets 
+
+ * You may have to scale them
+
+ * Easiest: Use Unit vectors
+
+ * Why would we need that?
+ 
+---
+
+# Obstacle avoidance
+
+ * What if we are following a path, but there’s an obstacle?
+
+ * Idea: Define a steering behavior for obstacle avoidance, and combine it with path following 
+
+ * Let’s say our obstacles are spheres
+
+ * When the character gets too close, add a vector that points away from the sphere (orthogonal to its velocity) to its target
+ 
+---
+
+class: small
+
+# Flocking
+ 
+ * What if we have a group of characters? (Birds, sheep, people, etc.)
+
+ * Use three different steering behaviors: Evasion, Cohesion, Alignment
+
+ * Evasion: Try to get away from other characters, scale depending on how close they are 
+
+ * Cohesion: Try to get to the average position of the flock
+
+ * Alignment: Try to look the same direction as the other characters
+ 
+---
+
+class: small
+
+# Steering Behaviors: Other tricks
+
+ * Seek and Flee use static targets. We could predict the future position of moving targets and use that as our actual target
+
+ * If your obstacles are not circles, it’s often ok to use circles anyway. If you have a long rectangle, use two or more circles.
+
+ * If you don’t update the target every frame, that’s fine. You could even run the target calculation in a Coroutine (or a thread)
+
+ * You may have to be careful with movements canceling each other out (especially with obstacle avoidance). You can use priorities, or simply scale them up differently.
+ 
+---
+
+# Demo Time
+
+<div class="webgl-content">
+  <div id="gameContainer" style="width: 700px; height: 400px"></div>
+  <div class="footer">
+    <div class="webgl-logo"></div>
+    <div class="fullscreen" onclick="gameInstance.SetFullscreen(1)"></div>
+  </div>
+</div>
+
+---
+
+class: middle, center
+
+# Story time 
+
+## From the Quake 3 Source Code
+
+---
+
+class: small
+
+# Inverse Square Root 
+
+  * For Steering Behaviors we often use normalized vectors 
+  
+  * Turns out normalizing vectors is something that is also used often in graphics (normals, for example)
+  
+  * How do you normalize a vector? You divide by its length 
+  
+  * How do you calculate the length? It's the square root of the sum of the squares of its components
+  
+$$
+v_n = \frac{v}{\sqrt{v_x^2 + v_y^2 + v_z^2}}
+$$
+   
+--
+
+As it turns out, 1/sqrt(x) can be calculated "quickly".
+
+---
+
+# Fast Inverse Square Root
+
+(Unedited from the Quake 3 source code)
+
+```C
+float Q_rsqrt( float number )
+{
+  long i;
+  float x2, y;
+  const float threehalfs = 1.5F;
+  x2 = number * 0.5F;
+  y  = number;
+  i  = * ( long * ) &y; // evil floating point bit level hacking
+  i  = 0x5f3759df - ( i >> 1 );  // what the fuck? 
+  y  = * ( float * ) &i;
+  y  = y * ( threehalfs - ( x2 * y * y ) );  
+      // 1st iteration
+//	y  = y * ( threehalfs - ( x2 * y * y ) );   
+      // 2nd iteration, this can be removed
+  return y;
+}
+```
+
+---
+
+class: small
+
+# Fast Inverse Square Root 
+
+  * Using an integer as a float is approximately the same as calculating the logarithm
+  
+  * Conversely, casting back to float basically performs an exponentiation
+  
+  * The line `y  = y * ( threehalfs - ( x2 * y * y ) );` is an iteration of Newton's algorithm on f(y) = 1/y^2 - 2*x2
+  
+  * And the weird line? It basically divides the number by 2, and performs some scaling and cleanup
+  
+$$
+\log(\frac{1}{\sqrt{x}}) = -\frac{1}{2} \log(\frac{1}{x})
+$$
+
+---
+
+class: small
+
+# References
+
+  * [Unity Documentation on NavMeshes](https://docs.unity3d.com/Manual/nav-BuildingNavMesh.html)
+
+  * [Steam Wiki on NavMeshes](https://developer.valvesoftware.com/wiki/Navigation_Meshes)
+  
+  * [Warframe 3D Navigation](https://www.gdcvault.com/play/1022017/Getting-off-the-NavMesh-Navigating)
+  
+  * [Steering Behaviors](https://www.red3d.com/cwr/steer/gdc99/)
+  
+  * [Steering Behaviors with interactive examples](https://natureofcode.com/book/chapter-6-autonomous-agents/)
+  
+  * [Flocking Tutorial](https://www.youtube.com/watch?v=4mlyu9-WimM)
+  
+  * [Fast Inverse Square Root in the Q3 source code](https://github.com/id-Software/Quake-III-Arena/blob/master/code/game/q_math.c#L552)
+  
+  * [Explanation of Fast Inverse Square Root](http://www.lomont.org/Math/Papers/2003/InvSqrt.pdf)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    
+    <script src="/CI-2700/assets/unity/steering/TemplateData/UnityProgress.js"></script>
+    <script src="/CI-2700/assets/unity/steering/Build/UnityLoader.js"></script>
+    <script>
+      var gameInstance = UnityLoader.instantiate("gameContainer", "/CI-2700/assets/unity/steering/Build/webbuild.json", {onProgress: UnityProgress});
+    </script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+   
+      
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+    <script src="sprite-animation.js"></script>
+  </body>
+</html>
