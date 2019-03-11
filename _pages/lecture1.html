@@ -6,6 +6,7 @@ permalink: /slides/lecture1.html
 <html>
   <head>
     <title>Lecture 1: Introduction</title>
+    <link rel="stylesheet" type="text/css" href="http://tikzjax.com/v1/fonts.css">
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -33,18 +34,21 @@ class: center, middle
 
 # Creación de Videojuegos
 
-### III-Verano 2018
+### I Ciclo 2019
 
 ---
+
 # Instructor and Schedule
 
  * Instructor: Dr. *Markus* Eger
  
+ * Assistant: Guillermo Venegas
+ 
  * Email: <a href="mailto:markus.eger.ucr@gmail.com">markus.eger.ucr@gmail.com</a>
  
- * Office hours: Monday, Wednesday, 2-2.55pm
+ * Office hours: Tuesday, Friday, 2-2.55pm, Office 3-23
     
- * Class: Monday - Thursday, 3-5pm
+ * Class: Tuesday, Friday, 3-5pm
  
 ---
  
@@ -76,6 +80,12 @@ class: center, middle
  
 ---
  
+# About Me
+
+<img src="/PF-3341/assets/img/cats.jpg" width="60%"/>
+ 
+---
+ 
 # About You
 
  * Name
@@ -88,11 +98,11 @@ class: center, middle
 
 # Class Resources
 
-  * Website: <a href="http://bit.ly/CI-2700">http://bit.ly/CI-2700</a>
+  * Website: <a href="http://bit.ly/CI-2807">http://bit.ly/CI-2807</a>
   
-  * Piazza: <a href="http://piazza.com/ucr.ac.cr/winter2019/ci2700">http://piazza.com/ucr.ac.cr/winter2019/ci2700</a>
+  * Piazza: <a href="http://piazza.com/ucr.ac.cr/spring2019/ci2807">http://piazza.com/ucr.ac.cr/spring2019/ci2807</a>
   
-  * Submission: TBD 
+  * Submission: Email (GDD), github (prototype and final submission)
   
 ---
   
@@ -119,23 +129,23 @@ class: small
   
 # Class schedule
   
-  * Game Design: 8/1-16/1
+  * Game Design: 15/3 - 26/3, 12/4-23/4
   
-  * Game Engines: 17/1-23/1
+  * Game Engines: 29/3 - 9/4
   
-  * Graphics: 24/1-30/1
+  * Graphics: 26/4 - 7/5
   
-  * <b>Mid term exam: 7/2</b>
+  * <b>Mid term exam: 17/5</b>
   
-  * AI: 4/2-12/2
+  * AI: 14/5 - 31/5
   
-  * Physics: 13/2-18/2
+  * Physics: 4/6 - 7/6
   
-  * Networking: 19/2-20/2
+  * Networking: 14/6 - 18/6
   
-  * Publishing: 21/2-27/2
+  * Publishing: 21/6 - 28/6
   
-  * <b>Final exam: 6/3</b>
+  * <b>Final exam: 9/7</b>
     
 ---
     
@@ -149,10 +159,9 @@ class: small
   
   * Work in groups of 4
   
-  * Three milestones: Design document, protoype, finished game 
+  * Three milestones: Design document, prototype, finished game 
   
-  * Progress update *every Monday* (usually 5 minutes per group)
-  
+  * Progress update *every Tuesday* (usually 5 minutes per group)
   
 ---
   
@@ -168,22 +177,60 @@ class: small
      
      - Some form of computer-controlled characters with "interesting" behavior ("AI")
      
+     - NEW: Use Markov Chains to generate content or for AI
+     
      - Unity strongly recommended, other options only with prior approval
      
+---
+  
+# Status Updates
+  
+  * Every Tuesday I want you to tell me about your progress 
+  
+  * Keep your presentations to five minutes 
+  
+  * It's OK if progress is slower some weeks 
+  
+  * Every game has to have a website where you post screenshots, or even WebGL builds, that you use for the presentations 
+  
+  * Not every team member is required to speak, except at the first presentation next week where you introduce your group
+
+---
+
+# An Example From Last Semester
+
+<div id="gameContainer" style="width: 400px; height: 600px"></div>
 
 ---
   
 # Project Schedule
   
-  * Form groups: 14/1
+  * Form groups: 19/3
   
-  * Design document: 20/1 
+  * Design document: 31/3
   
-  * Prototype: 17/2
+  * Prototype: 9/6
   
-  * Final submission: 27/2
+  * Prototype discussions: 11/6
   
-  * Project showcase: 28/2
+  * Final submission: 3/7
+  
+  * Project showcase: 5/7
+  
+---
+  
+# Grading
+  
+  * Midterm: 20%
+  
+  * Final: 20%
+  
+  * Project: 60%
+  
+     - Progress Updates: 7% (0.5% each for 14 weeks)
+     - Game Design Document: 8%
+     - Prototype: 20%
+     - Final Submission: 25%
   
 ---
      
@@ -207,7 +254,7 @@ class: small
   
   * There are some lectures that teach concepts necessary for the project early on
   
-  * Other lectures contain more advanced algorithms and methods
+  * Other lectures contain theory and more advanced algorithms and methods
   
   * If the need arises, I can shuffle lectures around
   
@@ -230,6 +277,117 @@ class: small
   * Of course I will also be answering questions
   
 ---
+
+# Markov Chains
+
+  - Markov Chains consist of states and transition probabilities
+  
+  - To "run" a chain, start in one of the states, and randomly move to the next state (according to the probabilities)
+  
+  - States can represent anything:
+     
+      - Letters or words
+      - Enemy types
+      - NPC mode (aggressive, defensive, patrolling, ...)
+      - Tiles in a level 
+      - etc. 
+      
+  - For your project you should use Markov Chains to dynamically generate *something*
+  
+  - If you want, you can also use a more sophisticated approach instead
+  
+---
+
+# Markov Chains: Challenges
+
+  - Where do you get the transition probabilities from?
+  
+     - Hand-pick values to have control over output 
+     
+     - Learn transition probabilities from some input 
+  
+  - How do you make sure the output is reasonable?
+  
+     - Put constraints on the output 
+     
+     - Test if generated level is beatable
+     
+     - Generate multiple options and score them
+
+
+---
+
+# Markov Chains
+
+<img src="/CI-2807/assets/img/markov.png" width="55%" />
+
+--
+
+How do we get the transition probabilities?
+
+---
+
+# Markov Chains: Training
+
+Let's use a set of words:
+
+  - tree
+  - see
+  - tier
+  - rest
+  - set
+  - ire
+  - is
+  - it
+  
+"e" is followed by: "e" twice (40%), "r" once (20%), "s" once (20%), and "t" once (20%)
+
+---
+
+# Markov Chains
+
+<img src="/CI-2807/assets/img/markovprob.png" width="55%" />
+
+---
+
+# Markov Chains: Generation
+
+  - We can now start at a random state, and run the chain for a few steps
+  
+  - By noting which states we visit we can generate words that seem vaguely English
+  
+  - For example:
+     
+     - serese
+     - reseer
+     - treeti
+     - street
+     - tiseet
+     
+  - The input words determine what the output words may look like!
+  
+---
+
+# Markov Chains: More Interesting Example
+
+  - You can play around with [this online Markov Name Generator](https://www.samcodes.co.uk/project/markov-namegen/)
+  
+  - There are many different data sets you can use as inputs, and other settings 
+  
+  - For example, instead of using single letters, it may be better to use pairs or triples of letters 
+  
+  - Sample output from using names of data structures as input:
+
+```
+Brodalqueap
+Routingtree
+Xorlinger
+Xorlinktree
+Quadedgram
+Associatist
+```
+
+---
   
 # To Dos
   
@@ -237,9 +395,9 @@ class: small
   
   * Give your group a name (can be funny, a pun, a reference)
   
-  * Work on 3-5 game ideas
+  * Work on 3-5 game ideas, think about what you want to generate
   
-  * Present your group, name, and game ideas next Monday, January 14
+  * Present your group, name, and game ideas next Tuesday, March 19
   
   * Each group has 10 minutes!
   
@@ -249,11 +407,25 @@ class: small
   
   * Unity: <a href="http://unity3d.com">http://unity3d.com</a>
   
-  * Piazza: <a href="http://piazza.com/ucr.ac.cr/winter2019/ci0152">http://piazza.com/ucr.ac.cr/winter2019/ci0152</a>
+  * Piazza: <a href="http://piazza.com/ucr.ac.cr/spring2019/ci2807">http://piazza.com/ucr.ac.cr/spring2019/ci2807</a>
+  
+  * [Markov Chains for 2D Level Generation](https://www.aaai.org/ocs/index.php/AIIDE/AIIDE15/paper/viewFile/11518/11380)
+  
+  * [Procedural Content Generation Book (free)](http://pcgbook.com/)
+  
+  * [Student Games from last semester](https://yawgmoth.github.io/CI-2700/games/)
+  
+  * [Markov Chain Name Generator](https://www.samcodes.co.uk/project/markov-namegen/)
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
     </script>
+    <script src="/CI-2700/assets/unity/eternalshadows/TemplateData/UnityProgress.js"></script>
+    <script src="/CI-2700/assets/unity/eternalshadows/Build/UnityLoader.js"></script>
+    <script>
+      var gameInstance = UnityLoader.instantiate("gameContainer", "/CI-2700/assets/unity/eternalshadows/Build/webbuild.json", {onProgress: UnityProgress});
+    </script>
+    <script src="http://tikzjax.com/v1/tikzjax.js"></script>
     <script>
       var slideshow = remark.create();
     </script>
