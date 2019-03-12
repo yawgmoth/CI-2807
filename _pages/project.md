@@ -14,4 +14,4 @@ The main focus of the class is the project, which is worth 60% of the grade. The
   * A Prototype submission, due 17/2, worth 20% of the grade 
   * The final product, due 27/2, worth 25% of the grade
   
-Additionally every group needs to present their progress every Monday in class (5 minutes per group). Each of these presentations is worth 1% of the grade. For more details about the requirements see <a href="/CI-2700/assets/pdf/project.pdf">here</a>.
+Additionally every group needs to present their progress every Monday in class (5 minutes per group). Each of these presentations is worth 1% of the grade. For more details about the requirements see <a href="/CI-2807/assets/pdf/project.pdf">here</a>.
