@@ -5,7 +5,7 @@ permalink: /slides/lecture6.html
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Lecture 6: Gameplay</title>
+    <title>Lecture 6: Unity</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -26,11 +26,6 @@ permalink: /slides/lecture6.html
       
       .small li {  font-size: 1em; }
       
-      .oneline li { font-size: 1.25em; line-height: 1.25em; }
-      .oneline li p { font-size: 1.25em; line-height: 1.25em; }
-      .oneline p { font-size: 1.25em; line-height: 1.25em; }
-      .oneline div { font-size: 1.25em; line-height: 1.25em; }
-      
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
     </style>
   </head>
@@ -39,364 +34,211 @@ permalink: /slides/lecture6.html
 
 class: center, middle
 
-# Creaci&oacute;n de Videojuegos
+# Creación de Videojuegos
 
-### Gameplay
+### Unity
 
 ---
 
 class: center, middle
 
-# Player Types
+# Unity - Introduction
 
 ---
 
-# Bartle's taxonomy of player types
+class: center, middle
 
-  * Killers 
-  
-  * Achievers
-  
-  * Explorers
-  
-  * Socializers
-  
----
+# Unity
 
-# Killers
-
-  * Want power 
-  
-  * Want to exert control over others
-  
-  * Create chaos
-  
-  * Sometimes problematic griefing behavior
-  
----
-
-# Achievers
-
-  * Want to collect wealth
-  
-  * Care about points, leaderboards, in-game currency
-  
-  * Leveling up is important
-  
-  * Are more willing to "grind" to gain advantages than other player types
-  
----
-
-# Explorers
-
-  * Want to find patterns 
-  
-  * Geography: Patterns in landscape 
-  
-  * Strategy: Patterns in the rules
-  
-  * Seek knowledge
-  
----
-
-# Socializers
-
-  * Care about people (virtual or real)
-  
-  * Want to interact with other players/non-players in meaningful ways
-  
-  * Enjoy roleplaying
-  
-  * Are often active in guilds, clans, etc.
-  
----
-
-class: center, middle 
-
-# What player type am I?
-
-<img src="/CI-2700/assets/img/bartle.png" width="100%"/>
+<img src="/CI-2700/assets/img/unity.jpg" width="100%"/>
 
 ---
 
-class: center, middle 
+class: small
 
-# What player type are you?
+# Unity
 
-<a href="http://matthewbarr.co.uk/bartle">http://matthewbarr.co.uk/bartle</a>
+Used for:
+
+  * Hearthstone
+  
+  * Pokemon Go
+  
+  * realMyst: Masterpiece Edition
+  
+  * Temple Run
+  
+  * Rust
+  
+  * SYNTHIA
+  
+  * etc.
 
 ---
 
-class: oneline
+class: center, middle
 
-# Notes
+# Unity - Scene view
 
-  * Aren't these four types just the four Hogwarts houses?
+<img src="/CI-2700/assets/img/unityview.jpg" width="100%"/>
+
+---
+
+class: center, middle
+
+# Unity - Scene hierarchy
+
+<img src="/CI-2700/assets/img/unityscene.jpg" width="100%"/>
+
+---
+
+class: center, middle
+
+# Unity - Inspector
+
+<img src="/CI-2700/assets/img/unityinspector.jpg" width="100%"/>
+
+---
+
+class: center, middle
+
+# Unity - Project
+
+<img src="/CI-2700/assets/img/unityproject.jpg" width="100%"/>
+
+---
+
+# Unity - Basics
+
+  * A "level" in Unity is called a *Scene*
+  
+  * A scene consists of *Game Objects* in a hierarchy
+  
+  * Each game object has multiple *Components*
+  
+     - Transform
+     - Geometry
+     - Physics
+     - Scripts
      
-     - Killer: Slytherin
-     - Achiever: Gryffindor
-     - Explorer: Ravenclaw
-     - Socializer: Hufflepuff
-  
 ---
 
-# Notes
-  
-  * They are definitely related to Myers-Briggs personality types (via David Keirsey):
-  
-     - Killer: Artisan (Sensing, Perceiving)
-     - Achiever: Guardian (Sensing, Judging)
-     - Explorer: Rational (Intuition, Thinking)
-     - Socializer: Idealist (Intuition, Feeling)
+# Physics
 
----
+Remember physics?
 
-# Filling in the gaps: DGD1 (by Christopher Bateman)
+$$
+\vec{v} = \int \vec{a} \cdot \operatorname{d}t
+$$
 
-<img src="/CI-2700/assets/img/DGD1.png" height="100%"/>
+$$
+\vec{s} = \int \vec{v} \cdot \operatorname{d}t
+$$
+
+$$
+\vec{a} = 9.81 \frac{m}{s^2} \cdot \operatorname{down}
+$$
 
 ---
 
-# Why do we care?
-  
-  * Ultimately, games are for players 
-  
-  * Different players want different things 
-  
-  * Understanding what players want helps us design better games for them
-  
-  * Understanding that there is a difference between players allows us to cater content to specific types
-  
----
+# Discretized Physics
 
-# Example: WildStar
+What if we have a loop that increments time by some small amount?
 
-<img src="/CI-2700/assets/img/wildstar.jpg" width="100%"/> 
-  
----
+$$
+\vec{v} = \sum \vec{a} \cdot \Delta t
+$$
 
-class: small
+$$
+\vec{s} = \sum \vec{v} \cdot \Delta t
+$$
 
-# Mechanics
-
-   * Killer
-      - Fighting
-      - Competition
-      - Interference
-   * Achiever
-      - Scores
-      - Ranking
-      - Challenges
-      - Vanity objects
-   * Explorer
-      - Expansive geography
-      - Hidden mechanics
-      - Hidden interactions
-   * Socializer
-      - Clans/guilds
-      - Rich characters
- 
----
-
-# What does Skyrim have to offer?
-
-<img src="/CI-2700/assets/img/skyrim.png" width="100%"/>
-
-(Skyrim)
+$$
+\vec{a} = 9.81 \frac{m}{s^2} \cdot \operatorname{down}
+$$
 
 ---
 
-class: center, middle
+# Discretized Physics in code
 
-# Flow
+Very easy to do in Unity:
+
+```C#
+acceleration = -9.81 * Vector3.up;
+
+velocity += acceleration * Time.deltaTime;
+
+transform.position += velocity * Time.deltaTime;
+```
 
 ---
 
-class: small
+# Discretized Physics in code
 
-# Flow
+Problems to solve:
 
-  * Experimentally validated by Mihaly Csikszentmihalyi in the 70s
-  
-  * For any task
-  
-     - If it's too hard: people get anxious
+   * 2D?
+
+   * Set acceleration to a better value
+   
+   * Handle user input (move sideways?)
+   
+   * Collisions?
      
-     - If it's too easy: people get bored
-     
-  * What is easy/hard changes with skill
-  
-  * Skill improves over time!
-  
-  * While in the "flow", people are focused purely on the task
-
----
-
-# Flow
-
-<img src="/CI-2700/assets/img/flow.png" width="70%"/>
-
----
-
-class: small
-
-# Flow
-
-To stay in the "flow", players need
-
-  * Concrete goals, and consistent rules
-  
-  * Actions to achieve these goals that they can accomplish
-  
-  * Clear and timely feedback
-  
-  * No distractions
-  
----
-
-class: small
-
-# Flow - In Games
-
-What this means for games:
-
-  * Provide the player with something to do 
-  
-  * Don't change the rules drastically
-  
-  * Increase difficulty incrementally, as players get better
-  
-  * Tell the player how they are doing on their goals
-  
-  * Don't overwhelm the player with information
-  
----
-
-class: small
-
-# How games keep you in the flow
-
-  * Give you a better weapon when killing monsters gets too hard
-  
-  * Introduce new mechanics gradually, then mix and match
-  
-  * Split missions up into smaller sub-tasks of increasing complexity
-  
-  * Progress feedback
-
 ---
 
 class: center, middle
 
-# Tutorials
+# Demo time
+
+## Get the demo project on github: <br/><a href="https://github.com/yawgmoth/UnityDemo2D"> https://github.com/yawgmoth/UnityDemo2D</a>
 
 ---
 
 class: small
 
-# Tutorials
+# Assets
 
-Good tutorials:
-
-  * Can be skipped (and aborted)
+  * <a href="https://assetstore.unity.com/packages/essentials/asset-packs/standard-assets-32351">Unity Standard Assets</a> (terrain textures, water, vehicles, a 2D character, code samples, etc. You probably want this)
+  * <a href="https://assetstore.unity.com/packages/2d/environments/free-platform-game-assets-85838">2D platform assets</a> (character, blocks, enemies, coins, etc.)
+  * <a href="https://assetstore.unity.com/packages/2d/characters/sunny-land-103349">Another pack of 2D platform assets</a>
+  * <a href="https://assetstore.unity.com/packages/3d/characters/easyroads3d-free-v3-987">Roads</a> (Free package with some restrictions; should work well for a racing game)
+  * <a href="https://assetstore.unity.com/packages/3d/environments/fantasy/mega-fantasy-props-pack-87811">Fantasy props</a> (walls, benches, etc.)
+  * <a href="https://assetstore.unity.com/packages/3d/environments/fantasy/medieval-town-exteriors-free-27026">Medieval town exterior</a> (buildings, well, buckets, etc.)
+  * <a href="https://assetstore.unity.com/packages/3d/characters/humanoids/fantasy-monster-skeleton-35635">Animated 3D Skeleton</a>
+  * Search with "price:0" to find free assets!
   
-  * Have little text 
-  
-  * Describe things clearly
-  
-  * Are complete
-  
-  * Excuse small mistakes
-  
-  * Are not condescending
-  
----
-
-class: small
-
-# Tutorials
-
-<img src="/CI-2700/assets/img/wowtutorial.jpg" width="80%"/>
-
-(World of Warcraft)
+  * My recommendation: Use art assets, but don't use code. You'll have to debug it when something goes wrong.
 
 ---
 
 class: small
 
-# Tutorials
+# References
 
-<img src="/CI-2700/assets/img/wowtutorialnew.jpg" width="100%"/>
-
-(World of Warcraft)
-
----
-
-class: middle, center
-
-# Tutorials
-
-## Good and bad tutorials?
-
----
-
-class: center, middle
-
-# Super Mario
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ZH2wGpEZVgE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
----
-
-class: middle, center
-
-# Educational games?
-
----
-
-# Educational games 
-
-  * Learn concepts using games 
+  * <a href="https://unity3d.com">Unity 3D</a>
   
-  * For example, math puzzles, physics concepts 
+  * <a href="https://unity3d.com/es/learn/tutorials">Unity Tutorials</a>
   
-  * Conveyed through mechanics and/or story
+  * <a href="https://github.com/Unity-Technologies/2d-extras">Unity 2D Extras</a> (Tilemap extensions)
   
-  * Effectiveness still under investigation
-
----
-
-# An educational game
-
-<img src="/CI-2700/assets/img/genomics.jpg" width="80%"/>
-
-(Genomics Digital Lab)
-
----
-
-# Or the reverse?
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ROPTP0yyroA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
----
-
-# Resources 
-
-  * <a href="http://matthewbarr.co.uk/bartle">Online Player Type Survey</a>
-  
-  * <a href="https://www.gamasutra.com/view/feature/134842/personality_and_play_styles_a_.php">Personality And Play Styles: A Unified Model</a>
-
-  * <a href="http://www.gamasutra.com/view/feature/166972/cognitive_flow_the_psychology_of_.php">Cognitive Flow</a>
-  
-  * <a href="https://www.gamasutra.com/view/feature/134774/the_designers_notebook_eight_.php">How not to make a tutorial</a>
+  * <a href="https://unity3d.com/es/learn/tutorials/topics/2d-game-creation/intro-2d-world-building-w-tilemap">Unity 2D Tilemap Video Tutorial</a>
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
     </script>
-    <script>
-      var slideshow = remark.create();
-      
-     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
     </script>
   </body>
 </html>
