@@ -217,6 +217,42 @@ class: small
   
 ---
 
+# Fixed Updates
+
+  * Some subsystems (like physics) benefit from a (pretty) fixed update rate 
+  
+  * Instead of doing physics calculations *every* frame, they are just done every n milliseconds 
+  
+  * In your main loop you check if the necessary time between updates has passed
+  
+  * May need to interrupt `Update` if it takes too long
+  
+---
+
+# Using a Game Engine
+
+  * Programming in this setting is very different from regular programming
+  
+  * In most programs you have one main thread of execution 
+  
+  * Now you have dozens of objects each with its own little routine to do things 
+  
+  * Physics collisions cause events to happen 
+  
+---
+
+# Using a Game Engine
+
+  * When you get used to it, this way of coding is actually very nice 
+  
+  * Consider each game object separately, and implement its behavior separately
+  
+  * If you need some global state, make *one* GameManager object or similar that stores it 
+  
+  * Think of it in terms of "if x then y" (like in your GDD), for each game object
+  
+---
+
 class: middle, center
 
 # Scenes
