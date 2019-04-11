@@ -1,11 +1,11 @@
 ---
-permalink: /slides/lecture7.html
+permalink: /slides/lecture10.html
 ---
 
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Lecture 7: World Building</title>
+    <title>Lecture 10: Players</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -26,6 +26,11 @@ permalink: /slides/lecture7.html
       
       .small li {  font-size: 1em; }
       
+      .oneline li { font-size: 1.25em; line-height: 1.25em; }
+      .oneline li p { font-size: 1.25em; line-height: 1.25em; }
+      .oneline p { font-size: 1.25em; line-height: 1.25em; }
+      .oneline div { font-size: 1.25em; line-height: 1.25em; }
+      
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
     </style>
   </head>
@@ -34,263 +39,312 @@ permalink: /slides/lecture7.html
 
 class: center, middle
 
-# Creación de Videojuegos
+# Creaci&oacute;n de Videojuegos
 
-### World Building
-
----
-
-class: center, middle
-
-# World Building
+### Players
 
 ---
 
 class: center, middle
 
-# Star Wars
+# Player Types
 
-<img src="/CI-2700/assets/img/starwars.png" width="100%"/>
+---
+
+# Bartle's taxonomy of player types
+
+  * Killers 
+  
+  * Achievers
+  
+  * Explorers
+  
+  * Socializers
+  
+---
+
+# Killers
+
+  * Want power 
+  
+  * Want to exert control over others
+  
+  * Create chaos
+  
+  * Sometimes problematic griefing behavior
+  
+---
+
+# Achievers
+
+  * Want to collect wealth
+  
+  * Care about points, leaderboards, in-game currency
+  
+  * Leveling up is important
+  
+  * Are more willing to "grind" to gain advantages than other player types
+  
+---
+
+# Explorers
+
+  * Want to find patterns 
+  
+  * Geography: Patterns in landscape 
+  
+  * Strategy: Patterns in the rules
+  
+  * Seek knowledge
+  
+---
+
+# Socializers
+
+  * Care about people (virtual or real)
+  
+  * Want to interact with other players/non-players in meaningful ways
+  
+  * Enjoy roleplaying
+  
+  * Are often active in guilds, clans, etc.
+  
+---
+
+class: center, middle 
+
+# What player type am I?
+
+<img src="/CI-2700/assets/img/bartle.png" width="100%"/>
+
+---
+
+class: center, middle 
+
+# What player type are you?
+
+<a href="http://matthewbarr.co.uk/bartle">http://matthewbarr.co.uk/bartle</a>
+
+---
+
+class: oneline
+
+# Notes
+
+  * Aren't these four types just the four Hogwarts houses?
+     
+     - Killer: Slytherin
+     - Achiever: Gryffindor
+     - Explorer: Ravenclaw
+     - Socializer: Hufflepuff
+  
+---
+
+# Notes
+  
+  * They are definitely related to Myers-Briggs personality types (via David Keirsey):
+  
+     - Killer: Artisan (Sensing, Perceiving)
+     - Achiever: Guardian (Sensing, Judging)
+     - Explorer: Rational (Intuition, Thinking)
+     - Socializer: Idealist (Intuition, Feeling)
+
+---
+
+# Filling in the gaps: DGD1 (by Christopher Bateman)
+
+<img src="/CI-2700/assets/img/DGD1.png" height="100%"/>
+
+---
+
+# Why do we care?
+  
+  * Ultimately, games are for players 
+  
+  * Different players want different things 
+  
+  * Understanding what players want helps us design better games for them
+  
+  * Understanding that there is a difference between players allows us to cater content to specific types
+  
+---
+
+# Example: WildStar
+
+<img src="/CI-2700/assets/img/wildstar.jpg" width="100%"/> 
+  
+---
+
+class: small
+
+# Mechanics
+
+   * Killer
+      - Fighting
+      - Competition
+      - Interference
+   * Achiever
+      - Scores
+      - Ranking
+      - Challenges
+      - Vanity objects
+   * Explorer
+      - Expansive geography
+      - Hidden mechanics
+      - Hidden interactions
+   * Socializer
+      - Clans/guilds
+      - Rich characters
+ 
+---
+
+# What does Skyrim have to offer?
+
+<img src="/CI-2700/assets/img/skyrim.png" width="100%"/>
+
+(Skyrim)
+
+---
+
+class: center, middle
+
+# Flow
 
 ---
 
 class: small
 
-# What's so great about Star Wars?
+# Flow
 
-  * "It is a period of <b>civil war</b>. Rebel spaceships, striking from a hidden base, have won their first victory against the evil Galactic <b>Empire</b>. "
+  * Experimentally validated by Mihaly Csikszentmihalyi in the 70s
   
-  * "*Tarkin*: The <b>Imperial Senate</b> will no longer be of any concern to us. I have just received word that the Emperor has dissolved the council permanently."
+  * For any task
   
-  * "*Leia*: The more you tighten your grip, Tarkin, the <b>more star systems</b> will slip through your fingers."
+     - If it's too hard: people get anxious
+     
+     - If it's too easy: people get bored
+     
+  * What is easy/hard changes with skill
   
-  * "*Vader*: A tremor in the Force. <b>The last time</b> I felt it was in the presence of <b>my old master.</b>"
+  * Skill improves over time!
+  
+  * While in the "flow", people are focused purely on the task
+
+---
+
+# Flow
+
+<img src="/CI-2700/assets/img/flow.png" width="70%"/>
+
+---
+
+class: small
+
+# Flow
+
+To stay in the "flow", players need
+
+  * Concrete goals, and consistent rules
+  
+  * Actions to achieve these goals that they can accomplish
+  
+  * Clear and timely feedback
+  
+  * No distractions
   
 ---
 
 class: small
 
-# What's so great about Star Wars?
+# Flow - In Games
 
-  * The story does not *need* these references
+What this means for games:
+
+  * Provide the player with something to do 
   
-  * But they give the story *context*
+  * Don't change the rules drastically
   
-  * And a *purpose*
+  * Increase difficulty incrementally, as players get better
   
-  * They allow audiences to imagine their own story within the larger world
+  * Tell the player how they are doing on their goals
+  
+  * Don't overwhelm the player with information
   
 ---
 
 class: small
 
-# What about Video Games?
+# How games keep you in the flow
 
-  * There are Star Wars games ...
+  * Give you a better weapon when killing monsters gets too hard
   
-  * Skyrim: Dragons were created by one of the gods
+  * Introduce new mechanics gradually, then mix and match
   
-  * Warcraft: Orcs &amp; Humans (1994): Orcs come from <b>another world</b>, Draenor<br/>World of Warcraft: The Burning Crusade (2007): Players can visit what's left of Draenor: Outland
+  * Split missions up into smaller sub-tasks of increasing complexity
   
-  * Overwatch: "Long before she took up the alias "Sombra," Olivia Colomar was among the thousands of children who were left orphaned in the aftermath of the Omnic Crisis."
-  
-  * Stardew Valley: Pelican Town is located within the Ferngill Republic, at war with the Gotoro Empire across the Gem Sea
-  
----
+  * Progress feedback
 
-# What are good worlds?
-
-  * They are intuitive
-  
-  * Can be used to tell many stories
-  
-  * Are about wish/fantasy fulfillment
-  
-  * Allow discovery
-  
-  * Are different from the real world
-  
----
-
-# Name a world!
-
-  * Intuitive?
-  
-  * Stories?
-  
-  * Wishes/Fantasies?
-   
-  * Discovery?
-  
-  * Not RL?
-  
 ---
 
 class: center, middle
 
-# Characters
+# Tutorials
 
 ---
 
-# Characters
+class: small
 
-  * Rey
+# Tutorials
 
-  * Sherlock Holmes
+Good tutorials:
+
+  * Can be skipped (and aborted)
   
-  * Indiana Jones
+  * Have little text 
   
-  * Black Widow
+  * Describe things clearly
   
-  * You
+  * Are complete
+  
+  * Excuse small mistakes
+  
+  * Are not condescending
   
 ---
 
 class: small
 
-# The Avatar
+# Tutorials
 
-  * Sanskrit: "descent", refers to the material appearance or incarnation of a deity on earth.
+<img src="/CI-2700/assets/img/wowtutorial.jpg" width="80%"/>
 
-  * Allows the player to identify themself with their character
-  
-  * Allows the player to <b>play as</b> someone
-  
-  * Two approaches:
-  
-     - Blank Slate
-  
-     - Ideal form
+(World of Warcraft)
+
+---
+
+class: small
+
+# Tutorials
+
+<img src="/CI-2700/assets/img/wowtutorialnew.jpg" width="100%"/>
+
+(World of Warcraft)
+
+---
+
+class: middle, center
+
+# Tutorials
+
+## Good and bad tutorials?
 
 ---
 
 class: center, middle
 
-# Name a video game protagonist you really like to play as!
+# Super Mario
 
----
-
-# Maybe the greatest video game character of all times
-
-  <img src="/CI-2700/assets/img/portal.jpg" width="90%"/>
-  
-  (Portal)
-  
----
-
-# Why is Chell great? Blank Slate
-
-  * Does not speak
-  
-  * Non-threatening
-  
-  * One goal: Escape
-  
-  * You don't even really see her (unless you try)
-  
-  * Inclusive
-  
----
-
-# Ideal form
-
-  * Strong warrior
-  
-  * Wise mage 
-  
-  * Stealthy assassin
-  
-  * Savvy adventurer
-  
-  * Customizable character
-  
----
-
-# Ideal form: challenges
-
-  * Non-customizable: Limited options 
-  
-  * Often further limited by game play
-  
-  * Reliance on stereotypes
-  
-  * Over- and underrepresentation of certain populations
-  
----
-
-# How about being inclusive?
-
-<img src="/CI-2700/assets/img/ac.png" width="100%"/>
-
-<a href="https://www.polygon.com/e3-2014/2014/6/10/5798592/assassins-creed-unity-female-assassins">Polygon article</a>
-
----
-
-# Non-player characters (NPCs)
-
-  * In stories, characters serve the story
-  
-  * In games, characters serve game play (and story)
-  
-  * Instead of characters, create <b>roles</b>
-  
-  * These roles can then be filled by characters as needed 
-
----
-
-# NPC roles, examples
-
-  * Mentor: gives players advice/quests/pointers
-    
-  * Assistant: helps player with quests 
-  
-  * Villain: the main antagonist
-  
-  * Minion: helps the villain
-  
-  * Town folk: require help from the player
-  
-  * etc.
-  
----
-
-# Character traits
-
-  * Background
-
-  * Likes/dislikes
-  
-  * Temperament
-  
-  * Goals
-  
-  * Alliances/Enemies
-  
-  * World view
-  
----
-
-# Name a famous character?
-
-  * Background?
-
-  * Likes/dislikes?
-  
-  * Temperament?
-  
-  * Goals?
-  
-  * Alliances/Enemies?
-  
-  * World view?
-  
----
-
-class: center, middle
-
-# Let's make this character the villain
-
-## What role and relation to the main character would they have?
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ZH2wGpEZVgE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ---
 
@@ -336,7 +390,7 @@ class: small
 
 # Story
 
-  * Remember the pencil, eraser, book?
+  * Remember the Sierra, queen of hammers and the nails?
   
 ---
 
@@ -396,6 +450,22 @@ class: small
 
 ---
 
+class: small
+
+# Diversity
+
+  * A [recent study](https://medium.com/@Electronic_Arts/what-inclusion-means-to-players-db4522bdd8a0) found that gamers increasingly want more diverse representation in games 
+  
+  * The study questioned 2252 *gamers*
+  
+  * 56% of the participants said that it is *important* to them that games are more inclusive (31% were neutral on the issue, only 13% found it not important)
+  
+  * 45% said they were more likely to play a game if the developers added inclusive features 
+  
+  * Respondents also said that games are becoming more inclusive, but that it is important that developers keep their characters authentic
+
+---
+
 class: center, middle
 
 # Economy
@@ -450,11 +520,15 @@ class: small
 
 ---
 
-class: small
+# Resources 
 
-# References
+  * <a href="http://matthewbarr.co.uk/bartle">Online Player Type Survey</a>
+  
+  * <a href="https://www.gamasutra.com/view/feature/134842/personality_and_play_styles_a_.php">Personality And Play Styles: A Unified Model</a>
 
-  * The Art of Game Design, a Book of Lenses, Jesse Schell, chapters 18 and 19
+  * <a href="http://www.gamasutra.com/view/feature/166972/cognitive_flow_the_psychology_of_.php">Cognitive Flow</a>
+  
+  * <a href="https://www.gamasutra.com/view/feature/134774/the_designers_notebook_eight_.php">How not to make a tutorial</a>
   
   * <a href="https://www.gamasutra.com/view/feature/134576/virtual_economic_theory_how_mmos_.php">Virtual Economic Theory: How MMOs Really Work</a> by Simon Ludgate
 
@@ -463,6 +537,8 @@ class: small
     </script>
     <script>
       var slideshow = remark.create();
+      
+     
     </script>
   </body>
 </html>
