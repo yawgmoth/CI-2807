@@ -5,7 +5,7 @@ permalink: /slides/lecture13.html
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Lecture 12: 3D graphics</title>
+    <title>Lecture 13: 3D graphics</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -25,6 +25,8 @@ permalink: /slides/lecture13.html
       .large { font-size: 2em; }
       .medium li {  font-size: 1.1em; }
       .small li {  font-size: 1em; }
+      
+      .smallp {  font-size: 0.17em; }
       
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
     </style>
@@ -71,6 +73,33 @@ class: center, middle
   * Convex makes it easier to interpolate between the vertices
   
   * Any polygon can be divided into triangles 
+  
+---
+
+class: smallp
+
+# An Example
+
+Consider the triangle 
+$$
+a = (2,2,3), 
+b = (3,3,4), 
+c = (3,1,3)
+$$
+with the normal vector 
+$$
+\vec{n} = \begin{pmatrix} 
+\frac{-1}{\sqrt{6}} \\\\ 
+\frac{-1}{\sqrt{6}} \\\\
+\frac{2}{\sqrt{6}}
+\end{pmatrix}
+$$
+and a point 
+$$
+p = (3\sqrt{6},0, 2\sqrt{6})
+$$
+
+## Does the point p lie in front of or behind the triangle?
   
 ---
 
@@ -185,6 +214,19 @@ $$c(p) = \theta \cdot c(r) + \phi \cdot c(s) + \psi \cdot c(t)$$
 
 ---
 
+# An example
+
+Consider the triangle 
+$$
+a = (1,0,0), 
+b = (1,1,0), 
+c = (0,1,0)
+$$
+
+## If a has the color (99,0,0), b has the color (0,39,0), and c has the color (0,81,81), what color does the barycenter of the triangle have using linear interpolation? Which color does the point that is twice as close to a as to b and c (in the barycentric sense) have?
+
+---
+
 class: medium
 
 # Normals
@@ -234,6 +276,19 @@ Let's use (0.5,0.5) as the UV value for one vertex.
 <table><tr><td>
 
 <div id="tex1container"></div></td><td><img src="/CI-2700/assets/img/crateuv.png"></td></tr></table>
+
+---
+
+# An example
+
+Consider the triangle 
+$$
+a = (2,1,3), 
+b = (4,3,4), 
+c = (3.5,2.5,4.5) 
+$$
+
+## If a has the color (99,0,0), b has the color (0,39,0), and c has the color (0,81,81), what color does the barycenter of the triangle have using linear interpolation? Which color does the point that is twice as close to a as to b and c (in the barycentric sense) have?
 
 ---
 
@@ -492,6 +547,14 @@ class: small
   
 ---
 
+class: center, middle
+
+# Shaders 
+
+<div id="shcontainer"></div>
+
+---
+
 class: small
 
 # Shaders 
@@ -502,21 +565,200 @@ class: small
   
   * Geometry shaders operate on primitives (triangles)
   
-  * Fragment shaders operate on fragments (drawable parts)
+  * Fragment/pixel shaders operate on fragments (drawable parts)
   
   * Compute shaders can be used to do calculations on the GPU
-  
-  * More next week
+
+  * Written in a Shader Language
   
 ---
 
-# Rendering: Shaders 
+# Shader languages 
 
-<div id="shcontainer"></div>
+  * ARB assembly (legacy)
+  
+  * Cg (deprecated)
+  
+  * GLSL (OpenGL)
+  
+  * HLSL (DirectX, used by Unity)
+  
+  * Tool: HLSL2GLSL
+  
+---
+
+# HLSL Shaders
+
+```HLSL
+Shader "ShaderName"
+{
+    Properties
+    {
+       // Properties you can set in Unity
+    }
+
+    SubShader
+    {
+        // Shader code
+    }   
+}
+```
 
 ---
+
+# HLSL Shader properties
+
+```HLSL
+Properties
+{
+    _MyTexture ("My texture", 2D) = "white" {}
+
+    _MyInt ("My integer", Int) = 2
+    _MyFloat ("My float", Float) = 1.5
+    _MyRange ("My range", Range(0.0, 1.0)) = 0.5
+
+    _MyColor ("My color", Color) = (1, 0, 0, 1)    // (R, G, B, A)
+    _MyVector ("My Vector4", Vector) = (0, 0, 0, 0) // (x, y, z, w)
+}
+```
+  
+---
+
+# HLSL Shader properties as 
+
+```HLSL
+SubShader
+{
+    sampler2D _MyTexture; // 2D = sampler2D
+
+    int _MyInt;
+    float _MyFloat;
+    float _MyRange;
+    half4 _MyColor; // Color = half4
+    float4 _MyVector; // Vector = float4
+
+    // Code
+}
+```
+
+---
+
+class: small
+
+# Vertex and Pixel Shader 
+
+```HLSL
+Pass {
+    CGPROGRAM
+    #pragma vertex vert             
+    #pragma fragment frag
+    struct vertInput { float4 pos : POSITION; };  
+    struct vertOutput { float4 pos : SV_POSITION; };
+    vertOutput vert(vertInput input) { 
+        vertOutput o;
+        o.pos = mul(UNITY_MATRIX_MVP, input.pos);
+        return o;
+    }
+    half4 frag(vertOutput output) : COLOR {
+        return half4(1.0, 0.0, 0.0, 1.0); 
+    }
+    ENDCG
+}
+```  
+
+---
+
+class: small
+
+# What can you pass in and out of these shaders?
+
+  * Possible inputs:
+      - `POSITION`
+      - `NORMAL`
+      - `COLOR`
+      - `TEXCOORD0`, `TEXCOORD1`, ...
+      - etc.
+      
+  * Possible outputs:
+      - `SV_POSITION`
+      - `COLOR`
+      - `TEXCOORD0`, `TEXCOORD1`, ...
+      - etc.
+      
+---
+
+class: small
+
+# What can you do?
+
+  * Vertex Shader:
+     - Change positions of vertices
+     - Modify texture coordinates
+     - Store information for the pixel shader 
+   
+  * Pixel Shader:
+     - Change how a pixel is drawn 
+     - Add noise or distortion effects (water, glass)
+     
+---
+
+class: small
+
+# How do you use a Shader in Unity?
+
+  * Create a new Asset:
+      - Surface Shader 
+      - Unlit Shader for a Vertex *and* Pixel Shader 
+      
+  * On your material, select your Shader from the dropdown box 
+  
+<img src="/CI-2700/assets/img/unity_shader.png" width="50%"/>
+     
+---
+
+class: small
+
+# Wobbling
+
+In the Vertex Shader:
+
+```HLSL
+fixed4 col = tex2Dlod(_NoiseTex, float4(v.uv, 0, 0));
+float d = 1 - (v.uv[1]*v.uv[1] + v.uv[0]*v.uv[0]) + col[0];
+
+o.vertex = UnityObjectToClipPos(v.vertex + 
+              float4(0.0, 0.5*(sin(_Time[2] + d*8) / 2 + 0.5), 
+                                0.0, 0.0));
+o.tex = float4(d,0,0,0);
+```
+
+In the Pixel Shader:
+```HLSL
+fixed4 col = float4(0, 0, 
+         (sin(_Time[2] + i.tex[0]*8)/2 + 0.5),1);
+```
+
+---
+
+# Wobbling: Result
+
+<div class="webgl-content">
+  <div id="gameContainer" style="width: 700px; height: 400px"></div>
+  <div class="footer">
+    <div class="webgl-logo"></div>
+    <div class="fullscreen" onclick="gameInstance.SetFullscreen(1)"></div>
+  </div>
+</div>
+
+<a href="/CI-2700/assets/unity/WobblyShader.shader">Shader source code</a>
+
+---
+
+class: medium
 
 # References 
+
+   * Book: *Mathematics for Game Developers*, by Christopher Tremblay
 
    * [Barycentric coordinate system](https://en.wikipedia.org/wiki/Barycentric_coordinate_system)
    
@@ -527,6 +769,8 @@ class: small
    * [three.js](https://threejs.org/) (JavaScript library for easy 3D rendering)
    
    * [OpenGL Render Pipeline](https://www.khronos.org/opengl/wiki/Rendering_Pipeline_Overview)
+   
+   * [Vertex and Fragment shaders in Unity](https://www.alanzucconi.com/2015/07/01/vertex-and-fragment-shaders-in-unity3d/)
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
