@@ -841,7 +841,7 @@ class: medium
       
     
  
-    var cubeinfo = setupScene(window.innerWidth/2, window.innerHeight/2, "container");
+    var cubeinfo = setupScene(window.innerWidth/2-200, window.innerHeight/2, "container");
     cubeinfo.update = function ( object ) {
             const timer = Date.now() * 0.0001;
             if ( object.isMesh === true ) {
@@ -850,7 +850,7 @@ class: medium
             }
         };
     
-    var triinfo = setupScene(window.innerWidth/2, window.innerHeight/2, "tricontainer");
+    var triinfo = setupScene(window.innerWidth/2-200, window.innerHeight/2, "tricontainer");
 
     triinfo.update = function ( object ) {
             const timer = Date.now() * 0.0001;
@@ -859,7 +859,7 @@ class: medium
             }
         };
         
-    var tricolinfo = setupScene(window.innerWidth/2, window.innerHeight/2, "tricolcontainer");
+    var tricolinfo = setupScene(window.innerWidth/2-200, window.innerHeight/2, "tricolcontainer");
 
     tricolinfo.update = function ( object ) {
             const timer = Date.now() * 0.0001;
@@ -868,7 +868,7 @@ class: medium
             }
         };
         
-    var texinfo = setupScene(window.innerWidth/4, window.innerHeight/2, "texcontainer");
+    var texinfo = setupScene(window.innerWidth/4-100, window.innerHeight/2, "texcontainer");
     
     texinfo.update = function ( object ) {
             const timer = Date.now() * 0.0001;
@@ -877,7 +877,7 @@ class: medium
             }
         };
     
-    var tex1info = setupScene(window.innerWidth/4, window.innerHeight/2, "tex1container");
+    var tex1info = setupScene(window.innerWidth/4-100, window.innerHeight/2, "tex1container");
     
     tex1info.update = function ( object ) {
             const timer = Date.now() * 0.0001;
@@ -886,7 +886,7 @@ class: medium
             }
         };
 
-    var shinfo = setupScene(window.innerWidth/2, window.innerHeight/2, "shcontainer");
+    var shinfo = setupScene(window.innerWidth/2-200, window.innerHeight/2, "shcontainer");
     
     
     
