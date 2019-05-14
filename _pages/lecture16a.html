@@ -1,0 +1,126 @@
+---
+permalink: /slides/lecture16a.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vector Math Practice</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/CI-2807/assets/unity/matrixcalculator/TemplateData/style.css">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.8em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .tiny table {  font-size: 0.8em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Vector Math Practice
+
+---
+
+class: small
+
+You are given a triangle with vertices (4,3,1), (6,4,-1), (3,3,3), and normal vector (2/3, -2/3, 1/3).
+
+The camera is located at (7,1,3), and looking in direction (-2,-2,-1). Does the triangle face the camera?
+
+How far from the plane of the camera is each of the three vertices (hint: The direction vector points in the same direction as the normal of the camera plane)
+
+---
+
+class: small 
+
+The player is at (1,2,1) and looking in direction (2,1,2). If they can see anything in front of them (180 degrees field of view), can they see the enemy at (3,-1,-2)? 
+
+How large does their field of view have to be *at least* to be able to see the enemy?
+
+---
+
+class: small
+
+Given a triangle with vertices (3,1,2), (4,1,3), (-1,-2,4), calculate the Barycenter of this triangle.
+
+The vertices are assigned the colors (42,126,222), (124, 204, 54) and (252,252,252). What is the color of the Barycenter?
+
+Which colors do the middle points of the three edges have?
+
+---
+
+class: small
+
+# Matrix Problem Generator
+
+  * On the right side you can type any combination of two movements or rotations and a vector, and the demo will calculate the matrices, the composed matrix, and how it transforms the given vector
+  
+  * On the bottom left, you can generate problems for you to solve as practice for the exam
+  
+  * The "Show Solution" button will automatically populate the fields on the right side and calculate the matrices
+  
+  * The box will show a visualization of the transformation, played out in steps
+
+---
+
+<div class="webgl-content">
+  <div id="unityContainer" style="width: 700px; height: 400px"></div>
+  <div class="footer">
+    <div class="webgl-logo"></div>
+    <div class="fullscreen" onclick="gameInstance.SetFullscreen(1)"></div>
+  </div>
+</div>
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script src="/CI-2807/assets/unity/matrixcalculator/TemplateData/UnityProgress.js"></script>
+    <script src="/CI-2807/assets/unity/matrixcalculator/Build/UnityLoader.js"></script>
+    <script>
+      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/webbuild.json", {onProgress: UnityProgress});
+    </script>    
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+   
+      
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+    <script src="sprite-animation.js"></script>
+  </body>
+</html>
