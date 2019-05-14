@@ -89,7 +89,7 @@ class: small
 ---
 
 <div class="webgl-content">
-  <div id="unityContainer" style="width: 700px; height: 400px"></div>
+  <div id="unityContainer" style="width: 900px; height: 500px"></div>
   <div class="footer">
     <div class="webgl-logo"></div>
     <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
@@ -116,7 +116,6 @@ class: small
     <script>
       var unityInstance = UnityLoader.instantiate("unityContainer", "/CI-2807/assets/unity/matrixcalculator/Build/webbuild.json", {onProgress: UnityProgress});
     </script>    
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     
     <script type="text/javascript">
       var slideshow = remark.create({"highlightStyle": "dark"});
@@ -132,6 +131,5 @@ class: small
 
       MathJax.Hub.Configured();
     </script>
-    <script src="sprite-animation.js"></script>
   </body>
 </html>
