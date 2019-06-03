@@ -1,11 +1,11 @@
 ---
-permalink: /slides/lecture23.html
+permalink: /slides/lecture21.html
 ---
 
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Lecture 23: Physics Simulation</title>
+    <title>Lecture 21: Physics Simulation</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -323,7 +323,7 @@ class: small
   
   * Both use the same equation, but different constants
   
-  * For example: Aluminium and steel have a static friction coefficient of 0.61, and a kinetic friction coefficient of 0.47
+  * For example: Aluminum and steel have a static friction coefficient of 0.61, and a kinetic friction coefficient of 0.47
   
 ---
 
@@ -426,6 +426,79 @@ class: small
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/HEfHFsfGXjs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+
+---
+
+class: middle, center
+
+# Story time 
+
+## From the Quake 3 Source Code
+
+---
+
+class: small
+
+# Inverse Square Root 
+
+  * For Steering Behaviors we often use normalized vectors 
+  
+  * Turns out normalizing vectors is something that is also used often in graphics (normals, for example)
+  
+  * How do you normalize a vector? You divide by its length 
+  
+  * How do you calculate the length? It's the square root of the sum of the squares of its components
+  
+$$
+v_n = \frac{v}{\sqrt{v_x^2 + v_y^2 + v_z^2}}
+$$
+   
+--
+
+As it turns out, 1/sqrt(x) can be calculated "quickly".
+
+---
+
+# Fast Inverse Square Root
+
+(Unedited from the Quake 3 source code)
+
+```C
+float Q_rsqrt( float number )
+{
+  long i;
+  float x2, y;
+  const float threehalfs = 1.5F;
+  x2 = number * 0.5F;
+  y  = number;
+  i  = * ( long * ) &y; // evil floating point bit level hacking
+  i  = 0x5f3759df - ( i >> 1 );  // what the fuck? 
+  y  = * ( float * ) &i;
+  y  = y * ( threehalfs - ( x2 * y * y ) );  
+      // 1st iteration
+//	y  = y * ( threehalfs - ( x2 * y * y ) );   
+      // 2nd iteration, this can be removed
+  return y;
+}
+```
+
+---
+
+class: small
+
+# Fast Inverse Square Root 
+
+  * Using an integer as a float is approximately the same as calculating the logarithm
+  
+  * Conversely, casting back to float basically performs an exponentiation
+  
+  * The line `y  = y * ( threehalfs - ( x2 * y * y ) );` is an iteration of Newton's algorithm on f(y) = 1/y^2 - 2*x2
+  
+  * And the weird line? It basically divides the number by 2, and performs some scaling and cleanup
+  
+$$
+\log(\frac{1}{\sqrt{x}}) = -\frac{1}{2} \log(\frac{1}{x})
+$$
   
 ---
 
@@ -444,6 +517,8 @@ class: small
    * [Stable Rigid-body Physics](https://www.gamasutra.com/features/gdcarchive/2001/rhodes_paper.pdf)
    
    * [Super Planet Crash: Physics Based Game](http://www.stefanom.org/spc/)
+   
+   * [Understanding Quake's Fast Inverse Square Root](https://betterexplained.com/articles/understanding-quakes-fast-inverse-square-root/)
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
