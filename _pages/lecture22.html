@@ -1,11 +1,11 @@
 ---
-permalink: /slides/lecture24.html
+permalink: /slides/lecture22.html
 ---
 
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Lecture 24: Collision Detection</title>
+    <title>Lecture 22: Collision Detection</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -47,7 +47,7 @@ class: center, middle
 
 # Collision Detection 
 
- * Yesterday we talked about how forces and masses make objects move 
+ * Last week we talked about how forces and masses make objects move 
  
  * Today we will be talking about how to detect if two objects bump into each other 
  
@@ -98,7 +98,7 @@ $$
 
 # Sphere-Sphere Collisions
 
-Remember from yesterday: To determine the resulting forces, we also need the normal of the impact site 
+Remember from last week: To determine the resulting forces, we also need the normal of the impact site 
   
 <img src="/CI-2700/assets/img/elastic.gif" width="50%"/>
 
@@ -108,7 +108,7 @@ In the case of two spheres, the normal is the vector from one center to the othe
 
 # Sphere-Ray Collisions 
 
-  * Sometimes all we want is to determine what is in a straight line from a certain point 
+  * Sometimes (for bullets, vision, path planning) all we want is to determine what is in a straight line from a certain point 
   
   * In Unity this is done by ray casts 
   
@@ -120,7 +120,7 @@ In the case of two spheres, the normal is the vector from one center to the othe
   
 ---
 
-# The Dot Product
+# Your Best Friend: The Dot Product
 
 $$
 \vec{A} \cdot \vec{B} = ||\vec{A}|| \cdot ||\vec{B}|| \cdot \cos{\theta}
@@ -392,6 +392,18 @@ $$
 
 ---
 
+# Question
+
+Given a plane going through the point (1,2,3) with normal (0.71,0,-0.71), for each of these three points determine if it lies in front, behind or on the plane.
+
+P1 = (3,4,5)
+
+P2 = (5,4,3)
+
+P3 = (0,0,0)
+
+---
+
 # Polyhedron-Point Collisions
 
   * Now let's say we have a polyhedron
@@ -404,6 +416,21 @@ $$
       - Shoot a ray from the point and count how often it intersects the polyhedron
       
   * The first method only works on convex shapes
+  
+---
+
+# Question
+
+Given a tetrahedron with points 
+
+$$a = (1, 1, 1)\\\\
+b = (−1, −1, 1)\\\\
+c = (−1, 1, −1)\\\\
+d = (1, −1, −1)
+$$
+
+How would we test if the point `\(p = (0.71,0.71,0)\)` is inside that tetrahedron?
+
 
 ---
 
@@ -481,7 +508,7 @@ $$
 
   * If the center (point) of the sphere is inside the polyhedron, they collide 
 
-  * Otherwise, shoot a ray towards the polyhedron: If the intersection distance is less than the radius, they also collide  
+  * Otherwise, shoot a ray towards the polyhedron: If the intersection distance is less than the radius, they also collide
 
 ---
 
