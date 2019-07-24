@@ -1,15 +1,15 @@
 ---
-title: "Lecture Notes"
+title: "Lecture Notes Archive"
 layout: archive
-excerpt: "Slides and other material used in the lectures"
+excerpt: "Slides and other material used in the lectures from previous semesters"
 sitemap: true
-permalink: /slides/
+permalink: /archive/
 frontpageorder: 1
 categories: [frontpage]
 ---
 
-<a href="lecture1II.html">Lecture 1: Introduction, Aug 13, 2019</a><br/>
-<!--<a href="lecture2.html">Lecture 2: What are (video) games? Mar 15, 2019</a><br/>
+<a href="lecture1.html">Lecture 1: Introduction, Mar 12, 2019</a><br/>
+<a href="lecture2.html">Lecture 2: What are (video) games? Mar 15, 2019</a><br/>
 <a href="lecture3.html">Lecture 3: Game Design, Mar 19, 2019</a><br/>
 <a href="lecture4.html">Lecture 4: Game Design Document, Mar 22, 2019</a><br/>
 <a href="lecture5.html">Lecture 5: Development Process, Mar 26, 2019</a><br/>
@@ -38,4 +38,4 @@ categories: [frontpage]
 <a href="lecture26.html">Lecture 26: Monetization and Publishing, Jun 28, 2019</a><br/>
 <a href="lecture27.html">Lecture 27: Review, Jul 2, 2019</a><br/>
 <a href="/CI-2807/assets/pdf/exam2.pdf">Second Exam from III Ciclo 2018</a><br/>
-<a href="/CI-2807/assets/pdf/exam2a.pdf">Second Exam from III Ciclo 2018 (alternative version)</a><br/>--!>
+<a href="/CI-2807/assets/pdf/exam2a.pdf">Second Exam from III Ciclo 2018 (alternative version)</a><br/>
