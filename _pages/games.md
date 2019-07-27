@@ -3,7 +3,7 @@ title: "Student Games"
 layout: single
 excerpt: "Game projects developed by the students as part of the course"
 sitemap: true
-permalink: /games/
+permalink: /games
 frontpageorder: 4
 categories: [frontpage]
 ---
