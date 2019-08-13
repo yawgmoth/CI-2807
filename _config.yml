@@ -16,10 +16,10 @@ minimal_mistakes_skin    : "dark" # "air", "aqua", "contrast", "dark", "dirt", "
 
 # Site Settings
 locale                   : "en-US"
-title                    : "CI-2807"
+title                    : "Creacion de Videojuegos"
 title_separator          : "-"
 name                     : "Markus Eger"
-description              : "CI-2807 - Creacion de videojuegos - course website"
+description              : "Creacion de videojuegos - course website"
 url                      : https://yawgmoth.github.io/ci-2807 # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : yawgmoth/ci-2807 # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
