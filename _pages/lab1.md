@@ -5,10 +5,8 @@ excerpt: "Lab 1: Unity 3D Intro"
 sitemap: true
 permalink: /labs/lab1
 frontpageorder: 4
-categories: [labs]
+categories: []
 ---
-
-# Lab 1
 
 ## Introduction
 
