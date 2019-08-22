@@ -8,6 +8,9 @@ frontpageorder: 4
 categories: []
 ---
 
+* TOC
+{:toc}
+
 ## Introduction
 
 In this lab you will develop a very basic 3D hovercraft racing game using Unity and its built-in physics engine. You should start by opening Unity and familiarizing yourself with the UI. In Unity, each game is a *project*, consisting of multiple levels, or *scenes*. Each scene, in turn, contains various *game objects* which are arranged in a *hierarchy*. Game objects, finally, can contain various *components*, each of which is responsible for different aspects of the game. The most important components are the *transform*, which defines the position and rotation of the game object in the scene, *renderers*, which define if and how a game object is shown in the game, *collider* and *rigidbody*, which define the physical properties of an object, including if and how it reacts to collisions, and - perhaps most importantly - *scripts*, which are used to implement arbitrary behavior. For a reasonably complex game, Unity could look like this:
