@@ -1,0 +1,585 @@
+---
+permalink: /slides/lecture4.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 4: Game Design Document</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .medium li {  font-size: 1.1em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      
+      .left-column {
+        color: #777;
+        width: 40%;
+        height: 92%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 55%;
+        float: right;
+        padding-top: 1em;
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Game Design Document
+
+---
+
+class: center, middle 
+
+# Achievements
+
+---
+
+# Achievements 
+
+  * In addition to goals (as we discussed last time), games provide players with "achievements"
+  
+  * The distinction is sometimes a bit blurry 
+  
+  * Often, though, games use achievements as "bonus"/optional goals 
+
+---
+
+# Achievements
+  
+<iframe width="560" height="315" src="https://www.youtube.com/embed/hFM4eIAou5M" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+---
+
+# Achievements 
+
+Which Achievements could we add to Super Mario?
+
+  * Unavoidable
+
+  * Optional 
+  
+  * Inspiring
+
+---
+
+class: center, middle
+
+# Game Design Document
+
+---
+
+# Game Design Document (GDD)
+
+A living, changing document containing
+  
+  * Game Pitch ("hook")
+  
+  * Setting
+  
+  * Rules (interactions)
+  
+  * Goals 
+  
+---
+
+# Game Design Document
+
+  * GDDs have been described as "obsolete"
+  
+  * Prototyping has become easier
+  
+  * There is usually still *some* documentation about a game before it is actually implemented
+  
+  * GDDs differ from company to company 
+  
+---
+
+# Game Pitch
+
+  * The most important part of the GDD 
+  
+  * You want the reader to become interested ("hooked")
+  
+  * One approach: Relate to an existing game and provide a twist
+  
+  * Another approach: Mention a unique idea/setting/mechanic
+  
+  * In practice, also: Argue using proven concepts
+  
+---
+
+# What's the pitch?
+
+<img src="/CI-2700/assets/img/tetris.gif" height="400px"/>
+
+(Tetris)
+
+---
+
+# What's the pitch?
+
+<img src="/CI-2700/assets/img/minecraft.jpg" width="90%"/>
+
+(Minecraft)
+
+---
+
+# What's the pitch?
+
+<img src="/CI-2700/assets/img/portal2.jpg" width="90%"/>
+
+(Portal 2)
+
+---
+
+# What's the pitch?
+
+<img src="/CI-2700/assets/img/mariokart.gif" width="90%"/>
+
+(Mario Kart)
+
+---
+
+# What's the pitch?
+
+<img src="/CI-2700/assets/img/guitar-hero.jpg" width="90%"/>
+
+(Guitar Hero)
+
+---
+
+# Ideation
+
+  * What do you want players to feel/experience?
+  * What mechanics do you want to incorporate?
+  * What do you see in the world around you?
+  * Which games are already fun?
+  * Which technology is available?
+  * Which art assets, world, IP do you have?
+  * Who do you want to play your game?
+  * Random page on wikipedia, tvtropes, a dictionary, ...
+  
+---
+
+# Setting
+
+  * Characters 
+  
+  * World 
+  
+  * Story
+  
+  * Not applicable to all games (Tetris?)
+  
+---
+
+# Characters
+
+  * Personality
+  
+  * Goals 
+  
+  * Relationships, conflicts
+  
+  * Who is the player?
+  
+---
+
+# World
+
+  * Time/technological level 
+  
+  * Location, real or fictional 
+  
+  * Relevant factions/groups
+  
+  * Where is the player?
+  
+---
+
+# Story
+
+  * Characters want to achieve their goals 
+  
+  * Conflicting goals result in obstacles
+  
+  * What does the player need to do?
+  
+  * How does the player progress through the story?
+  
+  * Non-linear stories, sandbox games
+  
+---
+
+# Name a popular story!
+
+  * Characters
+  
+  * World
+  
+  * Story/Conflict
+  
+---
+
+class: middle, center
+
+# Popular Story
+
+## Game?
+
+---
+
+# Rules/mechanics
+
+  * Objects, attributes, and relationships
+  
+  * Describes gameplay formally and provides basis for implementation
+  
+  * What does the player do in the game/how is it challenging?
+  
+  * Informal description is helpful
+  
+  * Compare to design in software engineering
+  
+---
+
+# Goals
+
+  * What is the player supposed to achieve?
+  
+  * Is there a win/loss condition, quests, etc.
+  
+  * Why should someone play the game?
+  
+  * Not always a clear answer
+  
+---
+
+# Aesthetics
+
+  * What should the game look/feel like 
+  
+  * Art assets (<a href="https://opengameart.org/">opengameart.org</a>, Unity asset store)
+  
+  * UI Style
+  
+  * Sound?
+  
+  * Can provide concept art, prototype screenshots, etc.
+   
+---
+
+# For the project 
+
+  * Team name, game name 
+  
+  * Rules and goals for the game
+  
+  * Setting/story, if applicable
+  
+  * Team members and relevant skills
+
+---
+
+# For the project 
+
+  * Team name, game name 
+  
+  * <b>Rules and goals for the game</b>
+  
+  * Setting/story, if applicable
+  
+  * Team members and relevant skills
+  
+---
+
+# For the project 
+
+  * I want you to think about your game in a formal way 
+  
+  * List the objects, attributes, and relationships explicitly
+  
+  * You should also provide a textual description of the rules and goals
+  
+  * If you have any prototype screenshots or diagrams, feel free to include them, but they are not required
+  
+---
+
+class: small
+
+# For the project 
+
+  * Choose an appropriate level of abstraction 
+  
+  * Be **consistent** 
+  
+  * There should be a description of:
+     - What the player can do 
+     - How the game reacts
+     - What the goal is
+     
+---
+
+# For example: Hoverrace
+
+  * [Hoverrace](/CI-2700/assets/unity/winbuild.zip) is a small game I made as a demo for the course
+  
+  * It is a racing game set on a lake, with high speed hovercrafts that can slide around corners
+  
+  * Makes heavy use of the Unity physics engine
+  
+  * We'll recreate most of it during one of the Unity classes
+  
+---
+
+class: middle, center
+
+# Example GDD
+
+## <a href="/CI-2700/assets/pdf/GDD.pdf">Hoverrace GDD</a>
+
+---
+
+# Objects and Attributes
+
+  * You can also put the objects and attributes into a table, or tables 
+  
+  * Or draw a (sort of) class diagram
+  
+  * Consistency is key
+
+---
+
+class: small
+
+# From the design document to a game
+
+  * Like in software engineering, the design document tells you how to start implementing
+  
+  * Objects fall into three categories:
+  
+     - Objects with behavior (code)
+     
+     - Passive scene objects 
+     
+     - Abstract objects (buttons)
+     
+  * In Unity: Create a scene, and populate with objects 
+  
+  * Add behavior/code step by step
+  
+---
+
+class: small
+
+# Hoverrace scene 
+
+.left-column[ 
+  <img src="/CI-2700/assets/img/scene.png" width="100%"/>
+]
+
+.right-column[
+   
+* Player
+   
+* AI Opponent
+   
+* Checkpoints 
+   
+* Terrain, water
+   
+* UI
+   
+* etc
+]
+
+---
+
+# Further notes on game design
+
+  * Try to play games with an open eye
+  
+  * Explicitly identify objects, attributes and relationships
+  
+  * Think about *why* objects relate in a certain way
+  
+  * What could you change about the game to keep it the same/similar, what would change it 
+  
+  * Exploit behavior, find unintended functionality
+  
+---
+
+# Every Frame a Painting
+
+  * Don't assume that any detail is added randomly
+  
+  * Game designers have very particular experiences in mind 
+  
+  * Compare to films: Very subtle effects are used intentionally by the directors
+ 
+  * Warning: This may change your experience of games (or movies)
+  
+---
+
+# Every Frame a Painting
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/5UE3jz_O_EM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+---
+
+class: center, middle 
+
+# Story Time!
+
+---
+
+# Apex Legends 
+
+  * Apex Legends was released earlier this year
+
+  * "The Next Evolution of Battle Royale", published by EA
+  
+  * Very popular game, reaching 50 Mio downloads in less than a month
+  
+  * Free to play with monetization in the form of cosmetic items 
+  
+---
+
+# Apex Legends: Iron Crown Event 
+
+  * About a week ago, an in-game event called "Iron Crown" started 
+  
+  * It added 25 new cosmetic items
+  
+  * One of them, a legendary axe, could only be obtained after a player had the other 24
+  
+  * The items are contained in loot boxes, which cost $7 each
+  
+  * Only 2 loot boxes could be obtained for free by playing the game 
+  
+---
+
+# Apex Legends: Controversy
+
+  * The legendary axe basically costs $170
+  
+  * Forbes, a **financial/business magazine** called this price "hilariously out of touch"
+  
+  * Players were equally unhappy
+  
+  * Reddit was fuming 
+  
+---
+
+# Apex Legends: How **not** to do PR 
+
+  * At this point, the developers could have apologized and fixed things 
+  
+  * They apologized ...
+  
+--
+
+  * And told players that they could also buy items for $18/piece (without the loot box)
+  
+  * Somehow, players were still not happy
+  
+---
+
+# Apex Legends: How not to talk to your players
+
+<img src="/CI-2700/assets/img/asshats.jpg" width="60%"/><br/>
+<img src="/CI-2700/assets/img/dick2.jpg" width="60%"/>
+
+---
+
+class: center, middle
+
+# Next Week
+
+---
+
+class: medium
+
+# Next Week: FDG
+
+  * I will be in California next week, to present a paper at the conference "Foundations of Digital Games" (FDG)
+  
+  * FDG is an interesting place, because there are many different kinds of games researchers there 
+  
+  * My paper is a collaboration with Daniel Gruss from University of Technology Graz, Austria
+  
+  * We present a communication method for Hanabi that uses timing rather than explicit communication 
+  
+  * Since computers can measure timing very precisely, we can transmit a lot of information this way, which helps a lot with the game
+  
+---
+
+class: medium
+
+# Next Week: Labs
+
+  * While I am gone, you will get to play with Unity 
+  
+  * I have prepared two tutorials you should work through 
+  
+  * I have reserved Lab 105 for this purpose during normal class hours, and Ruben will be present to help you if you get stuck 
+  
+  * You can find the labs [on the website](/CI-2807/labs)
+  
+---
+
+class: small
+
+# Resources
+
+  * <a href="https://www.gamasutra.com/view/feature/131791/the_anatomy_of_a_design_document_.php">The Anatomy of a Design Document</a>
+  
+  * <a href="https://www.gamasutra.com/blogs/LeandroGonzalez/20160726/277928/How_to_Write_a_Game_Design_Document.php">How to write a Game Design Document</a>
+  
+  * <a href="https://tvtropes.org/pmwiki/pmwiki.php/Main/Tropes">TVTropes</a>
+  
+  * <a href="https://www.youtube.com/watch?v=5UE3jz_O_EM">Every Frame a Painting: Shot/Reverse Shot</a>
+  
+  * <a href="https://www.pcgamer.com/uk/apex-legends-heirloom-items/">Apex Legends Super-Legendary Axe</a>
+  
+  * <a href="https://www.polygon.com/2019/8/18/20811014/apex-legends-iron-crown-skins-developers-rant-ass-hats-freeloaders-pc-ps4-xbox-one">Apex Legends Controversy</a>
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
