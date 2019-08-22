@@ -6,8 +6,8 @@ main:
     url: /slides
   - title: "Project"
     url: /project
-  - title: "Code Samples"
-    url: /samples
+  - title: "Labs"
+    url: /labs
   - title: "Student Games"
     url: /games
   - title: "Archive"
