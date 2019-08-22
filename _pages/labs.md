@@ -3,7 +3,7 @@ title: "Labs"
 layout: single
 excerpt: "Labs and Unity examples used in class"
 sitemap: true
-permalink: /labs
+permalink: /labs/
 frontpageorder: 3
 categories: [frontpage]
 ---
