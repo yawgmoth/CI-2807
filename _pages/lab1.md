@@ -21,7 +21,9 @@ In the center of the screen, you can see a 3D preview of the current scene. You 
 
 To the right of the scene view you can find the *inspector*, which shows you all components for the game object that is currently selected in the hierarchy. You can use the inspector to change attributes of components, but also to add, remove, or temporarily activate/deactivate components. 
 
-Finally, at the bottom of the screen, you can see the folders and files that make up your project. This is where you will place art assets, like 3D models or 2D images, that can then be used in any scene in your project. 
+Finally, at the bottom of the screen, you can see the folders and files that make up your project. This is where you will place art assets, like 3D models or 2D images, that can then be used in any scene in your project.
+
+Below you will find a step-by-step description for creating a simple racing game, inspired by "Hoverrace" as shown in class. Note that instructions start out with a lot of detailed, often providing the entire source code that is required. Read and try to understand the code, because as the tutorial progresses you will be given less and less detail, and are expected to figure things out on your own.
 
 ## Getting started
 
@@ -151,6 +153,10 @@ If you click the tab "Asset Store", you can search for better art assets for the
 ## Landscape (optional)
 
 Just having a plane as the landscape is a bit boring. Luckily, Unity provides a "Terrain" game object, in which we can use brushes to "draw" mountains, hills, canyons, etc. and then also put textures on the different parts of the level. If you want to know more about how to do this, check out this <a href="https://medium.com/@brianmayrose/unity3d-beginner-tutorial-creating-a-textured-terrain-185af232dc23">tutorial</a>.
+
+## Further Information
+
+You can find a completed version of this tutorial, with some extra features, on [github](https://github.com/yawgmoth/UnityDemo). You can also try a more advanced version of Hoverrace by downloading it from [here](/CI-2700/assets/unity/winbuild.zip)
 
 ## Some Frequent Pitfalls
 

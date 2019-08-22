@@ -77,7 +77,7 @@ Create a new script called `PhysicsObject`, and attach it to your player game ob
 
 ## Collisions
 
-While we are going to use our own code to move objects around, we will still make use of Unity's physics engine to detect collisions for us. Add a `CircleCollider2D` and a `Rigidbody2D` to the player game object, and a `BoxCollider2D` to the platform. Now, as-is, the Unity physics engine will **also** apply gravity to the player, which we want to avoid. Therefore, select the player game object, and in the inspector locate the Rigidbody 2D. Set the body type to "Kinematic", **and** uncheck the "Simulated" option. This will tell Unity that we want to move the object around, but it should not do its own physics simulation. Now we need to check for collisions when we more. Rather than adding this to the `Update` method, let's create a new method `Movement` in our `PhysicsObject` that takes a `Vector2 move` as a parameter and performs the necessary check before it actually moves the object (this can come in useful later, when we want to add other ways to move the object). Add the following code to this `Movement` method:
+While we are going to use our own code to move objects around, we will still make use of Unity's physics engine to detect collisions for us. Add a `CircleCollider2D` and a `Rigidbody2D` to the player game object, and a `BoxCollider2D` to the platform. Now, as-is, the Unity physics engine will **also** apply gravity to the player, which we want to avoid. Therefore, select the player game object, and in the inspector locate the Rigidbody 2D and set the body type to "Kinematic". This will tell Unity that we want to move the object around ourselves. Now we need to check for collisions when we more. Rather than adding this to the `Update` method, let's create a new method `Movement` in our `PhysicsObject` that takes a `Vector2 move` as a parameter and performs the necessary check before it actually moves the object (this can come in useful later, when we want to add other ways to move the object). Add the following code to this `Movement` method:
 
 ```
 if (move.magnitude < 0.00001f) return;
@@ -127,7 +127,7 @@ To add jumping, we add code to `PlayerController` that sets `velocity.y` to `6.5
 
 We will now make a nicer level, so you can delete the platform (leave the player as-is). Open paint and create a 64x64 image that is filled with green. Save it to the Assets-folder of your Unity project in a subfolder called "tiles". Repeat with a 64x64 image that is filled brown, and another one that is filled blue. In Unity, make sure the images show up in the project view. Select each of them, and set "Pixels per Unit" to 64
 
-Create a Tilemap game object from the menu "Game Object" - "2D", then open the tile palette using the menu "Window" - "2D" - "Tile Palette". The tilemap represents the level of your game, while the tile palette allows you to select different "brushes" to draw your level with. First, select "Create New Palette" in the tile palette window, and create a new folder for it in your Assets directory. Then locate the images you drew in paint earlier in the project view, select them, and drag and drop them into the palette. Unity will again ask you for a directory, just select the tile palette directory you just created. When you select one of the tiles in the tile palette, you will see a grid in the scene view. You can then paint tiles into the level (if not, make sure the "brush" tool at the top of the tile palette window is activated). Use the tile palette to draw a small level. Make sure there is at least one blue/"water" tile in the level. Before you play the game, select the TileMap game object (which is a child of Grid), and add a "TilemapCollider2D" component to it, otherwise your player will fall through the level. As you play around with the game, you may sometimes be able to fall into the "gaps" between two tiles. We will not fix this problem in this lab, but you should read the tutorials linked below if you need this for your project.
+Create a Tilemap game object from the menu "Game Object" - "2D", then open the tile palette using the menu "Window" - "2D" - "Tile Palette". The tilemap represents the level of your game, while the tile palette allows you to select different "brushes" to draw your level with. First, select "Create New Palette" in the tile palette window, and create a new folder for it in your Assets directory. Then locate the images you drew in paint earlier in the project view, select them, and drag and drop them into the palette. Unity will again ask you for a directory, just select the tile palette directory you just created. When you select one of the tiles in the tile palette, you will see a grid in the scene view. You can then paint tiles into the level (if not, make sure the "brush" tool at the top of the tile palette window is activated). Use the tile palette to draw a small level (if you misclick, you can use shift+click to erase tiles quickly). Make sure there is at least one blue/"water" tile the player could "fall into" in the level. Before you play the game, select the TileMap game object (which is a child of Grid), and add a "TilemapCollider2D" component to it, otherwise your player will fall through the level. As you play around with the game, you may sometimes be able to fall into the "gaps" between two tiles. We will not fix this problem in this lab, but you should read the tutorials linked below if you need this for your project.
 You may also notice that you can move the character out of the view of the camera, so - just like in the last lab - make the Main Camera a child of your player game object (you can move the camera around to get a screen layout you like). When you play the game now, it should look somewhat like this:
 
 <img src="/CI-2807/assets/img/2dlevel.png" width="100%"/>
@@ -136,18 +136,25 @@ Now we want to make the player reset when they fall into the water. Create an em
 
 <img src="/CI-2807/assets/img/2dcollider.png" width="100%"/>
 
-To reset the player, we first need to remember where they started. Add a member `Vector3 starting_position` to `PlayerController`, and save `transform.position` in this variable in the `Start` method. Now this is where our `CollideWithVertical` method comes in useful: Override this method in `PlayerController`. The `other` collider that is passed to this method has a `gameObject` attribute, which tells us which other game object we are colliding with. Now we can use the tag that we just set for the water hitbox to determine if what the player hit was water or not using the `CompareTag` method. If the object we collide with has the tag "water" we reset `transform.position` to `starting_position`. When you play the game now, you should reset back to the start when you hit the water.
+To reset the player, we first need to remember where they started. Add a member `Vector3 starting_position` to `PlayerController`, and save `transform.position` in this variable in the `Start` method. Now this is where our `CollideWithVertical` method comes in useful: Override this method in `PlayerController`. The `other` collider that is passed to this method has a `gameObject` attribute, which tells us which other game object we are colliding with. Now we can use the tag that we just set for the water hitbox to determine if what the player hit was water or not using the `CompareTag` method. If the object we collide with has the tag "water" we reset `transform.position` to `starting_position`. When you play the game now, you should reset back to the start when you hit the water. We can make more water pits, or other deadly areas (like spikes) by copying the game object and moving it to the other places that should kill the player, but it would also be interesting to have *moving* enemies.
 
 ## Enemies
 
+We will now add a simple, Goomba-like enemy that just moves back and forth between two walls. In your level, create a little pit between two "walls" and place a new sprite (perhaps using the UISprite again) there, similar to this (it will be helpful to put this close to the start, so you can observe it quickly when you play the game):
+
+<img src="/CI-2807/assets/img/2denemy.png" width="100%"/>
+
+Next, create a script `EnemyController`, which is derived from `PhysicsObject`, and attach it to the Enemy. Don't forget that every PhysicsObject needs a Collider (use a `BoxCollider2D`) and a `Rigidbody2D` (set "Body Type" to "Kinematic"). To make our enemy move, we only need to set `desiredx` to some value (e.g. `3`) in the `Start` method. Of course, now it will move towards the first wall and then get stuck there. However, remember that the `Movement` method calls the virtual method `CollideWithHorizontal` when the object hit something in x-direction. We can just override this method, and - when we hit something horizontally - set `desiredx = -desiredx`. With this, the enemy should move back and forth between the two walls. At this point, we can set the tag of the enemy game object to "water" and the player will reset to their starting position when they hit the enemy (from above).
+
+Play around a bit with this new enemy, and you may notice some problems. First, because we only handled vertical collisions for the water, the player also only dies if they jump on the enemy from above, but not if they walk into it from the side (it's actually pretty easy to get stuck this way). Also, if the player doesn't move, and the enemy runs into them, nothing happens, because we only handle the case in which the *player* jumps into the enemy. Think about how you would handle all of these cases, and implement these fixes.
 
 ## Putting it all together
 
-
+At this point, we have the ability to draw levels, place enemies and water pits, and then move around the level. Now create a slightly larger level, and put some object as the goal. To handle a "win condition", use the same logic as we used for detecting collisions with water and enemies, using a different tag. For now, it will suffice if the game prints a message to the debug log. Below you can also find some art assets if you want to make your game look nicer, or for use in your project.
 
 ## Some Art Assets
 
-  - <a href="https://assetstore.unity.com/packages/essentials/asset-packs/standard-assets-32351">Unity Standard Assets</a> (terrain textures, water, vehicles, a 2D character, code samples, etc. You probably want this)
+  - <a href="https://assetstore.unity.com/packages/essentials/asset-packs/standard-assets-32351">Unity Standard Assets</a> (terrain textures, water, vehicles, a 2D character, code samples, etc. You probably want this for you project)
   - <a href="https://assetstore.unity.com/packages/2d/environments/free-platform-game-assets-85838">2D platform assets</a> (character, blocks, enemies, coins, etc.)
   - <a href="https://assetstore.unity.com/packages/2d/characters/sunny-land-103349">Another pack of 2D platform assets</a>
   - <a href="https://assetstore.unity.com/packages/3d/characters/easyroads3d-free-v3-987">Roads</a> (Free package with some restrictions; should work well for a racing game)
@@ -157,7 +164,7 @@ To reset the player, we first need to remember where they started. Add a member 
   
 ## Further Information
 
-You can see a completed version of this tutorial on [github](https://github.com/yawgmoth/UnityDemo2D).
+You can find a completed version of this tutorial, with some extra features, on [github](https://github.com/yawgmoth/UnityDemo2D).
 
 If you want to know more about tilemaps, watch [this](https://unity3d.com/es/learn/tutorials/topics/2d-game-creation/intro-2d-world-building-w-tilemap?playlist=17093) excellent tutorial, or read [this](https://www.raywenderlich.com/23-introduction-to-the-new-unity-2d-tilemap-system) article.
 
@@ -170,5 +177,7 @@ If you want to know more about tilemaps, watch [this](https://unity3d.com/es/lea
   - Unity using floating point numbers for positions, rotations, scale. You have to append an f to numeric literals, or your code will not compile (e.g. you have to write `0.1f` instead of just `0.1`)
   
   - Make your members public so you can edit them in the inspector. For development this can be useful even for values you do not want to change from the scene view, because the inspector updates live while you play the game.
+  
+  - If you can't see any sprite, make sure it's z-coordinate is 0, or it may end up behind the camera.
   
   - If the tiles in a tile map are too big or too small make sure that the value of "pixels per unit" is correct. Each tile in a tile map is (by default) 1 by 1 units, and "pixels per unit" tells Unity how to scale down the tiles.
