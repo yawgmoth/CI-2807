@@ -1,0 +1,425 @@
+---
+permalink: /slides/lecture5.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 5: Unity, part 3</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .centered { text-align: center; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      
+      .left-column {
+        color: #777;
+        width: 40%;
+        height: 92%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 55%;
+        float: right;
+        padding-top: 1em;
+        font-size: 0.8em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Unity
+
+---
+
+class: center, middle 
+
+
+# FDG - Foundations of Digital Games
+
+# Conference
+
+## San Luis Obispo, California, 2019
+
+---
+
+# FDG 2019
+
+* As I mentioned, I went to a conference last week 
+
+* It was very interesting!
+
+* There was a panel of the IGDA's games education curriculum
+
+* I also talked to many people about potential future projects
+
+---
+
+# Keynote: Tarn Adams
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Keynote Speaker Tarn Adams <a href="https://twitter.com/Bay12Games?ref_src=twsrc%5Etfw">@Bay12Games</a> at <a href="https://twitter.com/hashtag/fdg19?src=hash&amp;ref_src=twsrc%5Etfw">#fdg19</a> speaking on providing systems to help players form their own narratives <a href="https://t.co/za9BjBS8gS">pic.twitter.com/za9BjBS8gS</a></p>&mdash; FDG 2019 Conference (@FDGconf) <a href="https://twitter.com/FDGconf/status/1166764570544705542?ref_src=twsrc%5Etfw">August 28, 2019</a></blockquote> 
+
+---
+
+# FDG 2019
+
+<img src="/CI-2807/assets/img/FDGdiscussion.jpg" width="100%"/>
+
+---
+
+# FDG 2019
+
+<img src="/CI-2807/assets/img/FDGlego.jpg" width="100%"/>
+
+---
+
+# FDG 2019
+
+<img src="/CI-2807/assets/img/FDGpresentation.jpg" width="100%"/>
+
+---
+
+# FDG 2019
+
+Why am I telling you all this?
+
+* Conferences are an important part of academia
+
+* It's nice to get out of your bubble, collaborations spark innovation
+
+* UCR/ECCI benefits from increased recognition in the research community
+
+* Maybe some of you want to work on a master's and/or PhD thesis?
+
+---
+
+class: center, middle 
+
+# Unity
+
+---
+
+# Controller support
+
+  * Controller support is very easy!
+  
+  * Just use Input.GetAxis, Input.GetButton etc.
+  
+  * Controllers should work out of the box!
+
+---
+
+# Particle Systems 
+
+  * Consist of a generator and particle properties
+  
+  * The generator emits particles 
+  
+  * Particles are usually simple sprites with colors
+  
+  * Can be used to make nice fire, smoke, etc.
+  
+  * Built-in system in Unity!
+  
+---
+
+# Particle Systems 
+
+<img src="/CI-2807/assets/img/unityparticles.png" width="100%"/>
+
+---
+
+# Animations 
+
+  * Animations in Unity use two parts: 
+     
+      - Animator Component
+      - Animation Controller
+      
+  * Of course you also need Animation Clips
+  
+  * You can make your own to animate basically anything
+  
+  * Window - Animation - Animation (or Ctrl+6)
+  
+---
+
+# Animations 
+
+<img src="/CI-2807/assets/img/animationcurve.png" width="100%"/>
+
+---
+
+class: small
+
+# Animator
+
+* The Animator defines which animation clips are played at what time 
+
+* This is done with a state machine (the Animation Controller), with transitions between states when conditions are satisfied
+
+* For example, when the movespeed is sufficiently high, an idle animation turns into a walk animation, and when the speed further increases that turns into a run animation
+
+```C#
+GetComponent<Animator>().SetFloat("movespeed", movespeed);
+```
+
+---
+
+# Animations 
+
+<img src="/CI-2807/assets/img/unityanimator.png" width="100%"/>
+
+---
+
+# Coroutines 
+
+  * Remember threads?
+  
+  * Sometimes all you want is for a function to run independently, pause for a bit and then continue
+  
+  * Or you need to wait for a download of some resource 
+  
+  * Use Coroutines! They run in the main thread, and can use all Unity API functions 
+  
+  * Alternative: IJob interface
+  
+---
+
+# Coroutines 
+
+```C#
+IEnumerator HighlightGO(GameObject go)
+{
+  MeshRenderer renderer = go.GetComponent<MeshRenderer>();
+  if (renderer == null) 
+      yield break;
+
+  Color original = renderer.material.color;
+  renderer.material.color = Color.white;
+
+  yield return new WaitForSeconds(3);
+  renderer.material.color = original;
+}
+
+...
+StartCoroutine(HighlightGO(someGameObject));
+```
+
+---
+
+class: small
+
+# Raycasts 
+
+   * Sometimes you want to know what the user clicks
+   
+   * `Camera.main.ScreenPointToRay(Input.mousePosition);`
+   
+   * `Physics.Raycast(ray, out res)`
+   
+   * Returns true if you hit anything
+   
+   * You will get information about what you hit in `res`
+   
+   * Also works with other rays (targeting, line-of-sight calculations, etc.)
+
+
+
+---
+
+# Raycasts
+
+```C#
+if (Input.GetMouseButtonDown(0))
+{
+    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    
+    RaycastHit res;
+    if (Physics.Raycast(ray, out res))
+    {
+        StartCoroutine(HighlightGO(res.collider.gameObject));
+    }
+}
+```
+
+---
+
+# Prefabs
+
+  * Prefabs are collections of game objects and components that you want to reuse
+
+  * Assemble in Scene, drag into Assets 
+
+  * You can edit the Prefab separately (since Unity 2018.3)
+  
+---
+
+# Prefabs
+
+Create a fireball: 
+
+```C#
+if (Input.GetButtonDown("Fire1")) {
+    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    Instantiate(fireball, transform.position + 
+                          ray.direction * 0.5f, 
+                 Quaternion.LookRotation(-ray.direction));
+}
+```
+
+Fireball:
+```C#
+void Update() {
+   transform.position += transform.rotation * 
+               (new Vector3(0, 0, -5) * Time.deltaTime);
+}
+
+private void OnTriggerEnter(Collider other) {   
+    Destroy(gameObject);
+}
+```
+
+---
+
+# Tags and Layers 
+
+  * You can assign Tags and Layers to game objects 
+  
+  * Tags can be used to tell you which type of game object you have (player, enemy, etc.)
+
+  * Layers are used by the Camera to determine what to show 
+  
+  * Can also be used by Raycast to ignore certain objects 
+
+---
+
+# Render-to-Texture 
+
+  * Usually, Cameras render what they see to the screen
+  
+  * You can also set up a Camera to render to a texture 
+  
+  * And then put that texture onto a game object 
+  
+  * Model surveillance cameras, add a minimap, mirrors, portals, etc.
+  
+---
+
+# Render-to-Texture 
+
+.left-column[
+<img src="/CI-2807/assets/img/cullingmask.png" width="100%"/>
+]
+
+.right-column[
+* Create a second camera 
+  
+* Select which layers that camera should render (avoid showing particle systems, use different symbol for the player on minimap, etc.)
+  
+* For a minimap you probably want to set the camera projection mode to "Ortographic"
+]
+
+---
+
+# Some Further Notes
+
+  * Use [this .gitignore](https://github.com/yawgmoth/UnityDemo2D/blob/master/.gitignore) file when working with Unity projects in git 
+  
+  * **Be careful** with scenes: Only one person can edit a scene at the same time (git merge will most likely **not** work)
+  
+  * It's easiest if everyone has their own scene to develop their parts
+
+---
+
+# From elsewhere 
+
+Andres Cart&iacute;n from [Tree Interactive](https://treeinteractivecr.com/) made a presentation with Unity tips and tricks for the Global Game Jam 2019. He has graciously allowed me to share it with you. 
+.centered[
+## Watch it [here](/CI-2807/assets/unity/cartin/index.html).
+]
+
+---
+
+class: center, middle 
+
+# More Opportunities
+
+---
+
+class: small
+
+# ASODEV Costa Rica
+
+  - Asociación de Desarrolladores de Videojuegos de Costa Rica 
+  
+  - One of the goals of the organization is to grow the games industry in Costa Rica 
+
+  - For this year's GDC they had 16 (free) passes that they gave out to applicants 
+  
+  - Every first Wednesday of the month they have a breakfast, 10-12am, at Match Cafe!
+
+---
+
+# ASODEV Breakfast
+
+<img src="/CI-2807/assets/img/ASODEVsep19.png" width="100%"/>
+
+---
+
+# GameDevDays Graz 
+
+* [Johanna Pirker](https://twitter.com/JoeyPrink) from TU Graz (Austria) is organizing a 3-day conference on game development, called [GameDevDays](https://gamedevdays.com)
+
+* All talks will be on youtube and in English
+
+* You can also watch talks from [previous years](https://www.youtube.com/channel/UCLuPXw4Yr6UxoCLqulli4xg/videos)
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+    
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+      
+      
+    </script>
+  </body>
+</html>
