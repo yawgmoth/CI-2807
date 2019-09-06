@@ -328,6 +328,29 @@ if (dy < 0 && transform.position.y > -6)
     transform.Translate(0, -6 * Time.deltaTime, 0);
 }
 ```
+
+---
+
+# Bonus: Pong: Countdown
+
+```C#
+IEnumerator DoShoot()
+{
+    int time = 3;
+    while (time > 0)
+    {
+        timer.text = time.ToString();
+        yield return new WaitForSeconds(1);
+        time -= 1;
+    }
+    timer.text = "";
+    int sgn = 1;
+    if (Random.value > 0.5) sgn = -1;
+    rigidbody.AddRelativeForce(sgn*(400 + Random.value * 150), 
+                               350 + Random.value * 250, 
+                               0);
+}
+```
   
 ---
 
@@ -458,6 +481,8 @@ class: small
   * <a href="https://www.gamedev.net/articles/programming/general-and-gameplay-programming/making-a-game-engine-core-design-principles-r3210/">Making a Game Engine: Core Design Principles</a>
   
   * <a href="https://www.gamasutra.com/blogs/AhmedKhalifa/20170315/293689/Game_Engines_Galore.php">Game Engine Overview</a>
+  
+  * [MiniPong](https://github.com/yawgmoth/MiniPong)
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
