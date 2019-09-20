@@ -1,0 +1,1302 @@
+---
+permalink: /slides/II2019/lecture10.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 13: 3D graphics</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.8em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      .medium li {  font-size: 1.1em; }
+      .small li {  font-size: 1em; }
+      
+      .smallp {  font-size: 0.17em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      
+       .left-column {
+        width: 50%;
+        height: 60%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 40%;
+        float: right;
+        padding-top: 1em;
+        font-size: 1em;
+      }
+      
+      .bottom{
+         float: bottom;
+         height: 20%;
+         font-size: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### 3D Graphics
+
+---
+
+class: center, middle 
+
+# Vectors
+
+---
+
+# Remember: The Dot Product
+
+$$
+\vec{A} \cdot \vec{B} = \begin{pmatrix} 
+x_1 \\\\ 
+y_1 \\\\
+z_1
+\end{pmatrix} \cdot 
+\begin{pmatrix} 
+x_2 \\\\ 
+y_2 \\\\
+z_2
+\end{pmatrix}
+ = x_1 \cdot x_2 + y_1 \cdot y_2 + z_1 \cdot z_2\\\\
+\vec{A} \cdot \vec{B} = \cos(\alpha) \cdot |\vec{A}| \cdot |\vec{B}|
+$$
+
+---
+
+# The Cross Product 
+
+With three dimensional vectors, we have another way of multiplying them: The cross product 
+
+$$
+\vec{A} \times \vec{B} = \begin{pmatrix} 
+x_1 \\\\ 
+y_1 \\\\
+z_1
+\end{pmatrix} \times 
+\begin{pmatrix} 
+x_2 \\\\ 
+y_2 \\\\
+z_2
+\end{pmatrix}
+ = \begin{pmatrix} 
+y_1 \cdot z_2 - z_1 \cdot y_2\\\\ 
+z_1 \cdot x_2 - x_1 \cdot z_2 \\\\
+x_1 \cdot y_2 - y_1 \cdot x_2
+\end{pmatrix}\\\\
+\vec{A} \times \vec{B} = \sin(\alpha) \cdot |\vec{A}| \cdot |\vec{B}| \cdot \vec{n}
+$$
+
+The main use of this (for us) is to find normal vectors for surfaces, i.e. vectors that point "away" from something.
+
+---
+
+class: small
+
+# Dot Product: Example 2
+
+There is a wall going through the points `a` and `b` extending "far" in both directions
+
+$$
+a = 
+\begin{pmatrix}
+-2 \\\\
+8 \\\\ 
+0
+\end{pmatrix} \quad b = 
+\begin{pmatrix}
+6 \\\\
+2 \\\\ 
+0
+\end{pmatrix}
+$$
+
+Is the player `p` at the same side of that wall as the king `k`?
+
+$$
+p = 
+\begin{pmatrix}
+-4\\\\
+10\\\\
+1
+\end{pmatrix} \quad k =
+\begin{pmatrix}
+-7\\\\
+11\\\\
+1
+\end{pmatrix}
+$$
+How far away is the player from the wall?
+
+---
+
+# Another Example 
+
+<img src="/CI-2807/assets/img/mario_kart_vector.png" width="80%"/>
+
+---
+
+# Summary
+
+* Vectors can be added to other vectors (result: vector)
+
+* Vectors can be multiplied with a number (result: vector)
+
+* Two vectors can be multiplied with the dot product (result: **number**)
+
+* Two (3D) vectors can be multiplied with the cross product (result: vector)
+
+---
+
+class: center, middle 
+
+# Matrices 
+
+---
+
+# Matrices 
+
+* A matrix is a two-dimensional array of numbers 
+
+* We will only work with 2x2, 3x3 and 4x4 matrices
+
+* Like vectors, matrices can be added and multiplied with scalars 
+
+* We can also multiply two matrices 
+
+---
+
+# Matrix Multiplication 
+
+.left-column[
+$$ A \cdot B $$
+
+The number of columns of A and the number of rows of B **must be the same**.
+
+Note: Each entry is the *dot product* of a row of A with a column of B.
+]
+
+.right-column[
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" 
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="250pt" height="200pt" id="svg2" version="1.0">
+  <defs id="defs4">
+    <marker style="overflow:visible" orient="auto" id="Arrow1Mstart" refY="0.0" inkscape:stockid="Arrow1Mstart" refX="0.0">
+      <path style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none" transform="scale(0.4) translate(10)" id="path3275" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "/>
+    </marker>
+    <marker style="overflow:visible;" orient="auto" id="Arrow1Mend" refY="0.0" inkscape:stockid="Arrow1Mend" refX="0.0">
+      <path style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;" transform="scale(0.4) rotate(180) translate(10)" id="path3278" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "/>
+    </marker>
+    <marker style="overflow:visible;" orient="auto" id="Arrow2Send" refY="0.0" inkscape:stockid="Arrow2Send" refX="0.0">
+      <path style="font-size:12.0;fill-rule:evenodd;stroke-width:0.62500000;stroke-linejoin:round;" transform="scale(0.3) rotate(180) translate(-2.3)" id="path4318" d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "/>
+    </marker>
+    <marker style="overflow:visible;" orient="auto" id="Arrow1Send" refY="0.0" inkscape:stockid="Arrow1Send" refX="0.0">
+      <path style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;" transform="scale(0.2) rotate(180) translate(6)" id="path4300" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "/>
+    </marker>
+    <marker style="overflow:visible;" orient="auto" id="Arrow1Lend" refY="0.0" inkscape:stockid="Arrow1Lend" refX="0.0">
+      <path style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;" transform="scale(0.8) rotate(180) translate(12.5)" id="path4288" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "/>
+    </marker>
+    <marker style="overflow:visible;" orient="auto" id="Arrow2Lend" refY="0.0" inkscape:stockid="Arrow2Lend" refX="0.0">
+      <path style="font-size:12.0;fill-rule:evenodd;stroke-width:0.62500000;stroke-linejoin:round;" transform="scale(1.1) rotate(180) translate(1)" id="path4306" d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "/>
+    </marker>
+  </defs>
+  <metadata id="metadata7">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <dc:title>Matrix multiplication diagram</dc:title>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/by-sa/2.5/"/>
+        <dc:date>2007-08-11</dc:date>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>mathematics</rdf:li>
+            <rdf:li>matrix</rdf:li>
+            <rdf:li>mutliplication</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title/>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title/>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title/>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier/>
+        <dc:source/>
+        <dc:relation/>
+        <dc:language/>
+        <dc:coverage/>
+        <dc:description/>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title/>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/by-sa/2.5/">
+        <cc:permits rdf:resource="http://web.resource.org/cc/Reproduction"/>
+        <cc:permits rdf:resource="http://web.resource.org/cc/Distribution"/>
+        <cc:requires rdf:resource="http://web.resource.org/cc/Notice"/>
+        <cc:requires rdf:resource="http://web.resource.org/cc/Attribution"/>
+        <cc:permits rdf:resource="http://web.resource.org/cc/DerivativeWorks"/>
+        <cc:requires rdf:resource="http://web.resource.org/cc/ShareAlike"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g inkscape:label="Calque 1" style="display:inline" id="layer1" inkscape:groupmode="layer">
+    <text style="font-size:31.54535294px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans" id="text1400" sodipodi:linespacing="125%" y="207.9886" x="2.7350435" xml:space="preserve" transform="scale(1.04324, 0.958555)"><tspan sodipodi:role="line" id="tspan1402" y="207.9886" x="2.7350435">A</tspan></text>
+    <text style="font-size:31.54535294px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans" id="text1404" sodipodi:linespacing="125%" y="25.195688" x="187.27748" xml:space="preserve" transform="scale(1.04324, 0.958555)"><tspan sodipodi:role="line" id="tspan1406" y="25.195688" x="187.27748">B</tspan></text>
+    <g id="g7530" transform="matrix(1.64546, 0, 0, 1.5119, -2.00765, -1.07901)">
+      <path style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.31710899;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline" d="M 102.05358,171.56709 L 91.160716,171.56709 L 91.160716,81.647188 L 102.05358,81.647188" sodipodi:nodetypes="cccc" id="path2328"/>
+      <path style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.31710899;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline" d="M 151.69643,171.56709 L 162.58929,171.56709 L 162.58929,81.647188 L 151.69643,81.647188" sodipodi:nodetypes="cccc" id="path2330"/>
+      <g id="g7518">
+        <path style="fill:#73d216;fill-opacity:1;fill-rule:nonzero;stroke:#3465a4;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" id="path2285" sodipodi:cx="26.071428" sodipodi:cy="499.14789" sodipodi:type="arc" d="M 32.5,499.14789 A 6.4285712,6.4285712 0 1 1 19.642857,499.14789 A 6.4285712,6.4285712 0 1 1 32.5,499.14789 z" transform="translate(120.862, -362.505)" sodipodi:rx="6.4285712" sodipodi:ry="6.4285712"/>
+        <path style="fill:#edd400;fill-opacity:1;fill-rule:nonzero;stroke:#ef2929;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" id="path4037" sodipodi:cx="26.071428" sodipodi:cy="499.14789" sodipodi:type="arc" d="M 32.5,499.14789 A 6.4285712,6.4285712 0 1 1 19.642857,499.14789 A 6.4285712,6.4285712 0 1 1 32.5,499.14789 z" transform="translate(101.164, -402.527)" sodipodi:rx="6.4285712" sodipodi:ry="6.4285712"/>
+        <g id="g7463" transform="translate(0.313445)">
+          <g transform="matrix(1.03319, 0, 0, 1, -3.19616, 0)" id="g7457">
+            <path style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:0.98380649px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1" d="M 97.475841,146.60977 L 153.6734,146.60977" sodipodi:nodetypes="cc" id="path6463"/>
+            <rect style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.98380649;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3.79999995;stroke-dasharray:none;stroke-opacity:1" id="rect6465" width="57.586479" y="86.244034" x="96.796043" height="80.5"/>
+            <path style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:0.98380649px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;display:inline" d="M 97.497365,126.47551 L 153.69493,126.47551" sodipodi:nodetypes="cc" id="path6467"/>
+            <path style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:0.98380649px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;display:inline" d="M 97.497365,106.34125 L 153.69493,106.34125" sodipodi:nodetypes="cc" id="path6469"/>
+          </g>
+          <path style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1" id="path6471" d="M 116.89899,86.743777 L 116.89899,166.24942"/>
+          <path style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;display:inline" id="path7455" d="M 137.00194,86.738391 L 137.00194,166.24403"/>
+        </g>
+      </g>
+    </g>
+    <g id="g7545" transform="matrix(1.64546, 0, 0, 1.5119, -2.00765, -1.07901)">
+      <path style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.31710899;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M 31.25,171.99999 L 20.357143,171.99999 L 20.357143,82.080086 L 31.25,82.080086" sodipodi:nodetypes="cccc" id="path1388"/>
+      <path style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.31710899;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline" d="M 64.5733,172 L 75.466157,172 L 75.466157,82.080086 L 64.5733,82.080086" sodipodi:nodetypes="cccc" id="path2326"/>
+      <g transform="translate(-1.40085)" id="g6389">
+        <path style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1" d="M 28.869325,146.60977 L 69.734349,146.60977" sodipodi:nodetypes="cc" id="path1358"/>
+        <g id="g7478">
+          <rect style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3.79999995;stroke-dasharray:none;stroke-opacity:1" id="rect4491" width="41.875" y="86.244034" x="28.375" height="80.5"/>
+          <path style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;display:inline" id="path5462" sodipodi:nodetypes="cc" d="M 28.884976,126.47551 L 69.75,126.47551"/>
+          <path style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;display:inline" id="path5464" sodipodi:nodetypes="cc" d="M 28.884976,106.34125 L 69.75,106.34125"/>
+        </g>
+        <path style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1" d="M 49.3125,86.379661 L 49.3125,166.59816" id="path5418"/>
+      </g>
+      <rect style="fill:none;fill-opacity:1;stroke:#edd400;stroke-width:2.49002862;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:3.79999995;stroke-dasharray:none;stroke-opacity:1" id="rect7476" width="38.816055" y="87.771233" x="28.422049" height="16.742577"/>
+      <rect style="fill:none;fill-opacity:1;stroke:#73d216;stroke-width:2.49014163;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:3.79999995;stroke-dasharray:none;stroke-opacity:1" id="rect7478" width="38.90078" y="128.10184" x="28.42288" height="16.722221"/>
+    </g>
+    <g id="g6464" transform="matrix(1.70534, 0, 0, 1.37977, -2.1939, -1.28831)" style="opacity:1">
+      <g id="g6472" style="opacity:1" transform="matrix(0.577914, 0, 0, 1.09576, 44.5553, -0.235716)">
+        <path style="opacity:1;fill:#ef2929;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:4.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline" id="path5416" d="M 37.28125,94.40625 L 37.28125,98.90625 L 108.8125,98.90625 L 108.8125,94.40625 L 37.28125,94.40625 z"/>
+        <path style="font-size:12px;fill:#ef2929;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round" id="path6470" d="M 102.13562,91.197224 L 116.88555,96.621149 L 102.13562,102.04507 C 104.49204,98.84279 104.47846,94.461512 102.13562,91.197224 z"/>
+      </g>
+      <text xml:space="preserve" style="font-size:12.3389492px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans" x="33.145538" y="100.70789" id="text3312" transform="scale(0.938382, 1.06566)"><tspan sodipodi:role="line" id="tspan3314" x="33.145538" y="100.70789" style="font-size:9.25421238px">a<tspan dy="2.0564916" style="font-size:5.14122868px" id="tspan2534">1,1</tspan></tspan></text>
+      <text xml:space="preserve" style="font-size:12.3389492px;font-style:normal;font-weight:normal;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline;font-family:Bitstream Vera Sans" x="32.955677" y="142.02773" id="text3194" transform="scale(0.938382, 1.06566)"><tspan sodipodi:role="line" id="tspan3196" x="32.955677" y="142.02773" style="font-size:9.25421238px">a<tspan dy="2.0564916" style="font-size:5.14122868px" id="tspan3198">3,1</tspan></tspan></text>
+      <text xml:space="preserve" style="font-size:12.3389492px;font-style:normal;font-weight:normal;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline;font-family:Bitstream Vera Sans" x="51.532799" y="142.31792" id="text3200" transform="scale(0.938382, 1.06566)"><tspan sodipodi:role="line" id="tspan3202" x="51.532799" y="142.31792" style="font-size:9.25421238px">a<tspan dy="2.0564916" style="font-size:5.14122868px" id="tspan3204">3,2</tspan></tspan></text>
+      <g id="g2633">
+        <text transform="scale(0.938382, 1.06566)" id="text2621" y="121.0079" x="33.059025" style="font-size:12.3389492px;font-style:normal;font-weight:normal;opacity:1;fill:#808080;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline;font-family:Bitstream Vera Sans" xml:space="preserve"><tspan style="font-size:9.25421238px;fill:#808080" y="121.0079" x="33.059025" id="tspan2623" sodipodi:role="line">a<tspan id="tspan2625" style="font-size:5.14122868px;fill:#808080" dy="2.0564916">2,1</tspan></tspan></text>
+        <text transform="scale(0.938382, 1.06566)" id="text2627" y="121.36169" x="51.813751" style="font-size:12.33894825px;font-style:normal;font-weight:normal;fill:#808080;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline;font-family:Bitstream Vera Sans" xml:space="preserve"><tspan style="font-size:9.3846159px;fill:#808080" y="121.36169" x="51.813751" id="tspan2629" sodipodi:role="line">a<tspan id="tspan2631" style="font-size:5.362638px;fill:#808080" dy="2.0564914">2,2</tspan></tspan></text>
+      </g>
+      <g style="opacity:1;display:inline" id="g2637" transform="translate(-0.479447, 44.1094)">
+        <text transform="scale(0.938382, 1.06566)" id="text2639" y="121.0079" x="33.059025" style="font-size:12.3389492px;font-style:normal;font-weight:normal;opacity:1;fill:#808080;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline;font-family:Bitstream Vera Sans" xml:space="preserve"><tspan style="font-size:9.25421238px;fill:#808080" y="121.0079" x="33.059025" id="tspan2641" sodipodi:role="line">a<tspan id="tspan2643" style="font-size:5.14122868px;fill:#808080" dy="2.0564916">4,1</tspan></tspan></text>
+        <text transform="scale(0.938382, 1.06566)" id="text2645" y="121.36169" x="51.813751" style="font-size:12.33894825px;font-style:normal;font-weight:normal;fill:#808080;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline;font-family:Bitstream Vera Sans" xml:space="preserve"><tspan style="font-size:9.3846159px;fill:#808080" y="121.36169" x="51.813751" id="tspan2647" sodipodi:role="line">a<tspan id="tspan2649" style="font-size:5.362638px;fill:#808080" dy="2.0564914">4,2</tspan></tspan></text>
+      </g>
+    </g>
+    <g style="fill:#3465a4" id="g6492" transform="matrix(1.12139, 0, 0, 1.5119, 68.8604, -1.07901)">
+      <path style="fill:#3465a4;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:4.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M 37.28125,134.40625 L 37.28125,138.90625 L 129.125,138.90625 L 129.125,134.40625 L 37.28125,134.40625 z" id="path2294"/>
+      <path style="font-size:12px;fill:#3465a4;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round" d="M 120.47432,131.21867 L 135.22425,136.64259 L 120.47432,142.06652 C 122.83074,138.86423 122.81716,134.48296 120.47432,131.21867 z" id="path6498"/>
+    </g>
+    <g id="g7739" transform="matrix(1.64546, 0, 0, 1.5119, -2.00765, -1.07901)">
+      <path style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.31710899;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline" id="path6458" sodipodi:nodetypes="cccc" d="M 102.05358,72.090424 L 91.160716,72.090424 L 91.160716,19.647186 L 102.05358,19.647186"/>
+      <path style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.31710899;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline" id="path6460" sodipodi:nodetypes="cccc" d="M 151.69643,72.090424 L 162.58929,72.090424 L 162.58929,19.647186 L 151.69643,19.647186"/>
+      <g transform="translate(0.375)" id="g7510">
+        <rect style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.99999994;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3.79999995;stroke-dasharray:none;stroke-opacity:1" id="rect6420" width="41.875" transform="matrix(0, -1, 1, 0, 0, 0)" y="96.25" x="-66.806305" height="60.375"/>
+        <path style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;display:inline" d="M 136.48148,66.296329 L 136.48148,25.431305" sodipodi:nodetypes="cc" id="path6422"/>
+        <path style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;display:inline" d="M 116.34722,66.296329 L 116.34722,25.431305" sodipodi:nodetypes="cc" id="path6424"/>
+        <path style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1" d="M 96.260574,45.868805 L 156.41667,45.868805" id="path6426"/>
+        <rect style="fill:none;fill-opacity:1;stroke:#edd400;stroke-width:2.42053151;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:3.79999995;stroke-dasharray:none;stroke-opacity:1" id="rect7500" width="38.15583" transform="matrix(0, 1, -1, 0, 0, 0)" y="-134.90015" x="26.798586" height="16.994709"/>
+        <rect style="fill:none;fill-opacity:1;stroke:#73d216;stroke-width:2.33166838;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:3.79999995;stroke-dasharray:none;stroke-opacity:1" id="rect7508" width="38.327728" transform="matrix(0, 1, -1, 0, 0, 0)" y="-155.14755" x="26.712637" height="17.180845"/>
+      </g>
+    </g>
+    <g style="fill:#3465a4" id="g6484" transform="matrix(1.64546, 0, 0, 0.967041, -1.3906, 66.9559)">
+      <path style="fill:#3465a4;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:4.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline" d="M 144.21875,33.40625 L 144.21875,118.78125 L 148.71875,118.78125 L 148.71875,33.40625 L 144.21875,33.40625 z" id="path6456"/>
+      <path style="font-size:12px;fill:#3465a4;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round" d="M 151.92392,110.11757 L 146.5,124.8675 L 141.07607,110.11757 C 144.27836,112.47399 148.65963,112.46041 151.92392,110.11757 z" id="path6490"/>
+    </g>
+    <g style="fill:#ef2929" id="g6476" transform="matrix(1.64546, 0, 0, 0.54009, -1.3906, 81.2187)">
+      <path style="fill:#ef2929;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:4.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;display:inline" d="M 124.21875,33.40625 L 124.21875,78.59375 L 128.71875,78.59375 L 128.71875,33.40625 L 124.21875,33.40625 z" id="path6446"/>
+      <path style="font-size:12px;fill:#ef2929;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round" d="M 131.90957,69.935261 L 126.48565,84.685196 L 121.06172,69.935261 C 124.26401,72.291684 128.64528,72.278106 131.90957,69.935261 z" id="path6482"/>
+    </g>
+    <text xml:space="preserve" style="font-size:18.92720985px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline;font-family:Bitstream Vera Sans" x="77.508934" y="153.67857" id="text2559" transform="scale(1.04324, 0.958555)"><tspan sodipodi:role="line" id="tspan2561" x="77.508934" y="153.67857" style="font-size:14.39544106px">a<tspan dy="3.1545351" style="font-size:8.22596645px" id="tspan2563">1,2</tspan></tspan></text>
+    <text xml:space="preserve" style="font-size:18.92720985px;font-style:normal;font-weight:normal;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline;font-family:Bitstream Vera Sans" x="186.68127" y="60.148842" id="text3182" transform="scale(1.04324, 0.958555)"><tspan sodipodi:role="line" id="tspan3184" x="186.68127" y="60.148842" style="font-size:12.61814022px"><tspan style="font-size:14.39544106px" id="tspan3229">b</tspan><tspan style="font-size:8.22596645px" id="tspan3186" dy="3.1545351">1,2</tspan></tspan></text>
+    <text xml:space="preserve" style="font-size:18.92720985px;font-style:normal;font-weight:normal;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline;font-family:Bitstream Vera Sans" x="186.87546" y="89.329178" id="text3188" transform="scale(1.04324, 0.958555)"><tspan sodipodi:role="line" id="tspan3190" x="186.87546" y="89.329178" style="font-size:12.61814022px"><tspan style="font-size:14.39544106px" id="tspan3231">b</tspan><tspan style="font-size:8.22596645px" id="tspan3192" dy="3.1545351">2,2</tspan></tspan></text>
+    <text xml:space="preserve" style="font-size:18.92720985px;font-style:normal;font-weight:normal;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline;font-family:Bitstream Vera Sans" x="218.30501" y="60.885384" id="text3226" transform="scale(1.04324, 0.958555)"><tspan sodipodi:role="line" id="tspan3228" x="218.30501" y="60.885384" style="font-size:12.61814022px"><tspan style="font-size:14.39544106px" id="tspan3226">b</tspan><tspan style="font-size:8.22596645px" id="tspan3230" dy="3.1545351">1,3</tspan></tspan></text>
+    <text xml:space="preserve" style="font-size:18.92720985px;font-style:normal;font-weight:normal;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline;font-family:Bitstream Vera Sans" x="218.15356" y="89.950317" id="text3232" transform="scale(1.04324, 0.958555)"><tspan sodipodi:role="line" id="tspan3234" x="218.15356" y="89.950317" style="font-size:12.61814022px"><tspan style="font-size:14.39544106px" id="tspan3233">b</tspan><tspan style="font-size:8.22596645px" id="tspan3236" dy="3.1545351">2,3</tspan></tspan></text>
+    <text xml:space="preserve" style="font-size:18.92720985000000056px;font-style:normal;font-weight:normal;opacity:1;fill:#999999;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline;font-family:Bitstream Vera Sans" x="153.94395" y="59.262863" id="text2665" transform="scale(1.04324, 0.958555)"><tspan sodipodi:role="line" id="tspan2667" x="153.94395" y="59.262863" style="font-size:12.61814022000000080px;fill:#999999"><tspan style="font-size:14.39544105999999957px;fill:#999999" id="tspan2669">b</tspan><tspan style="font-size:8.22596644999999960px;fill:#999999" id="tspan2671" dy="3.1545351">1,1</tspan></tspan></text>
+    <text xml:space="preserve" style="font-size:18.92720985000000056px;font-style:normal;font-weight:normal;opacity:1;fill:#999999;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline;font-family:Bitstream Vera Sans" x="153.40378" y="89.245232" id="text2673" transform="scale(1.04324, 0.958555)"><tspan sodipodi:role="line" id="tspan2675" x="153.40378" y="89.245232" style="font-size:12.61814022000000080px;fill:#999999"><tspan style="font-size:14.39544105999999957px;fill:#999999" id="tspan2677">b</tspan><tspan style="font-size:8.22596644999999960px;fill:#999999" id="tspan2679" dy="3.1545351">2,1</tspan></tspan></text>
+  </g>
+</svg>
+]
+
+---
+
+# Matrix-Vector Product 
+
+$$
+A \cdot \vec{v} = \begin{pmatrix}
+a_1 & b_1 & c_1 \\\\
+a_2 & b_2 & c_2 \\\\
+a_3 & b_3 & c_3
+\end{pmatrix} 
+\cdot 
+\begin{pmatrix}
+x \\\\
+y \\\\
+z
+\end{pmatrix} =
+\begin{pmatrix}
+a_1 \cdot x + b_1 \cdot y + c_1 \cdot z \\\\
+a_2 \cdot x + b_2 \cdot y + c_2 \cdot z \\\\
+a_3 \cdot x + b_3 \cdot y + c_3 \cdot z
+\end{pmatrix}
+$$
+
+As you can see, a matrix-vector multiplication performs many operations. We can use this to represent a wide variety of operations on vectors (technically: Linear Transformations)
+
+---
+
+# Matrix-Vector Multiplication Example
+
+$$
+A = \begin{pmatrix}
+3 & 0 & 0 \\\\
+0 & 3 & 0 \\\\
+0 & 0 & 3
+\end{pmatrix} 
+$$
+
+What might this do?
+
+--
+
+Scale a vector by a factor of 3.
+
+$$
+A \cdot \vec{v} = \begin{pmatrix}
+3 & 0 & 0 \\\\
+0 & 3 & 0 \\\\
+0 & 0 & 3
+\end{pmatrix} \cdot 
+\begin{pmatrix}
+x \\\\
+y \\\\
+z
+\end{pmatrix} =
+\begin{pmatrix}
+3 \cdot x \\\\
+3 \cdot y \\\\
+3 \cdot z
+\end{pmatrix}
+$$
+
+---
+
+# Matrix-Vector Multiplication Example
+
+$$
+A = \begin{pmatrix}
+1 & 1  \\\\
+0 & 1 
+\end{pmatrix} 
+$$
+
+What might this do?
+
+--
+
+This is a "shear" operation: Move points in x-direction the further "up" they are (in y direction)
+
+$$
+A \cdot \vec{v} = \begin{pmatrix}
+1 & 1 \\\\
+0 & 1 \\\\
+\end{pmatrix} \cdot 
+\begin{pmatrix}
+x \\\\
+y 
+\end{pmatrix} =
+\begin{pmatrix}
+x + y \\\\
+y 
+\end{pmatrix}
+$$
+
+---
+
+class: center, middle
+
+# Triangles
+
+<div id="tricontainer"></div>
+
+---
+
+# Some definitions
+
+  * Vertex (plural Vertices): A point in 3D space
+  
+  * Triangle: Three vertices
+  
+  * Face: The "front" side of a triangle
+  
+  * Normal: A vector that points "away" from the face
+
+---
+
+# Why triangles?
+
+  * Triangles are always flat
+  
+  * Flat makes it easier to calculate lighting, color, etc.
+  
+  * Triangles are convex
+  
+  * Convex makes it easier to interpolate between the vertices
+  
+  * Any polygon can be divided into triangles 
+  
+---
+
+class: smallp
+
+# An Example
+
+Consider the triangle 
+$$
+a = (2,2,3), 
+b = (3,3,4), 
+c = (3,1,3)
+$$
+with the normal vector 
+$$
+\vec{n} = \begin{pmatrix} 
+\frac{-1}{\sqrt{6}} \\\\ 
+\frac{-1}{\sqrt{6}} \\\\
+\frac{2}{\sqrt{6}}
+\end{pmatrix}
+$$
+and a point 
+$$
+p = (3\sqrt{6},0, 2\sqrt{6})
+$$
+
+## Does the point p lie in front of or behind the triangle?
+  
+---
+
+# Color
+
+  * We can assign a color to a triangle
+  
+  * But what if we want to have different colors?
+  
+  * Ideally, we want a gradual change
+  
+  * Idea: Assign color to the vertices and interpolate
+  
+  * It's such a good idea, 3D libraries have it built-in
+
+---
+
+# Interpolation 
+
+Recall:
+
+$$
+a + t (b-a) = p 
+$$
+
+`p` is "some distance" between `a` and `b`. 
+
+Rewritten:
+
+$$
+p = (1-t) \cdot a + t \cdot b
+$$
+
+---
+
+# Interpolation
+  
+Halfway between two values:
+
+$$ p = \frac{1}{2} a + \frac{1}{2}b$$
+
+Closer to a than to b
+
+$$ p = \frac{2}{3} a + \frac{1}{3} b$$
+
+or, generally:
+
+$$ p = \theta \cdot a + (1- \theta) \cdot b$$
+
+---
+
+# Interpolation
+  
+What if we have more than two values? e.g. r, s, t
+
+$$ p = \theta \cdot r + \phi \cdot s + \psi \cdot t$$
+
+with 
+
+$$\theta + \phi + \psi = 1$$
+
+Note: r, s, and t don't have to be numbers, they could also be vectors! In particular, they can be the vertices of a triangle. Every point in the triangle can then be represented as
+
+$$p = (\theta,\phi,\psi)$$
+
+---
+
+# Barycentric coordinates
+<!--- Source: https://commons.wikimedia.org/wiki/File:TriangleBarycentricCoordinates.svg -->
+<svg preserveAspectRatio="xMidYMid meet" version="1.0" id="svg2" docname="TriangleBarycentricCoordinates.svg" width="1344.0642" height="2011.8257" font-size="23">
+  <metadata id="metadata65">
+    <RDF id="RDF4">
+      <Work about="" id="Work6">
+        <format id="format8">image/svg+xml</format>
+        <type resource="http://purl.org/dc/dcmitype/StillImage" id="type10"/>
+      </Work>
+    </RDF>
+  </metadata>
+  <desc id="desc4">Barycentric Coordinates in a triangle</desc>
+  <g id="g2526" transform="matrix(0.9,0,0,0.9,0,0)">
+    <path id="path6" d="M 100,50 L 600,50 L 350,483.0127 L 100,50 z" style="fill:none;stroke:#000000;stroke-width:3"/>
+    <circle id="circle8" r="4" cy="194.33757" cx="350" rx="4" ry="4"/>
+    <circle id="circle10" r="4" cy="50" cx="100" rx="4" ry="4"/>
+    <circle id="circle12" r="4" cy="50" cx="600" rx="4" ry="4"/>
+    <circle id="circle14" r="4" cy="483.0127" cx="350" rx="4" ry="4"/>
+    <circle id="circle16" r="4" cy="50" cx="350" rx="4" ry="4"/>
+    <circle id="circle18" r="4" cy="266.50635" cx="475" rx="4" ry="4"/>
+    <circle id="circle20" r="4" cy="266.50635" cx="225" rx="4" ry="4"/>
+    <circle id="circle22" r="4" cy="266.50635" cx="350" rx="4" ry="4"/>
+    <circle id="circle24" r="4" cy="158.25317" cx="412.5" rx="4" ry="4"/>
+    <circle id="circle26" r="4" cy="158.25317" cx="287.5" rx="4" ry="4"/>
+    <g id="g28" style="stroke:#0000ff;stroke-width:0.5;stroke-dasharray:3, 3">
+      <path id="path30" d="M 100,50 L 475,266.50635"/>
+      <path id="path32" d="M 600,50 L 225,266.50635"/>
+      <path id="path34" d="M 350,483.0127 L 350,50"/>
+      <path id="path36" d="M 475,266.50635 L 225,266.50635"/>
+      <path id="path38" d="M 225,266.50635 L 350,50"/>
+      <path id="path40" d="M 350,50 L 475,266.50635"/>
+    </g>
+    <text id="text42" dy="-5" dx="-5" y="50" x="100" style="text-anchor:end">(1,0,0)</text>
+    <text id="text44" dy="-5" dx="5" y="50" x="600">(0,1,0)</text>
+    <text id="text46" dy="20" y="485.9617" x="350" style="text-anchor:middle">(0,0,1)</text>
+    <text id="text48" dy="-5" y="49.016991" x="350" style="text-anchor:middle">(1/2,1/2,0)</text>
+    <text id="text50" dy="20" y="266.50635" x="225" style="text-anchor:end">(1/2,0,1/2)</text>
+    <text id="text52" dy="20" y="266.50635" x="475">(0,1/2,1/2)</text>
+    <text id="text54" dy="20" y="269.45535" x="350" style="text-anchor:middle">(1/4,1/4,1/2)</text>
+    <text id="text56" dy="-5" y="155.30417" x="434.12604" style="text-anchor:middle">(1/4,1/2,1/4)</text>
+    <text id="text58" dy="-5" y="155.30417" x="264.89096" style="text-anchor:middle">(1/2,1/4,1/4)</text>
+    <text id="text60" dy="20" y="197.28658" x="350" style="text-anchor:middle">(1/3,1/3,1/3)</text>
+  </g>
+</svg>
+
+---
+
+# Interpolation
+  
+What can we do with this representation?
+
+$$p = (\theta,\phi,\psi)$$
+
+Calculate color values!
+
+$$c(p) = \theta \cdot c(r) + \phi \cdot c(s) + \psi \cdot c(t)$$
+
+---
+
+# A colored triangle
+
+<div id="tricolcontainer"></div>
+
+---
+
+# An example
+
+Consider the triangle 
+$$
+a = (1,0,0), 
+b = (1,1,0), 
+c = (0,1,0)
+$$
+
+## If a has the color (99,0,0), b has the color (0,39,0), and c has the color (0,81,81), what color does the barycenter of the triangle have using linear interpolation? Which color does the point that is twice as close to a as to b and c (in the barycentric sense) have?
+
+---
+
+class: medium
+
+# Normals
+
+  * Normals are (unit) vectors that point away from a face
+  
+  * They are used for lighting
+  
+  * What does "away" mean?
+  
+  * Simplest case: perpendicular to the triangle 
+  
+  * What if we have adjacent triangles?
+  
+  * We can assign normals to each vertex and interpolate, just as with colors
+ 
+---
+
+# Textures
+
+  * Colored triangles are boring!
+  
+  * What if we want to show something like wood?
+  
+  * Use an image as the texture 
+  
+  * Assign texture (uv) coordinates to each vertex 
+  
+  * *Interpolate* between the vertices to get the uv coordinate for each pixel!
+  
+---
+
+# Textured Triangle
+
+Texture coordinates (uv): (0,0), (1,1), (1,0)
+
+<table><tr><td>
+
+<div id="texcontainer"></div></td><td><img src="/CI-2700/assets/img/crateuv.png"></td></tr></table>
+
+---
+
+# Textured Triangle
+
+Let's use (0.5,0.5) as the UV value for one vertex.
+
+<table><tr><td>
+
+<div id="tex1container"></div></td><td><img src="/CI-2700/assets/img/crateuv.png"></td></tr></table>
+
+---
+
+# An example
+
+Consider the triangle 
+$$
+a = (2,1,3), 
+b = (4,3,4), 
+c = (3.5,2.5,4.5) 
+$$
+The texture coordinates are 
+$$
+t(a) = (\frac{3}{5}, \frac{3}{8}), t(b) = (\frac{3}{10}, \frac{3}{16}), t(c) = (\frac{3}{7}, \frac{3}{10})
+$$
+## The point p is the closest point to c on the line from a to b. What texture coordinates does p have?
+
+
+---
+
+# Meshes
+
+  * Triangles are boring!
+  
+  * A *Mesh* is a collection of triangles (and normals, uv coordinates, colors)
+  
+  * How about something more exciting, like a cube?
+  
+  * We can assemble a cube out of triangles!
+  
+  * Or a bunny!
+  
+---
+
+# Stanford Bunny
+
+<table><tr><td><img src="/CI-2700/assets/img/stanfordbunny.jpg" width="100%"/></td><td><img src="/CI-2700/assets/img/BunnyWire.gif" width="100%"/></td></tr></table>
+
+---
+
+class: small
+
+# Back to the cube
+
+  * Cubes have 8 vertices and 6 faces (12 triangles!) 
+  * Vertices:
+     - v1 = (0,0,0)
+     - v2 = (1,0,0)
+     - v3 = (0,1,0)
+     - v4 = (1,1,0)
+     - v5 = (0,0,1)
+     - v6 = (1,0,1)
+     - v7 = (0,1,1)
+     - v8 = (1,1,1)
+  * Faces:
+     - f1: (v1,v2,v3)
+     - f2: (v3,v2,v4)
+     - etc.
+     
+---
+
+class: small
+
+# The .obj file format
+
+<table width="100%"><tr><td width="50%">
+
+<span style="font-family: monospace;">
+v 0 0 0<br/>
+v 1 0 0<br/>
+v 0 1 0<br/>
+v 1 1 0<br/>
+v 0 0 1<br/>
+v 1 0 1<br/>
+v 0 1 1<br/>
+v 1 1 1<br/>
+</span>
+
+</td><td width="50%">
+<span style="font-family: monospace;">
+f 2 1 3<br/>
+f 2 3 4<br/>
+<br/>
+f 8 5 6<br/>
+f 5 8 7<br/>
+<br/>
+f 6 1 2<br/>
+f 1 6 5<br/>
+<br/>
+f 3 8 4<br/>
+f 8 3 7<br/>
+<br/>
+f 1 7 3<br/>
+f 7 1 5<br/>
+<br/>
+f 8 2 4<br/>
+f 2 8 6<br/>
+</span>
+</td></tr></table>
+
+Download file <a href="https://github.com/yawgmoth/CI-2700/blob/master/assets/unity/cube.obj">here</a>
+
+---
+
+# .obj files
+
+  * List of vertices, faces, uv coordinates, normals, etc.
+  
+  * You could hand-write one (like for the cube!)
+  
+  * Or you write code to generate the file
+  
+  * Unity (and most other 3D software) reads them!
+
+---
+
+# Cube (Controls: w, a, s, d)
+
+<div id="container"></div>
+
+---
+
+# Level of Detail 
+
+  * Many modern meshes have a lot of detail 
+  
+  * But what if it is far away?
+  
+  * Idea: Use a lower-resolution (fewer triangles) version of the same mesh!
+  
+  * Can often be precomputed automatically
+  
+  * Limitation: Visible "jumping" when the low-res mesh is replaced with the higher-res one
+  
+---
+
+# Stanford Bunny and Level of Detail
+
+<img src="/CI-2700/assets/img/stanfordbunnylod.png" width="100%"/>
+
+---
+
+class: small
+
+# Billboards
+
+  * Many background objects like trees, grass, rocks only exist as decoration
+  
+  * It may not be important for them to have a lot of detail 
+  
+  * Actually, as long as it looks like a tree from all sides, it's probably fine
+  
+  * Just show a picture of a tree, and turn it so it always faces the camera!
+  
+  * Also useful for health bars or similar information
+  
+  * `transform.LookAt(2 * transform.position - Camera.main.transform.position);`
+
+
+---
+
+class: center, middle
+
+# Rendering Pipeline
+
+## Or: How do we actually get something onto the screen
+
+---
+
+class: small
+
+# Rendering 
+
+  * Model coordinates need to be translated to world coordinates (where is the mesh)
+  
+  * World coordinates are then translated to Camera coordinates (where in the field of view of the camera is the mesh?)
+  
+  * The Camera coordinates need to be projected onto a Viewport (objects that are further away become smaller)
+  
+  * The Viewport is then mapped onto a window on the screen
+  
+  * We will discuss the math behind this next week
+  
+---
+
+# Camera 
+
+<img src="/CI-2700/assets/img/frustum.jpg" width="100%"/>
+
+---
+
+# Clipping and Culling
+
+  * Many triangles do not need to be rendered
+  
+  * Anything outside the frustum or not facing the camera can be discarded (Frustum culling and backface culling)
+  
+  * Triangles that are behind other triangles can also be culled (Occlusion culling)
+  
+  * Triangles that are partially inside the frustum have to be clipped (cut into pieces)
+  
+---
+
+class: small
+
+# Backface culling
+
+  * How do we recognize what is facing away from the camera?
+  
+  * Assume a and b are unit vectors
+  
+$$ \vec{a} \cdot \vec{b} = \cos(\theta) $$
+
+  * The cosine is negative iff the vectors point in opposite directions
+
+  * Discard any triangle where the face normal points in the same direction as the (unit) vector pointing from the camera to the triangle
+  
+---
+
+class: small
+
+# Painter's algorithm
+
+  * How do we avoid showing triangles that are occluded?
+
+  * When you paint, whatever you draw last is visible on the canvas 
+  
+  * Let's use the same idea with triangles!
+  
+  * Draw triangles starting with the one furthest from the camera 
+  
+  * The closer a triangle is to the viewer, the later it is drawn
+  
+  * If a triangle is partially occluded, you will still see the rest
+  
+---
+
+# Which order?
+
+<img src="/CI-2700/assets/img/painters.png" width="50%"/>
+  
+---
+
+class: small
+
+# z-Buffer
+
+  * Instead of deciding per triangle, decide per pixel 
+  
+  * Store z-coordinate (depth) in a special buffer
+  
+  * When something would be drawn on a pixel:
+       
+       - If the z-coordinate of the new object is greater than the buffer, don't draw
+       - Otherwise draw, and update the buffer 
+       
+  * The z-Buffer usually exists in hardware
+  
+---
+
+class: small
+
+# Occlusion culling
+
+  * Both of these approaches still attempt to draw everything
+  
+  * In large scenes this can be very expensive
+  
+  * Specialized algorithms exist to determine objects that are occluded
+  
+  * Such objects can be culled entirely
+  
+  * Unity has an Occlusion culling algorithm, but it requires some setup
+  
+---
+
+class: medium
+
+# References 
+
+   * Book: *Mathematics for Game Developers*, by Christopher Tremblay
+
+   * [Barycentric coordinate system](https://en.wikipedia.org/wiki/Barycentric_coordinate_system)
+   
+   * [NeHe OpenGL tutorials](http://nehe.gamedev.net/) (slightly outdated, but explains the basics well)
+   
+   * [OpenGL Billboard tutorial](http://www.opengl-tutorial.org/intermediate-tutorials/billboards-particles/billboards/)
+
+   * [three.js](https://threejs.org/) (JavaScript library for easy 3D rendering)
+   
+   * [OpenGL Render Pipeline](https://www.khronos.org/opengl/wiki/Rendering_Pipeline_Overview)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
+    <script src="/CI-2700/assets/js/3dutils.js"></script>
+
+    <script>
+      var gameInstance = UnityLoader.instantiate("gameContainer", "/CI-2700/assets/unity/wobbly/Build/webbuild1.json", {onProgress: UnityProgress});
+    </script>
+    <!-- From:  https://github.com/mrdoob/three.js/blob/master/examples/webgl_shader_lava.html  -->
+    <script id="fragmentShader" type="x-shader/x-fragment">
+			uniform float time;
+			uniform float fogDensity;
+			uniform vec3 fogColor;
+			uniform sampler2D texture1;
+			uniform sampler2D texture2;
+			varying vec2 vUv;
+			void main( void ) {
+				vec2 position = - 1.0 + 2.0 * vUv;
+				vec4 noise = texture2D( texture1, vUv );
+				vec2 T1 = vUv + vec2( 1.5, - 1.5 ) * time * 0.02;
+				vec2 T2 = vUv + vec2( - 0.5, 2.0 ) * time * 0.01;
+				T1.x += noise.x * 2.0;
+				T1.y += noise.y * 2.0;
+				T2.x -= noise.y * 0.2;
+				T2.y += noise.z * 0.2;
+				float p = texture2D( texture1, T1 * 2.0 ).a;
+				vec4 color = texture2D( texture2, T2 * 2.0 );
+				vec4 temp = color * ( vec4( p, p, p, p ) * 2.0 ) + ( color * color - 0.1 );
+				if( temp.r > 1.0 ) { temp.bg += clamp( temp.r - 2.0, 0.0, 100.0 ); }
+				if( temp.g > 1.0 ) { temp.rb += temp.g - 1.0; }
+				if( temp.b > 1.0 ) { temp.rg += temp.b - 1.0; }
+				gl_FragColor = temp;
+				float depth = gl_FragCoord.z / gl_FragCoord.w;
+				const float LOG2 = 1.442695;
+				float fogFactor = exp2( - fogDensity * fogDensity * depth * depth * LOG2 );
+				fogFactor = 1.0 - clamp( fogFactor, 0.0, 1.0 );
+				gl_FragColor = mix( gl_FragColor, vec4( fogColor, gl_FragColor.w ), fogFactor );
+			}
+		</script>
+
+		<script id="vertexShader" type="x-shader/x-vertex">
+			uniform vec2 uvScale;
+            uniform float time;
+			varying vec2 vUv;
+			void main()
+			{
+				vUv = uvScale * uv;
+				vec4 mvPosition = modelViewMatrix * vec4( position + vec3(0.3*sin(time)*position.y,0.4*cos(time*1.3)*position.z,0), 1.0 );
+				gl_Position = projectionMatrix * mvPosition;
+			}
+		</script>
+    
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+      
+    
+ 
+    var cubeinfo = setupScene(window.innerWidth/2-200, window.innerHeight/2, "container");
+    cubeinfo.update = function ( object ) {
+            const timer = Date.now() * 0.0001;
+            if ( object.isMesh === true ) {
+                object.rotation.z = timer * 15;
+                object.rotation.x = timer * 22;
+            }
+        };
+    
+    var triinfo = setupScene(window.innerWidth/2-200, window.innerHeight/2, "tricontainer");
+
+    triinfo.update = function ( object ) {
+            const timer = Date.now() * 0.0001;
+            if ( object.isMesh === true ) {
+                object.rotation.y = timer * 6;
+            }
+        };
+        
+    var tricolinfo = setupScene(window.innerWidth/2-200, window.innerHeight/2, "tricolcontainer");
+
+    tricolinfo.update = function ( object ) {
+            const timer = Date.now() * 0.0001;
+            if ( object.isMesh === true ) {
+                object.rotation.y = timer * 6;
+            }
+        };
+        
+    var texinfo = setupScene(window.innerWidth/4-100, window.innerHeight/2, "texcontainer");
+    
+    texinfo.update = function ( object ) {
+            const timer = Date.now() * 0.0001;
+            if ( object.isMesh === true ) {
+                object.rotation.y = timer * 6;
+            }
+        };
+    
+    var tex1info = setupScene(window.innerWidth/4-100, window.innerHeight/2, "tex1container");
+    
+    tex1info.update = function ( object ) {
+            const timer = Date.now() * 0.0001;
+            if ( object.isMesh === true ) {
+                object.rotation.y = timer * 6;
+            }
+        };
+
+    var shinfo = setupScene(window.innerWidth/2-200, window.innerHeight/2, "shcontainer");
+    
+    
+    
+    var tri = new THREE.Geometry();
+    
+    tri.vertices.push(
+        new THREE.Vector3(-2,-2,0), new THREE.Vector3(2,2,0), new THREE.Vector3(2,-2,0)
+    );
+    
+    var triface = new THREE.Face3( 1, 0, 2, new THREE.Vector3(0,0,1), new THREE.Color( 0xff0000 ) );
+    
+   // triface.vertexColors = [ new THREE.Color( 0xff0000 ), new THREE.Color(0x00ff00), new THREE.Color(0x0000ff) ];
+
+    tri.faces.push( triface );
+    
+    var mat = new THREE.MeshLambertMaterial({vertexColors: THREE.FaceColors, side: THREE.DoubleSide});
+    tri.computeVertexNormals();
+
+    var trimesh = new THREE.Mesh(tri, mat);
+    triinfo.scene.add(trimesh);  
+    
+    
+    var tricolface = new THREE.Face3( 1, 0, 2, new THREE.Vector3(0,0,1), new THREE.Color( 0xff0000 ) );
+    tricolface.vertexColors = [ new THREE.Color( 0xff0000 ), new THREE.Color(0x00ff00), new THREE.Color(0x0000ff) ];
+    var tricol = new THREE.Geometry();
+    tricol.vertices.push(new THREE.Vector3(-2,-2,0), new THREE.Vector3(2,2,0), new THREE.Vector3(2,-2,0));
+    tricol.faces.push(tricolface);
+    //tricol.computeVertexNormals();
+    
+    var tricolmesh = new THREE.Mesh(tricol, new THREE.MeshLambertMaterial({vertexColors: THREE.VertexColors, side: THREE.DoubleSide}));
+    tricolinfo.scene.add(tricolmesh);
+    
+    var texface = new THREE.Face3( 1, 0, 2, new THREE.Vector3(0,0,1) );
+   
+    var tex = new THREE.Geometry();
+    tex.vertices.push(new THREE.Vector3(-2,-2,0), new THREE.Vector3(2,2,0), new THREE.Vector3(2,-2,0));
+    tex.faces.push(texface);
+    tex.faceVertexUvs[0].push([new THREE.Vector2(1,0), new THREE.Vector2(0,0), new THREE.Vector2(1,1)]);
+    tex.uvsNeedUpdate = true;
+    tex.computeVertexNormals();
+    tex.computeFaceNormals();
+    var texture = new THREE.TextureLoader().load('/CI-2700/assets/img/crate.gif');
+    var texmesh = new THREE.Mesh(tex, new THREE.MeshBasicMaterial({map: texture, side: THREE.DoubleSide}));
+
+    texinfo.scene.add(texmesh);
+    texinfo.camera.position.z=5;
+    
+    var tex1face = new THREE.Face3( 1, 0, 2, new THREE.Vector3(0,0,1) );
+   
+    var tex1 = new THREE.Geometry();
+    tex1.vertices.push(new THREE.Vector3(-2,-2,0), new THREE.Vector3(2,2,0), new THREE.Vector3(2,-2,0));
+    tex1.faces.push(texface);
+    tex1.faceVertexUvs[0].push([new THREE.Vector2(1,0), new THREE.Vector2(0,0), new THREE.Vector2(0.5,0.5)]);
+    tex1.uvsNeedUpdate = true;
+    tex1.computeVertexNormals();
+    tex1.computeFaceNormals();
+    textmat = new THREE.MeshBasicMaterial({map: texture, side: THREE.DoubleSide})
+    var tex1mesh = new THREE.Mesh(tex1, textmat);
+
+    
+    tex1info.scene.add(tex1mesh);
+    tex1info.camera.position.z=5;
+    
+    var cube = new THREE.Geometry();
+    
+    cube.vertices.push(
+        new THREE.Vector3(-2,-2,2), new THREE.Vector3(2,2,2), new THREE.Vector3(2,-2,2), new THREE.Vector3(-2, 2,2),
+        new THREE.Vector3(-2,-2,-2), new THREE.Vector3(2,2,-2), new THREE.Vector3(2,-2,-2), new THREE.Vector3(-2, 2,-2)
+    );
+
+    cube.faces.push( new THREE.Face3( 1, 0, 2, new THREE.Vector3(0,0,1), new THREE.Color( 0xff0000 ) ), 
+                       new THREE.Face3( 0, 1, 3, new THREE.Vector3(0,0,1), new THREE.Color( 0x00ff00 ) ));
+                       
+    cube.faces.push( new THREE.Face3( 2, 6, 1, new THREE.Vector3(1,0,0), new THREE.Color( 0x0000ff ) ),
+                       new THREE.Face3( 1, 6, 5, new THREE.Vector3(1,0,0), new THREE.Color( 0xffff00 ) ));
+    
+    cube.faces.push( new THREE.Face3( 2, 0, 4, new THREE.Vector3(0,-1,0), new THREE.Color( 0xff00ff ) ),
+                       new THREE.Face3( 2, 4, 6, new THREE.Vector3(0,-1,0), new THREE.Color( 0x00ffff ) ));
+                       
+    cube.faces.push( new THREE.Face3( 1, 5, 3, new THREE.Vector3(0,1,0), new THREE.Color( 0xff7700 ) ),
+                       new THREE.Face3( 3, 5, 7, new THREE.Vector3(0,1,0), new THREE.Color( 0x77ff00 ) ));
+                       
+    cube.faces.push( new THREE.Face3( 4, 3, 7, new THREE.Vector3(-1,0,0), new THREE.Color( 0xff0077 ) ),
+                       new THREE.Face3( 0, 3, 4, new THREE.Vector3(-1,0,0), new THREE.Color( 0x7700ff ) ));
+                       
+    cube.faces.push( new THREE.Face3( 5, 6, 4, new THREE.Vector3(0,0,1), new THREE.Color( 0x00ff77 ) ), 
+                       new THREE.Face3( 5, 4, 7, new THREE.Vector3(0,0,1), new THREE.Color( 0x0077ff ) ));
+                       
+    cube.faceVertexUvs[0].push([new THREE.Vector2(1,0), new THREE.Vector2(0,0), new THREE.Vector2(1,1)]); 
+    cube.faceVertexUvs[0].push([new THREE.Vector2(0,1), new THREE.Vector2(1,1), new THREE.Vector2(0,0)]); 
+    
+    cube.faceVertexUvs[0].push([new THREE.Vector2(1,0), new THREE.Vector2(0,0), new THREE.Vector2(1,1)]); 
+    cube.faceVertexUvs[0].push([new THREE.Vector2(0,1), new THREE.Vector2(1,1), new THREE.Vector2(0,0)]); 
+    
+    cube.faceVertexUvs[0].push([new THREE.Vector2(1,0), new THREE.Vector2(0,0), new THREE.Vector2(1,1)]); 
+    cube.faceVertexUvs[0].push([new THREE.Vector2(0,1), new THREE.Vector2(1,1), new THREE.Vector2(0,0)]); 
+    
+    cube.faceVertexUvs[0].push([new THREE.Vector2(1,0), new THREE.Vector2(0,0), new THREE.Vector2(1,1)]); 
+    cube.faceVertexUvs[0].push([new THREE.Vector2(0,1), new THREE.Vector2(1,1), new THREE.Vector2(0,0)]); 
+    
+    cube.faceVertexUvs[0].push([new THREE.Vector2(1,0), new THREE.Vector2(0,0), new THREE.Vector2(1,1)]); 
+    cube.faceVertexUvs[0].push([new THREE.Vector2(0,1), new THREE.Vector2(1,1), new THREE.Vector2(0,0)]); 
+    
+    cube.faceVertexUvs[0].push([new THREE.Vector2(1,0), new THREE.Vector2(0,0), new THREE.Vector2(1,1)]); 
+    cube.faceVertexUvs[0].push([new THREE.Vector2(0,1), new THREE.Vector2(1,1), new THREE.Vector2(0,0)]); 
+    
+    cube.computeVertexNormals();
+    cube.computeFaceNormals();
+    
+    var gmat = new THREE.MeshLambertMaterial({color: 0xFF0000});
+    
+    var wirematerial = new THREE.MeshLambertMaterial({color: 0xFF0000, wireframe: true});
+    
+    var mesh = new THREE.Mesh(cube, gmat);
+
+    cubeinfo.scene.add(mesh);
+    
+    var onKeyDown = function ( event ) {
+
+		//event.preventDefault();
+
+		switch ( event.keyCode ) {
+
+			case 38: /*up*/
+			case 87: /*W*/ mesh.material = mat; break;
+            
+            case 37: /*left*/
+            case 65: /*A*/ mesh.material = textmat; break;
+
+			case 40: /*left*/
+			case 83: /*A*/ mesh.material = gmat; break;
+            
+            case 39: /*right*/
+            case 68: /*D*/ mesh.material = wirematerial; break;
+
+		}
+
+     };
+     
+    // From https://github.com/mrdoob/three.js/blob/master/examples/webgl_shader_lava.html 
+    var textureLoader = new THREE.TextureLoader();
+    uniforms = {
+        fogDensity: { value: 0.45 },
+        fogColor: { value: new THREE.Vector3( 0, 0, 0 ) },
+        time: { value: 1.0 },
+        uvScale: { value: new THREE.Vector2( 3.0, 1.0 ) },
+        texture1: { value: textureLoader.load( '/CI-2700/assets/img/cloud.png' ) },
+        texture2: { value: textureLoader.load( '/CI-2700/assets/img/lavatile.jpg' ) }
+    };
+    uniforms.texture1.value.wrapS = uniforms.texture1.value.wrapT = THREE.RepeatWrapping;
+    uniforms.texture2.value.wrapS = uniforms.texture2.value.wrapT = THREE.RepeatWrapping;
+    clock = new THREE.Clock();
+    shinfo.update = function ( object ) {
+        
+        const timer = Date.now() * 0.0001;
+        uniforms.time.value += 0.2 * 5 * clock.getDelta();
+        if ( object.isMesh === true ) {
+            object.rotation.y = timer * 2;
+            object.rotation.z = timer * 1.25;
+        }
+    };
+    
+    var size = 0.65;
+    var material = new THREE.ShaderMaterial( {
+        uniforms: uniforms,
+        vertexShader: document.getElementById( 'vertexShader' ).textContent,
+        fragmentShader: document.getElementById( 'fragmentShader' ).textContent
+    } );
+    var shmesh = new THREE.Mesh( new THREE.TorusBufferGeometry( size, 0.3, 30, 30 ), material );
+    shmesh.rotation.x = 0.3;
+    shinfo.scene.add( shmesh );
+    shinfo.camera.position.z = 1.8;
+     
+     window.addEventListener( 'keydown', onKeyDown, false );
+    
+
+    // Schedule the first frame.
+    requestAnimationFrame(update);
+      
+    </script>
+  </body>
+</html>
