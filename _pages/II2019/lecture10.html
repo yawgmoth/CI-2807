@@ -989,6 +989,12 @@ class: small
   
 ---
 
+# Shaders 
+
+<div id="shcontainer"></div>
+  
+---
+
 class: medium
 
 # References 
@@ -1011,9 +1017,6 @@ class: medium
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
     <script src="/CI-2700/assets/js/3dutils.js"></script>
 
-    <script>
-      var gameInstance = UnityLoader.instantiate("gameContainer", "/CI-2700/assets/unity/wobbly/Build/webbuild1.json", {onProgress: UnityProgress});
-    </script>
     <!-- From:  https://github.com/mrdoob/three.js/blob/master/examples/webgl_shader_lava.html  -->
     <script id="fragmentShader" type="x-shader/x-fragment">
 			uniform float time;
