@@ -1380,8 +1380,6 @@ context.drawImage(image,
 
 ---
 
-# Review: Linear Interpolation
-
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">A quick guide to Lerp~✨<br><br>Lerp is used to blend between two things!<br><br>It has three inputs: ( a, b, t )<br>a = start value<br>b = end value<br>t = how far we should go from start to end, as a percentage<br><br>Here it is in action!⚡blending a value, position, color and an angle! <a href="https://t.co/LdA69fLI8N">pic.twitter.com/LdA69fLI8N</a></p>&mdash; Freya Holmér 🔜 IndieCade Europe (@FreyaHolmer) <a href="https://twitter.com/FreyaHolmer/status/1175925033002254338?ref_src=twsrc%5Etfw">September 23, 2019</a></blockquote> 
 
 ---
@@ -1461,7 +1459,10 @@ class: medium
           skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
           }
       });
-      
+    
+    var shinfo = setupScene(window.innerWidth/2-200, window.innerHeight/2, "shcontainer");
+    
+        
        // From https://github.com/mrdoob/three.js/blob/master/examples/webgl_shader_lava.html 
     var textureLoader = new THREE.TextureLoader();
     uniforms = {
