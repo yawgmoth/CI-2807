@@ -5,7 +5,7 @@ permalink: /slides/II2019/lecture10.html
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Lecture 13: 3D graphics</title>
+    <title>Lecture 10: 3D graphics</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -872,126 +872,7 @@ class: small
   * `transform.LookAt(2 * transform.position - Camera.main.transform.position);`
 
 
----
 
-class: center, middle
-
-# Rendering Pipeline
-
-## Or: How do we actually get something onto the screen
-
----
-
-class: small
-
-# Rendering 
-
-  * Model coordinates need to be translated to world coordinates (where is the mesh)
-  
-  * World coordinates are then translated to Camera coordinates (where in the field of view of the camera is the mesh?)
-  
-  * The Camera coordinates need to be projected onto a Viewport (objects that are further away become smaller)
-  
-  * The Viewport is then mapped onto a window on the screen
-  
-  * We will discuss the math behind this next week
-  
----
-
-# Camera 
-
-<img src="/CI-2700/assets/img/frustum.jpg" width="100%"/>
-
----
-
-# Clipping and Culling
-
-  * Many triangles do not need to be rendered
-  
-  * Anything outside the frustum or not facing the camera can be discarded (Frustum culling and backface culling)
-  
-  * Triangles that are behind other triangles can also be culled (Occlusion culling)
-  
-  * Triangles that are partially inside the frustum have to be clipped (cut into pieces)
-  
----
-
-class: small
-
-# Backface culling
-
-  * How do we recognize what is facing away from the camera?
-  
-  * Assume a and b are unit vectors
-  
-$$ \vec{a} \cdot \vec{b} = \cos(\theta) $$
-
-  * The cosine is negative iff the vectors point in opposite directions
-
-  * Discard any triangle where the face normal points in the same direction as the (unit) vector pointing from the camera to the triangle
-  
----
-
-class: small
-
-# Painter's algorithm
-
-  * How do we avoid showing triangles that are occluded?
-
-  * When you paint, whatever you draw last is visible on the canvas 
-  
-  * Let's use the same idea with triangles!
-  
-  * Draw triangles starting with the one furthest from the camera 
-  
-  * The closer a triangle is to the viewer, the later it is drawn
-  
-  * If a triangle is partially occluded, you will still see the rest
-  
----
-
-# Which order?
-
-<img src="/CI-2700/assets/img/painters.png" width="50%"/>
-  
----
-
-class: small
-
-# z-Buffer
-
-  * Instead of deciding per triangle, decide per pixel 
-  
-  * Store z-coordinate (depth) in a special buffer
-  
-  * When something would be drawn on a pixel:
-       
-       - If the z-coordinate of the new object is greater than the buffer, don't draw
-       - Otherwise draw, and update the buffer 
-       
-  * The z-Buffer usually exists in hardware
-  
----
-
-class: small
-
-# Occlusion culling
-
-  * Both of these approaches still attempt to draw everything
-  
-  * In large scenes this can be very expensive
-  
-  * Specialized algorithms exist to determine objects that are occluded
-  
-  * Such objects can be culled entirely
-  
-  * Unity has an Occlusion culling algorithm, but it requires some setup
-  
----
-
-# Shaders 
-
-<div id="shcontainer"></div>
   
 ---
 
