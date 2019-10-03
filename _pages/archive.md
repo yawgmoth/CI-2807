@@ -8,6 +8,20 @@ frontpageorder: 1
 categories: [frontpage]
 ---
 
+# Old Exams
+
+## Mid term
+[I Ciclo 2019](/CI-2807/assets/pdf/exam1I2019.pdf) <br/>
+[III Ciclo 2018](/CI-2807/assets/pdf/exam1III2018.pdf) 
+
+
+## Final 
+
+[III Ciclo 2018](/CI-2807/assets/pdf/exam2III2018.pdf) <br/>
+[III Ciclo 2018 (alternative version)](/CI-2807/assets/pdf/exam2aIII2018.pdf)
+
+# Lecture Notes I Ciclo 2019
+
 <a href="/CI-2807/slides/lecture1.html">Lecture 1: Introduction, Mar 12, 2019</a><br/>
 <a href="/CI-2807/slides/lecture2.html">Lecture 2: What are (video) games? Mar 15, 2019</a><br/>
 <a href="/CI-2807/slides/lecture3.html">Lecture 3: Game Design, Mar 19, 2019</a><br/>
@@ -26,7 +40,6 @@ categories: [frontpage]
 <a href="/CI-2807/slides/lecture16.html">Lecture 16: Movement, May 14, 2019</a><br/>
 <a href="/CI-2807/slides/lecture16a.html">Vector Math Practice</a><br/>
 <a href="/CI-2807/slides/lecture17.html">Lecture 17: Review, May 17, 2019</a><br/>
-<a href="/CI-2807/assets/pdf/exam1.pdf">First Exam from III Ciclo 2018</a><br/>
 <a href="/CI-2807/slides/lecture18.html">Lecture 18: AI Behavior, May 21, 2019</a><br/>
 <a href="/CI-2807/slides/lecture19.html">Lecture 19: Game Trees, May 28, 2019</a><br/>
 <a href="/CI-2807/slides/lecture20.html">Lecture 20: Advanced AI, May 31, 2019</a><br/>
@@ -37,5 +50,3 @@ categories: [frontpage]
 <a href="/CI-2807/slides/lecture25.html">Lecture 25: Testing and Balancing, Jun 24, 2019</a><br/>
 <a href="/CI-2807/slides/lecture26.html">Lecture 26: Monetization and Publishing, Jun 28, 2019</a><br/>
 <a href="/CI-2807/slides/lecture27.html">Lecture 27: Review, Jul 2, 2019</a><br/>
-<a href="/CI-2807/assets/pdf/exam2.pdf">Second Exam from III Ciclo 2018</a><br/>
-<a href="/CI-2807/assets/pdf/exam2a.pdf">Second Exam from III Ciclo 2018 (alternative version)</a><br/>

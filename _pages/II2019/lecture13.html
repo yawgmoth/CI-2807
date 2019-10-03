@@ -43,6 +43,14 @@ class: center, middle
 
 ---
 
+# Previous exams 
+
+* You can look at old exams in the [/CI-2807/archive](archive)
+
+* Let's work through them!
+
+---
+
 class: center, middle
 
 #  What are (video) games? 
@@ -344,12 +352,40 @@ $$
 
 ## Which three matrices are responsible for mapping an object's vertices onto the screen?
 
+---
+
+class: small
+
+# Matrix Problem Generator
+
+  * On the right side you can type any combination of two movements or rotations and a vector, and the demo will calculate the matrices, the composed matrix, and how it transforms the given vector
+  
+  * On the bottom left, you can generate problems for you to solve as practice for the exam
+  
+  * The "Show Solution" button will automatically populate the fields on the right side and calculate the matrices
+  
+  * The box will show a visualization of the transformation, played out in steps
+
+---
+
+<div class="webgl-content">
+  <div id="unityContainer" style="width: 900px; height: 500px"></div>
+  <div class="footer">
+    <div class="webgl-logo"></div>
+    <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
+  </div>
+</div>
+
 
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
     </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
-    
+    <script src="/CI-2807/assets/unity/matrixcalculator/TemplateData/UnityProgress.js"></script>
+    <script src="/CI-2807/assets/unity/matrixcalculator/Build/UnityLoader.js"></script>
+    <script>
+      var unityInstance = UnityLoader.instantiate("unityContainer", "/CI-2807/assets/unity/matrixcalculator/Build/webbuild.json", {onProgress: UnityProgress});
+    </script>    
     
     <script type="text/javascript">
       var slideshow = remark.create({"highlightStyle": "dark"});
