@@ -1,0 +1,479 @@
+---
+permalink: /slides/II2019/lecture14.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 14: AI</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.8em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .tiny table {  font-size: 0.8em; }
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Artificial Intelligence
+
+---
+
+class: center, middle
+
+#  Game AI
+
+---
+
+# Game AI
+
+The first rule of game AI:
+
+### It does not matter how smart/dumb your AI is, as long as it *plays well*
+
+---
+
+class: center, middle
+
+# An example 
+
+## Let's talk about the oldest survival game in which you have to escape from the Undead 
+
+--
+
+## Pacman!
+
+---
+
+# Pacman 
+
+<img src="/CI-2700/assets/img/pacman.png" width="50%"/>
+
+---
+
+# Pacman Ghost AI 
+
+  * There are four ghosts: Blinky, Pinky, Inky, and Clyde
+
+  * They chase Pacman 
+  
+  * But they all have different "personalities"
+  
+  * How?
+  
+  * What are they actually doing?
+  
+---
+
+class: small
+
+# Pacman Ghost AI 
+
+Some disclaimers:
+
+  * The ghosts actually have three modes: scatter, chase and frightened 
+  
+  * In scatter mode each of them tries to get to his own corner 
+  
+  * In frightened mode, they move randomly and can be eaten 
+  
+  * Scatter and chase modes alternate temporally; frightened mode is triggered by eating a power-up
+  
+  * We will only be talking about chase mode 
+  
+---
+
+# Pacman Ghost AI: The maze 
+
+<img src="/CI-2700/assets/img/pacmanmaze.png" width="50%"/>
+
+---
+
+# Pacman Ghost AI
+
+  * Each ghost has a current position/cell and a target position/cell 
+  
+  * Ghosts can not turn around
+  
+  * Whenever a ghost comes to an intersection, it has to decide where to go 
+  
+  * This decision is based on what their target is 
+  
+---
+
+# Pacman Ghost AI
+
+  * Only Blinky is actually "chasing" Pacman
+
+  * Pinky is trying to get to where Pacman "will be"
+
+  * Inky does something weird, his target depends on Pacman's position *and* Blinky's position
+  
+  * Clyde tries to chase Pacman if he is far away, but if he gets too close he will try to go back to his own corner
+
+---
+
+# Pacman Ghost AI: Pathfinding
+
+  * How do the ghosts calculate the path to their target cell?
+  
+  * They don't!
+  
+  * Instead, before an intersection, they look at the next cell in each direction, and pick the direction that is closest to the target
+  
+<img src="/CI-2700/assets/img/ghostdecision.png" width="80%"/>
+
+---
+
+# Pacman Ghost AI
+
+What is the problem with this approach?
+
+--
+
+<img src="/CI-2700/assets/img/cantreach.png" width="80%"/>
+
+---
+
+# Pacman Ghost AI
+
+  * The ghosts only make decisions one intersection at a time
+
+  * Sometimes they reach their goal 
+  
+  * What we need is actual pathfinding: Calculating a route from the current position to a goal
+  
+  * Note: This wasn't actually a problem for Pacman, but generally we want an actual path to the goal
+  
+---
+
+# What can we do?
+
+<img src="/CI-2700/assets/img/pacmanmaze.png" width="50%"/>
+
+---
+
+# What can we do?
+
+<img src="/CI-2700/assets/img/mazenodes.png" width="50%"/>
+
+---
+
+# What can we do?
+
+<img src="/CI-2700/assets/img/mazegraph.png" width="50%"/>
+
+---
+
+# Intelligence 
+
+* We will talk about pathfinding more next week 
+
+* But let's start with the actual behavior of NPCs 
+
+* How about we make something "smarter" than just "go to a point"?
+
+---
+
+# Ad-hoc behavior
+  
+  * Let's start simple: We have a bandit that's walking back and forth 
+  
+  * Our player comes near
+  
+```C
+if (distance(player, bandit) < x) 
+{
+    attack(bandit, player);
+}
+```
+
+---
+
+# Ad-hoc behavior 
+
+  * We play with this a bit, and realize that the player can now bait ("kite") the bandit to town, where the friendly NPCs can kill him without a problem 
+  
+  * Let's solve that!
+  
+```C
+if (distance(bandit, bandit_camp) > y)
+{
+   walk_to(bandit, bandit_camp);
+}
+else if (distance(player, bandit) < x) 
+{
+    attack(bandit, player)
+}>
+``` 
+
+---
+
+# Ad-hoc behavior 
+
+  * Now the player can bait the bandit to the edge of his follow radius
+  
+  * What if the player walks back and forth on that line?
+  
+  * We could add another condition for that ...
+  
+  * Note: This does not mean that ad-hoc coding of behavior is not bad, and often works well
+   
+---
+
+class: center, middle
+
+# AI
+
+## What is AI?
+
+---
+
+# What is AI
+  
+  * Just like with "game", no one agrees what "AI" really is 
+  
+  * Commonly, "the science of intelligent agents"
+  
+  * Or, as Douglas R. Hofstadter said "AI is whatever hasn't been done yet"
+  
+  * Pathfinding "was" once AI
+  
+  * For games: Whatever the opponents do
+  
+---
+
+class: small
+
+# What is an agent
+  
+  * We often talk of "AI agents"
+  
+  * Each "intelligent" character in your game is an "agent"
+  
+  * If you play "honestly", each agent only "knows" what a player would know if they could play as that character
+  
+  * For example: If you have a bandit, it can't see the player if the player is behind an obstacle
+  
+  * The agent uses their knowledge to make determine which action to use
+  
+  * Note: It's not mandatory to play "honestly" for the AI agents
+  
+---
+
+class: middle, center
+
+# Some AI techniques
+
+## (that are commonly used in games)
+
+---
+
+# Decision Trees
+
+  * Remember the series of if statements from earlier?
+  
+  * We can represent them as a tree 
+  
+  * Each branch is one if statement, based on some condition 
+  
+  * The leaves of the trees are actions the character takes 
+  
+---
+
+# Decision Trees
+
+<img src="/CI-2700/assets/img/decisiontree.png" width="100%"/>
+
+---
+
+# Decision Trees: Limitations
+
+  * We haven't actually changed anything from the if statements (other than drawing them)
+  
+  * Designing a decision tree is still a lot of manual work
+  
+  * There's also no persistence, the agent will decide a new behavior every time the tree is evaluated
+  
+  * There is one nice thing: Decision trees can (sometimes) be learned with Machine Learning techniques
+
+---
+
+# Finite State Machines
+
+  * We can make our code nicer if we separate decisions and behavior 
+  
+  * For example: Wandering around is one behavior, attacking the player another, etc.
+  
+  * Each of these behaviors is a "state" of the bandit 
+  
+  * The bandit decides when to change states depending on the game state 
+
+---
+
+# Finite State Machines 
+
+<img src="/CI-2700/assets/img/fsm.png" width="100%"/>
+
+---
+
+class: small
+
+# Finite State Machines: Limitations
+
+  * There's no real concept of "time", it has to be "added" 
+
+  * If you just want to add one state you have to determine how it relates to every other state 
+
+  * If you have two Finite State Machines they are hard to compose 
+  
+  * It's also kind of hard to reuse subparts
+  
+  * For example: A guard has a routine consisting of multiple states to chase an intruder, the bandit could use that same routine, but it would connect differently to the rest of its behavior
+
+---
+
+# Hierarchical Finite State Machines
+
+  * Finite State Machines define the behavior of the agent 
+  
+  * But we said the nodes are behaviors?!
+  
+  * We can make each node another sub-machine!
+  
+  * This leads to *some* reusability, and eases authoring  
+  
+---
+
+class: small
+
+# Behavior Trees
+
+  * Let's still use a graph, but make it a tree!
+  
+  * If we have a subtree, we now only need to worry about one connection: its parent
+  
+  * The *leaves* of the tree will be the actual actions, while the interior nodes define the decisions 
+  
+  * Each node can either be successful or not, which is what the interior nodes use for the decisions
+  
+  * We can have different kinds of nodes for different kinds of decisions 
+  
+  * This is extensible (new kinds of nodes), easily configurable (just attach different nodes together to make tree) and reusable (subtrees can be used multiple times)
+  
+---
+
+# Behavior Trees: Common Node types
+
+  * Selector: Execute the first child that is successful 
+  
+  * Sequence: Execute all children until one fails
+  
+  * Loop: Keep executing child (or children) until one fails 
+  
+  * Random choice: Execute one of the children at random
+  
+  * Timing: Execute first child for x seconds, then the second child, etc.
+  
+---
+
+# Behavior Trees
+
+<img src="/CI-2700/assets/img/behaviortree.jpg" width="100%"/>
+
+---
+
+# Let's make a Behavior Tree for a Bandit!
+
+  * She can walk somewhere
+  
+  * She can see the player 
+  
+  * She can sound the alarm
+  
+  * She can hear the alarm of the bandit camp
+  
+  * She can attack the player 
+  
+---
+
+class: medium
+
+# AIIDE 2019
+
+* I was in Atlanta for a conference last week: Artificial Intelligence in Interactive Digital Entertainment
+
+* There were presentations about content generation, narrative, machine learning in games, etc. 
+
+* There were also some demos, like the fantastic "Playing with SHRDLU", a game featuring natural language conversations with robots
+
+---
+
+# Playing with SHRDLU 
+
+<img src="/CI-2807/assets/img/shrdlu.png" width="80%"/>
+  
+---
+
+# References 
+
+  * ["The Pacman Dossier"](http://www.gamasutra.com/view/feature/3938/the_pacman_dossier.php)
+  
+  * [Artificial Intelligence and Games](http://gameaibook.org/)
+  
+  * [Finite State Machines for Game AI (ES)](https://gamedevelopment.tutsplus.com/es/tutorials/finite-state-machines-theory-and-implementation--gamedev-11867)
+  
+  * [Halo 2 AI using Behavior Trees](http://www.gamasutra.com/view/feature/130663/gdc_2005_proceeding_handling_.php)
+  
+  * [AIIDE conference website](http://aiide.org)
+  
+  * [Playing with SHRDLU](https://www.cs.drexel.edu/~santi/games/SHRDLU-demo28/shrdlu.html)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+
+   
+      
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+    </script>
+    <script src="sprite-animation.js"></script>
+  </body>
+</html>
