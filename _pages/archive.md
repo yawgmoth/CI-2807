@@ -11,6 +11,8 @@ categories: [frontpage]
 # Old Exams
 
 ## Mid term
+[II Ciclo 2019](/CI-2807/assets/pdf/exam1II2019.pdf) <br/>
+[II Ciclo 2019 (alternative version)](/CI-2807/assets/pdf/exam1II2019a.pdf) <br/>
 [I Ciclo 2019](/CI-2807/assets/pdf/exam1I2019.pdf) <br/>
 [III Ciclo 2018](/CI-2807/assets/pdf/exam1III2018.pdf) 
 
