@@ -169,9 +169,10 @@ class: center, middle
 
 The planning problem: Given the current game state, a list of actions, and a goal, find a sequence of actions that leads to the goal 
 
---
 
-Note: This is basically pathfinding! And what do we use for pathfinding? A*!
+Note: This is basically pathfinding! 
+
+And what do we use for pathfinding? A*!
 
 ---
 
@@ -1827,22 +1828,6 @@ class: center, middle
 
 ---
 
-class: small
-
-# Search-based approaches 
-
-  * So far, we've used actual geometry to search for paths
-  
-  * What if every node in our graph is a "level" for a game
-  
-  * Some levels are incomplete, bad, impossible to finish, etc.
-  
-  * Say we can connect two levels with their difference (e.g. adding a block in Super Mario)
-  
-  * If we know what a "good" level looks like, we can search through this graph
-
----
-
 # Search-based approaches: Story generation
 
   * We can also have the computer generate a story 
@@ -1884,6 +1869,12 @@ class: small
   * Introduce conflict: Actors can plan to execute actions, but other actors might interfere
   
   * There are many more extension, e.g. to add interactivity
+  
+---
+
+class: center, middle 
+
+# Solver-Based Approaches
   
 ---
 
