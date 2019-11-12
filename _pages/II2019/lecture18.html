@@ -331,7 +331,7 @@ class: small
 
 # Sphere-Ray Collisions 
 
-We just calculated p, the point of closest approach. We then calculate d, which is the distance of the sphere from that point/the ray. If this distance is less than the radius, the ray is inside the sphere.
+We just calculated p, the point of closest approach. We then calculate x, which is the distance of the sphere from that point/the ray. If this distance is less than the radius, the ray is inside the sphere.
 
 To determine the actual intersection point we observe that the projection point, the center and the intersection point form a right triangle, with the longest side being the radius, and d as one of the legs. We can then subtract the length of the other leg from `\(t_p\)`
 
@@ -352,11 +352,11 @@ t_p = (\vec{c} - \vec{o}) \cdot \vec{d} = ((2,1,8) - (0,0,0)) \cdot (0,0,1) = 8
 $$
 
 $$ 
-p = ||(\vec{o} + t_p \cdot \vec{d} - \vec{c})|| = ||(0,0,0) + 8 \cdot (0,0,1) - (2,1,8)|| \\\\= ||(-2,-1,0)|| = \sqrt{4+1} \approx 2.23 \le 3
+x = ||(\vec{o} + t_p \cdot \vec{d} - \vec{c})|| = ||(0,0,0) + 8 \cdot (0,0,1) - (2,1,8)|| \\\\= ||(-2,-1,0)|| = \sqrt{4+1} \approx 2.23 \le 3
 $$
 
 $$
-t_i = t_p - \sqrt{r^2 - p^2} = 8 - \sqrt{9 - 5} = 8 - 2 = 6\\\\
+t_i = t_p - \sqrt{r^2 - x^2} = 8 - \sqrt{9 - 5} = 8 - 2 = 6\\\\
 i = \vec{o} + t_i \cdot \vec{d} = (0,0,0) + 6 \cdot (0,0,1) = (0,0,6)
 $$
 
