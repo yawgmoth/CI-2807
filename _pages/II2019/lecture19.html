@@ -1701,7 +1701,11 @@ class: small
     </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
     <script src="https://yawgmoth.github.io/CI-2700/assets/js/3dutils.js"></script>
-    
+    <script src="/CI-2700/assets/unity/interpolation/TemplateData/UnityProgress.js"></script>
+    <script src="/CI-2700/assets/unity/interpolation/Build/UnityLoader.js"></script>
+    <script>
+      var gameInstance1 = UnityLoader.instantiate("gameContainer1", "/CI-2700/assets/unity/interpolation/Build/webbuild.json", {onProgress: UnityProgress});
+    </script>
     <script type="text/javascript">
       var slideshow = remark.create({"highlightStyle": "dark"});
 
