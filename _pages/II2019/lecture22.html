@@ -1,0 +1,783 @@
+---
+permalink: /slides/II2019/lecture22.html
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture 22: Games</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; font-size: 2em; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .MathJax {
+         font-size: 0.8em !important;
+      }
+      p { font-size: 1.25em; }
+      div { font-size: 1.25em; }
+      li { font-size: 1.25em; }
+      li p { line-height: 1.25em; font-size: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      
+      .small li {  font-size: 1em; }
+      
+      .tiny li {  font-size: 0.8em; }
+      
+      .tiny table {  font-size: 0.8em; }
+      
+      .smalltext p {  font-size: 1em; }
+      
+      
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Creación de Videojuegos
+
+### Games
+
+---
+
+class: center, middle 
+
+# Conclusion
+
+---
+
+# Conclusion 
+
+  - It was the third time I taught this class, I enjoyed it a lot!
+  
+  - I hope you enjoyed taking it, too
+  
+  - Also check out my master's/PhD level class on Machine Learning and Statistical Learning! 
+  
+  - Y'all were a great (and patient) audience!
+  
+---
+
+class: medium
+
+# The Future 
+
+  - I hope you all had fun with your projects 
+  
+  - If you have any intentions of publishing them in any form, I'd appreciate it if I got a link or something 
+  
+  - **Please participate in the official evaluation**
+  
+  - You can also let me know if there is anything you particularly liked/disliked (for example by posting anonymously and/or privately on Piazza)
+
+---
+
+class: center, middle 
+
+# Testing
+
+---
+
+# Why testing?
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/7f3HDsgLV68" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+---
+
+# Game Bugs 
+
+   - Beyond just "classical" software bugs, games, as complex systems, also have many other sources for errors 
+   
+   - Some of these might be hard to find or judge 
+   
+   - For example, how do you determine if a mechanic is "fun"?
+   
+   - How do you judge if a game is "easy" or "hard"
+   
+   - Companies are trying to get players involved earlier
+
+---
+
+class: small
+
+# Skyrim
+
+<img src="/CI-2700/assets/img/flyingmammoth.jpg" width="100%"/>
+
+---
+
+class: small
+
+# Twilight Princess 
+
+<img src="/CI-2700/assets/img/twilightprincess.jpg" width="80%"/>
+
+When you get to this room, you have to talk to Shad *before* you save and quit. He will not be there on reload, and is necessary to progress.
+
+---
+
+class: small
+
+# Pokemon Red &amp; Blue
+
+<img src="/CI-2700/assets/img/missingno.jpg" width="100%"/>
+
+---
+
+class: small
+
+# The Sims 3
+
+<img src="/CI-2700/assets/img/simsbugs.jpg" width="100%"/>
+
+---
+
+class: small
+
+# Pool Of Radiance: Ruins of Myth Drannor
+
+<img src="/CI-2700/assets/img/poolofradiance.jpg" width="80%"/>
+
+Pool Of Radiance: Ruins of Myth Drannor was a mediocre RPG, but when you uninstalled it, it would also delete some important Windows system files and your computer wouldn't boot anymore.
+
+---
+
+class: center, middle 
+
+# Balancing
+
+---
+
+# Balancing 
+
+  - We already discussed "easy" vs. "hard"
+  
+  - But what can you do to change that?
+  
+  - Also, what if players actually play against each other?
+  
+  - And which rewards do you give players?
+  
+---
+
+# Balancing: Basics 
+
+  - The best basis for balancing is math 
+  
+  - You want to know the relative strength of every item/unit in your game 
+  
+  - Build an Excel sheet (or code) that can tell you how good any combination of items/units is
+  
+  - Tweak numbers in the Excel sheet until the relative strengths are what you want 
+  
+  - And then playtest!
+
+---
+
+# Random-Number Generation
+
+  - Many players hate Random Number Generation (RNG) in games 
+  
+  - But it actually serves important purposes
+  
+  - Randomization helps with replayability
+  
+  - It also helps with player engagement and retention 
+  
+  - The problem is "too much" randomness
+  
+---
+
+class: small
+
+# RNG for Replayability 
+
+  - Many games use randomized levels to keep things fresh 
+  
+  - Card games typically shuffle the deck 
+  
+  - Bobby Fischer suggested Chess960 because he felt chess got stale from people using memorized openings
+  
+  - If the outcome of a match is less certain it is also more likely that you'll try again if you lose
+  
+  - Conversely: If you lose, you can always just blame "bad luck", rather than admitting that you made mistakes
+  
+---
+
+class: small
+
+# RNG for Player Engagement and Retention
+
+  - Studies in rats: If a lever gives a reward every time, or consistently every n times, the rats actually get bored and stop using the lever. If it gives rewards randomly instead, they will keep trying.
+  
+  - If you give your players a legendary item every 10 bosses they are more likely to get bored than if they get it randomly 10% of the time 
+  
+  - People have trouble with perceiving randomness, though 
+  
+  - If a player kills 20 bosses and doesn't get a legendary, they will claim the game is broken, even though that should happen in 12% of the cases 
+  
+  - 1.5% of players would even have to kill 40 bosses to get a legendary
+  
+---
+
+# RNG is bad
+
+  - Now we have a problem: RNG is good for the game, but too much of it makes players feel bad 
+  
+  - What if we "fix" our randomness if it gets too bad 
+  
+  - You still want "some" randomness, but it should be much less likely to get extreme results 
+  
+  - This actually applies to game play as well as rewards!
+  
+---
+
+class: small
+
+# Random Number Smoothing 
+
+  - Consider a game with a percentage chance to get a critical hit ("crit") which deals double damage 
+  
+  - Say you have a 35% chance of dealing a critical hit
+  
+  - If a player is "really lucky" they might deal 5 crits in a row
+  
+  - Conversely, a player that is really unlucky might not get any crits in 10 attacks
+  
+  - What if we actually start with lower odds, but if you miss, you get a bonus on your chances?
+  
+---
+
+class: smalltext
+
+# Random Number Smoothing 
+
+<table><tr><td><img src="/CI-2700/assets/img/rage.png" width="200pt"/></td>
+<td>
+<ul>
+<li> This item used to exist in Smite
+
+<li>Your initial odds of landing a critical hit are lower
+
+<li>If you miss, you will get a higher chance of critical hits 
+
+<li>In effect, you still have a 35% chance of landing a critical hit, but it is less likely that you have many in a row, or many misses in a row</ul>
+</td></tr></table>
+
+With crit smoothing:
+<canvas id="rage"></canvas><br/>
+
+Without crit smoothing:
+<canvas id="rage1"></canvas><br/>
+
+---
+
+# Random Number Smoothing 
+
+  - Games do this all the time!
+  
+  - Diablo 3: If you don't get a legendary item for a long time, your odds are increased over time 
+  
+  - Crusaders of the Lost Idols: Every 4th chest is guaranteed to be a "golden chest"
+  
+  - Smite: Crit-smoothing items
+  
+  - League of Legends: Critical Strike Smoothing Algorithm
+
+---
+
+class: center, middle
+
+# Monetization 
+
+---
+
+# Game Pricing
+
+  - AAA games usually sell around $40-$80 (25 000 - 50 000 CRC)
+  
+  - The *average* price for indie games on Steam is $9, with 21 000 units sold on average 
+  
+  - Stardew Valley was $15, and sold millions of copies
+  
+  - Mobile Games are often free to play, or sell for less than $5
+  
+---
+
+# Free to Play 
+
+  - You can also make your game "free"
+  
+  - How do you make money? Sell in-game items
+  
+  - The idea is that everyone can play your game, and spend money according to how much money they have 
+  
+  - There are several pitfalls, though 
+  
+  - Which items do you sell?
+  
+---
+
+# Pay to Win 
+
+  - Say you have a fighting game 
+  
+  - Players can spend 500h to craft a legendary sword 
+  
+  - Or they pay $20
+  
+  - This is not necessarily a problem
+  
+  - However, if the players compete in the game it might be, and/or if they need a large number of such items
+  
+---
+
+# Free to Play: Cosmetic Items
+
+  - A better (?) way to make money is to sell cosmetic (and convenience) items 
+  
+  - For example, new hats for characters, additional character slots
+  
+  - It can be beneficial for player engagement to allow them to "grind" for these items 
+  
+  - If there are 20 character skins for $20 each, and players can get one in 500h, a dedicated player can unlock a few of these 
+  
+---
+
+
+# Loot Boxes 
+
+  - Loot Boxes have become very controversial
+  
+  - They can become part of a compulsion loop/addiction
+  
+  - Players also don't like that they may not get the skin/item they really want
+  
+  - Several countries have also declared them to be gambling and falling under gambling laws
+  
+  - Games usually display the odds of getting every item (Chinese law)
+  
+---
+
+class: small
+
+# Free-to-Play: Currency
+
+  - Games usually don't let you buy items (or loot boxes) directly 
+  
+  - Instead you buy some made-up currency like gems and then spend that currency on the items 
+  
+  - This gets around some gambling laws 
+  
+  - It also makes it harder for players to judge how much they are spending 
+  
+  - Finally, if you sell 400 gems at a time, but your items cost 350 gems, the players have left over gems and are incentivized to spend more
+  
+  - You can also give your players 20 gems per week for free
+ 
+---
+
+class: small
+
+# Free-to-Play Player Types
+
+  - Whales are the players that invest "a lot" of money into your game, often multiple hundreds of USD
+  
+  - Dolphins are players that spend a little bit of money, by making maybe one or two small purchases
+  
+  - Minnows are players that spend (almost) no money on your game (sometimes "Freeloaders" are used as a distinct group that spends absolutely no money)
+  
+  - Some people argue that there should also be a category like "Megalodons" or "Mega-Whales"
+  
+  - However, none of the players typically spend a lot of money at once, Whales usually make many small purchases that add up.
+  
+---
+
+# Conversion Rate
+
+The "conversion rate" of a free-to-play game is the percentage of players that become payers. What's your estimate?
+
+--
+
+For a typical free-to-play game the conversion rate is less than 5%. Candy Crush has about 8%. How many Whales?
+
+--
+
+Whales make up less than 1% of your player base, often less than 0.1%. In other words, 0.1% of players pay for the other 99.9%.
+
+Treat your whales well, give them special offers, don't show them ads, keep them engaged.
+
+On the other hand, also treat the freeloaders well, or your game will die out and then the whales leave, too.
+
+---
+
+class: center, middle
+
+# Non-traditional Games
+
+---
+
+# Non-traditional Games
+
+  - As we discussed, it is hard to define what a "game" is 
+  
+  - Over the last few decades, several genres and kinds of games have established themselves 
+  
+  - However, there are many less explored ways to make games 
+  
+  - Let's look at a few of those!
+
+---
+
+# Zen Games 
+
+  - We said that (most) games have rules and goals
+  
+  - Sometimes all you want is to watch something grow (or burn)
+  
+  - Maybe with some minor interaction component 
+  
+  - There may be some progression, for example to unlock new items
+  
+---
+
+# Example: Bohm
+
+"Bohm is a game where you control a tree. Slow gameplay lets you discover the simple beauty of a growing tree. A zen-like, soothing experience that isn't about winning or losing."
+
+<img src="/CI-2700/assets/img/bohm.png" width="60%"/>
+
+---
+
+# Example: Little Inferno
+
+<img src="/CI-2700/assets/img/littleinferno.jpg" width="100%"/>
+
+---
+
+# Life Simulations
+
+  - Remember that games are often used for fantasy/wish fulfillment 
+  
+  - Some of these wishes might just be "what if I had a different job?"
+  
+  - Especially recently, the "_ Simulator" games have exploded in popularity
+  
+  - Some of these are more realistic than others
+  
+---
+
+# Example: Papers, Please
+
+<img src="/CI-2700/assets/img/papersplease.jpg" width="100%"/>
+
+---
+
+# Games in Unusual Environments 
+
+  - Just as the definition of what a "game" is can be pushed, so can the environments they are implemented in
+  
+  - For the project we used Unity
+  
+  - But any interactive medium can serve as a platform for games, with some creativity
+  
+  - Note that these games are not necessarily "practical", but merely technology demonstrations (or pranks)
+
+---
+
+# Example: World of Tweetcraft 
+
+  - In 2012 three (then) PhD students wanted to play an action RPG on Twitter 
+  
+  - So they implemented a bot that you could tweet at to participate in dungeon runs and slay monsters (including bosses)
+  
+  - Unfortunately the bot is no longer active :(
+  
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/sgware?ref_src=twsrc%5Etfw">@sgware</a> smashes a fancy pirate with a old crossbow of vileness and does 50 damage!</p>&mdash; World of Tweetcraft (@worldtweetcraft) <a href="https://twitter.com/worldtweetcraft/status/258218383718379523?ref_src=twsrc%5Etfw">October 16, 2012</a></blockquote>
+
+  
+---
+
+# Example: Tetris on the Green Building at MIT
+
+<img src="/CI-2700/assets/img/tetrisgreen.jpg" width="40%"/>
+
+---
+
+# Accessibility
+
+  - Games are often not the most accessible software 
+  
+  - Nowadays they often at least include a colorblind mode and subtitles
+  
+  - But what about other disabilities?
+  
+  - For example, how do you make a "video" game without video?
+  
+  - Audio games!
+
+---
+
+# Example: A Blind Legend
+
+"A Blind Legend is a collaborative project of an audio-only action/adventure game for mobile phones. It's based on a very innovative technology: binaural sound. In this game, the players are guided only by 3D sound and live the adventure by controlling their hero with multi-point tactile gestures. A Blind Legend is above all a story: an adventure from the Age of Chivalry, to which we want to give epic scope."
+
+A review:
+
+<span style="font-size:80%">"The combat is very easy at first, but gets harder after a while: enemies will move during combat, and depending on where they are located, you must press the corresponding arrow key. When there are more enemies, it gets even more fun. There are only a handeful of fights that kinda frustrated me, but the game balances the difficulty very well."</span>
+
+---
+
+# Interactive Fiction
+
+  - Some games are very story-driven
+  
+  - Movies are stories without a game 
+  
+  - What if we add some interactivity?
+  
+  - Where does the concept of "movie" end, and that of "game" start?
+
+---
+
+# Example: Bandersnatch
+
+<img src="/CI-2700/assets/img/bandersnatch.jpg" width="100%"/>
+
+---
+
+# Example: The Stanley Parable
+
+<img src="/CI-2700/assets/img/stanley.png" width="100%"/>
+
+---
+
+# Example: Façade
+
+<img src="/CI-2700/assets/img/facade.jpg" width="80%"/>
+
+---
+
+# Video Games for Pets
+
+  - Humans are not the only species that likes to play 
+  
+  - When we think of pets playing, we usually imagine physical activity
+  
+  - However, there is no reason this couldn't involve something like a "video game"
+  
+  - The score/reward should still be something tangible, like a treat 
+  
+---
+
+# Example: CleverPet
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Jack has a very intense love/hate relationship with <a href="https://twitter.com/getcleverpet?ref_src=twsrc%5Etfw">@getcleverpet</a> <br><br>He LOVES that it gives him food... so much so that he can&#39;t think straight. <br><br>Then he gets mad at it when he doesn&#39;t do the sequence right (as evidenced by his floofy tail). <a href="https://t.co/ZyOQ4FIfij">pic.twitter.com/ZyOQ4FIfij</a></p>&mdash; PJ (@OtherKnave) <a href="https://twitter.com/OtherKnave/status/1071090963861381125?ref_src=twsrc%5Etfw">December 7, 2018</a></blockquote>
+
+
+  
+---
+
+class: center, middle 
+
+# Some Publishing Options
+  
+---
+
+class: small
+
+# Steam
+
+  - $100 to submit a game for publication
+  
+  - 70% revenue goes to the developer (75% if the game makes more than $10 million, 80% if it makes more than $50 million)
+  
+  - Over 100 Million users
+  
+  - There are several tools for promotions, including weekly discounts, discoverability ("see more like this"), etc.
+  
+  - Players can request a refund for your game for 14 days, if they played for less than 2h 
+  
+---
+
+# Epic Games Store
+  
+  - 88% revenue goes to the developer, you can also use Unreal Engine without paying royalties
+  
+  - Newer store with fewer customers (but Fortnite is a big game!), and submissions are currently strongly selected
+  
+  - Epic (still) says the store would open to all developers in "the second half of 2019" 
+  
+  - Two no-questions-asked refunds per player within two weeks of purchase
+  
+---
+
+class: small
+
+# Humble Bundle
+
+  - Originally sold bundles of indie games 
+  
+  - Now also has a store for their 12 million customers with 75% revenue for the developer (10% go to charity!)
+  
+  - Also offers two other services:
+  
+     * Humble Gamepage: Host a website for your game for free and sell it, 95% revenue goes to the developer 
+     
+     * Humble Widget: Provides a payment widget for your own website to sell your game with, with 95% going to the developer
+  
+---
+
+# Itch.io
+
+  - Smaller, indie-focused store 
+  
+  - Pricing is generally "pay what you want", but you can set a minimum price 
+  
+  - Revenue sharing is also "pay what you want", you can give itch.io 0-30% of your revenue 
+  
+  - You can upload anything (that is legal): games, art assets, books, comics, etc.
+  
+---
+
+# Google Play
+
+  - You have to register as a developer (once) for $25
+  
+  - 70% revenue goes to the developer
+  
+  - If you make your game free you *can not* change it to paid later 
+  
+  - Google also offers ads
+  
+---
+
+# Apple Store
+
+  - You have to register as a developer for $99/year
+  
+  - 70% revenue goes to the developer (85% after the first year, if you have a subscription-based app)
+  
+  - All apps are put through strict review (and sometime rejected rather arbitrarily)
+  
+---
+
+# Consoles
+
+  - To publish on (major) consoles, you need a DevKit 
+  
+  - It's usually a bit of a process to register as a developer and get these 
+  
+  - Nintendo and Sony actually loan them out for free, while Microsoft gives them away (but there's a waiting list)
+  
+  - You need to show that you are registered as a company and have an actual game in development
+
+---
+
+class: small
+
+# References
+
+  - [World of Tweetcraft](http://stephengware.com/wotc/)
+  
+  - [A Blind Legend](http://www.ablindlegend.com/en/about-us/)
+  
+  - [MIT: Tetris on the Green Building](http://hacks.mit.edu/by_year/2012/tetris/)
+  
+  - [Personal Experience of a Game Tester](http://www.cracked.com/personal-experiences-2415-the-ridiculous-tedious-world-video-game-testing.html)
+
+  - ["Luck in Games" by Richard Garfield](https://www.youtube.com/watch?v=av5Hf7uOu-o)
+  
+  - [Variable Reward Schedules](https://www.psychologytoday.com/us/blog/brain-wise/201311/use-unpredictable-rewards-keep-behavior-going)
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
+    <script src="https://yawgmoth.github.io/CI-2700/assets/js/3dutils.js"></script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "dark"});
+      
+      var canvas;
+    canvas = document.getElementById("rage");
+	canvas.width = 800;
+	canvas.height = 6;
+    var i;
+    
+    var p = 0
+    
+    var ragef = function(ctx, p, n, incr, maxp) {
+        var i;
+        var origp = p;
+        var dmgsum = 0;
+        var distsum = 0;
+        var distcount = 0;
+        var lastcrit = 0;
+        for (i = 0; i < n; ++i)
+        {
+           r = Math.random();
+           ctx.beginPath();
+           if (r <= p)
+           {
+               distsum += (i-lastcrit);
+               lastcrit = i;
+               p = origp;
+               dmgsum += 20;
+               ctx.strokeStyle = "red";
+               ctx.fillStyle = "red";
+           }
+           else
+           {
+               dmgsum += 10;
+               p = p + incr;
+               if (p > maxp) 
+               {
+                  p = maxp;
+               }
+               ctx.strokeStyle = "green";
+               ctx.fillStyle = "green";
+           }
+           
+           ctx.rect(i*4, 0, 4, 4);
+           ctx.stroke();
+           ctx.fill();
+        }
+    }
+    
+    
+    ragef(canvas.getContext("2d"), 0.2, 200, 0.1, 0.8);
+    
+    var canvas1;
+    canvas1 = document.getElementById("rage1");
+	canvas1.width = 800;
+	canvas1.height = 6;
+    
+    ragef(canvas1.getContext("2d"), 0.35, 200, 0, 0.8);
+      
+      // Setup MathJax
+      MathJax.Hub.Config({
+          tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          }
+      });
+
+      MathJax.Hub.Configured();
+      
+    
+    </script>
+  
+  </body>
+</html>
