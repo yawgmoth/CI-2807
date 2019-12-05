@@ -10,15 +10,27 @@ categories: [frontpage]
 
 Here you can play the students' games online, or download a windows build (for better performance):
 
+## II Ciclo 2019
+
+  * [Klimtsnatch by Noobs (Hannia Aguilar Salas, Maria de la Cruz, Paola Ortega Saborio, Gerald Vindas Aguila)](https://drive.google.com/open?id=1iQPkp9jt4lLBrKRcFE-7nqYE24Id-1br)
+  
+  * [Xcape by Terabithians (José Fernando Quirós, Walter Bonilla Gutierrez, Christian Rodríguez, Katherine Hernández Benavides)[/CI-2807/assets/unity/xcape/index.html) ([Windows Build](/CI-2807/assets/unity/deadlymountain/build.zip))
+  
+  * [Negrita Surfers by Flip-Flop (Daniel Diaz Molina, Kevin Jimenez, Joseph Rementería, Marco Venegas)](/CI-2807/assets/unity/negritasurfers/index.html)
+  
+  * [Wizard's Labyrinth by popóm devs (Christofer Rodriguez Sanchez, Jorge Araya Gonzalez, Jorge Melendez, Estiven Alfaro Gómez)](/CI-2807/assets/unity/wizardslabyrinth/index.html)
+  
+  * [Pegasus Rider by Blind Studio (Andrea Gómez, Geovanny Cordeo, Diego Chacon Arrieta, Jose Soto, Sergio Tijerino Avila)](/CI-2807/assets/unity/pegasusrider/index.html) ([Windows Build](/CI-2807/assets/unity/pegasusrider/build.zip))
+
 ## I Ciclo 2019
 
-  * [Deadly Mountain by !(Game Makers) (Carlos Mellado Xatruch, Luis Diego Mora Jiménez, Jose David Vargas Artaria, Valeria Zamora)](/CI-2807/assets/unity/deadlymountain/index.html) ([Windows Build](/CI-2700/assets/unity/deadlymountain/build.zip))
+  * [Deadly Mountain by !(Game Makers) (Carlos Mellado Xatruch, Luis Diego Mora Jiménez, Jose David Vargas Artaria, Valeria Zamora)](/CI-2807/assets/unity/deadlymountain/index.html) ([Windows Build](/CI-2807/assets/unity/deadlymountain/build.zip))
   
-  * [BoltBlade by Godlike Gamers (José Arias Catazo, Patrick Loney Rojas, Carlos Portuguez Ubeda, Daniel Varela Serrano)](/CI-2807/assets/unity/boltblade/index.html) ([Windows Build](/CI-2700/assets/unity/boltblade/build.zip))
+  * [BoltBlade by Godlike Gamers (José Arias Catazo, Patrick Loney Rojas, Carlos Portuguez Ubeda, Daniel Varela Serrano)](/CI-2807/assets/unity/boltblade/index.html) ([Windows Build](/CI-2807/assets/unity/boltblade/build.zip))
   
-  * [Exorcist Slime by SAL (Ariel Arias Rojas, Sivana Alexa Hamer, Luis Porras)](/CI-2807/assets/unity/exorcistslime/index.html) ([Windows Build](/CI-2700/assets/unity/exorcistslime/build.zip))
+  * [Exorcist Slime by SAL (Ariel Arias Rojas, Sivana Alexa Hamer, Luis Porras)](/CI-2807/assets/unity/exorcistslime/index.html) ([Windows Build](/CI-2807/assets/unity/exorcistslime/build.zip))
   
-  * [Polar Bear by SYZYGY (Oscar Barahona, Benjamin Blanco, Sergio Lizano Paniagua, Jose Vitaly Mayarga J., Daniel Soito Lemus)](/CI-2807/assets/unity/polarbear/index.html) ([Windows Build](/CI-2700/assets/unity/polarbear/build.zip), [Website](https://crbenjaminblanco.github.io/GameDesign/))
+  * [Polar Bear by SYZYGY (Oscar Barahona, Benjamin Blanco, Sergio Lizano Paniagua, Jose Vitaly Mayarga J., Daniel Soito Lemus)](/CI-2807/assets/unity/polarbear/index.html) ([Windows Build](/CI-2807/assets/unity/polarbear/build.zip), [Website](https://crbenjaminblanco.github.io/GameDesign/))
   
   * [Gloomnight Grove by ${placeholder} studios (Ian Durán, Javier Fernandez Aguilar, Melissa Garro Morales, Fabian Roberto Leandro)](https://gloomnightgrove.com/)
 
