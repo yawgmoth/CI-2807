@@ -14,7 +14,7 @@ Here you can play the students' games online, or download a windows build (for b
 
   * [Klimtsnatch by Noobs (Hannia Aguilar Salas, Maria de la Cruz, Paola Ortega Saborio, Gerald Vindas Aguila)](https://drive.google.com/open?id=1iQPkp9jt4lLBrKRcFE-7nqYE24Id-1br)
   
-  * [Xcape by Terabithians (José Fernando Quirós, Walter Bonilla Gutierrez, Christian Rodríguez, Katherine Hernández Benavides)[/CI-2807/assets/unity/xcape/index.html) ([Windows Build](/CI-2807/assets/unity/deadlymountain/build.zip))
+  * [Xcape by Terabithians (José Fernando Quirós, Walter Bonilla Gutierrez, Christian Rodríguez, Katherine Hernández Benavides)](/CI-2807/assets/unity/xcape/index.html) ([Windows Build](/CI-2807/assets/unity/xcape/build.zip))
   
   * [Negrita Surfers by Flip-Flop (Daniel Diaz Molina, Kevin Jimenez, Joseph Rementería, Marco Venegas)](/CI-2807/assets/unity/negritasurfers/index.html)
   
